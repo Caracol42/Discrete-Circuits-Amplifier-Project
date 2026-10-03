@@ -1,1 +1,1 @@
-# Discrete-Circuits-Amplifier-Challenge
+# Discrete Circuits Amplifier Challenge
