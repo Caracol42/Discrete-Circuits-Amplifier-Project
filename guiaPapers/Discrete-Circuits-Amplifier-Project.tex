@@ -1,0 +1,93 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{cite}
+
+\title{Discrete Electronics Project: Class AB Audio Amplifier\\\large Design and Simulation Progress Report}
+
+\author{
+\IEEEauthorblockN{
+María Fernanda Morales Calderón,
+Ian José Álvarez Arrieta,\\
+Óscar Felipe Montejo Cordero,
+Bryan Alessandro Elizondo Fallas,
+Andrés Obregón López
+}
+\IEEEauthorblockA{
+School of Electronics Engineering\\
+Tecnológico de Costa Rica (TEC)
+}
+}
+
+
+
+
+
+
+
+\begin{document}
+\maketitle
+\begin{abstract}
+This paper outlines the design and simulation progress of a discrete-component Class AB audio amplifier developed in collaboration with Analog One. The proposed system is organized into three functional stages: preamplification, amplification, and power amplification. The preliminary circuit also includes an audio input network, volume adjustment, a low-pass filter, and a nominal $8\,\Omega$ speaker load. This report describes the planned simulation methodology for checking the DC operating points, time-domain signal behavior, and frequency response. Numerical findings will be incorporated after they have been confirmed in the circuit simulator.
+\end{abstract}
+
+
+\begin{IEEEkeywords}
+Class AB amplifier, discrete electronics, audio amplification, MOSFET, Multisim, simulation.
+\end{IEEEkeywords}
+
+
+\section{Introduction}
+An audio amplifier must increase the level of an input signal while maintaining sufficient signal quality to drive a loudspeaker. Designing an amplifier using discrete electronic components requires attention to transistor biasing, coupling networks, gain, frequency response, and the electrical conditions of the output stage. In particular, a Class AB output stage aims to reduce the high quiescent dissipation associated with Class A operation while limiting distortion around the transition between output devices.
+
+The Discrete Electronics Project, developed in collaboration with Analog One, focuses on a Class AB audio amplifier. Its architecture is divided into three functional sections: a preamplifier, an amplifier, and a power stage. The circuit is being studied through simulation before proceeding to further implementation and validation. This report summarizes the proposed organization and the simulation tests relevant to the current design stage.
+\section{Circuit Description}
+\subsection{Preamplification Stage}
+The preamplification stage receives the audio input and prepares a suitable signal level for the following stage. The preliminary input arrangement includes signal mixing, volume control, and an RC low-pass filter. The filter uses proposed values of $R_{LP}=1\,\mathrm{k}\Omega$ and $C_{LP}=7.5\,\mathrm{nF}$. An ideal isolated RC estimate is
+\begin{equation}
+ f_c=\frac{1}{2\pi R_{LP}C_{LP}}\approx21.2\,\mathrm{kHz}.
+\end{equation}
+The effective frequency response must still be checked in the integrated circuit because the surrounding impedances affect the result.
+\subsection{Amplification Stage}
+The amplification section provides additional voltage gain before the signal reaches the output stage. In the preliminary schematic, BS170 MOSFET common-source circuits appear within the gain path. Their bias points, gain, and interaction with the coupling capacitors must be evaluated using the corresponding transistor models.
+\subsection{Class AB Power Stage}
+The final section is intended to supply the load current required by the speaker. The preliminary Class AB schematic uses IRF510 and IRF9510 MOSFETs in the output arrangement, with a nominal $8\,\Omega$ load and proposed $\pm12\,\mathrm{V}$ supply rails. The output-stage bias must be evaluated to check whether the waveform is reproduced without excessive clipping or crossover distortion. These schematic values are preliminary and do not establish validated output-power performance.
+\section{Simulation Description}
+\subsection{Simulation Environment}
+The circuit has been prepared as a Multisim design file. The device models, component values, source settings, and simulation conditions must be documented before numerical results are reported. Each simulation should use a specified load and defined supply voltages so that its behavior can be evaluated consistently.
+\subsection{DC Operating-Point Analysis}
+A DC operating-point analysis is used to inspect transistor terminal voltages and currents. This allows the bias conditions of the preamplification, amplification, and Class AB output stage to be checked before analyzing their time-domain response. Any values reported in the final paper should be obtained directly from the simulator.
+\subsection{Transient Analysis}
+A sinusoidal audio input can be applied to observe the signal at the input, between functional stages, and across the load. The resulting waveforms allow evaluation of amplification, clipping, asymmetry, and possible crossover distortion at the output. Input amplitude, frequency, volume setting, simulation time, and load must accompany each waveform.
+\subsection{AC Sweep and Frequency Response}
+An AC frequency sweep can be used to obtain the overall gain and phase response. The analysis should determine the midband gain and estimate the lower and upper cutoff frequencies relative to the simulated midband level. Particular attention should be paid to the low-pass filter near the upper part of the audio band and to the effects of interstage coupling.
+\section{Results to Be Documented}
+The following table is provided as a reporting structure only; no simulated numerical values have yet been verified for this manuscript.
+\begin{table}[t]
+\caption{Class AB Amplifier: Simulation Results Template}
+\centering
+\begin{tabular}{lc}
+\toprule
+Parameter & Verified result \\
+\midrule
+DC bias conditions & Pending \\
+Midband voltage gain (dB) & Pending \\
+Lower cutoff frequency (Hz) & Pending \\
+Upper cutoff frequency (Hz) & Pending \\
+Output waveform and distortion & Pending \\
+Output voltage across $8\,\Omega$ & Pending \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% Insert the actual Class AB Multisim schematic and verified simulation plots here.
+% Example: \includegraphics[width=\columnwidth]{figures/class_ab_schematic.png}
+\section{Conclusions and Next Steps}
+The current proposal organizes the Class AB audio amplifier into preamplification, amplification, and power stages. The next steps are to verify the MOSFET operating points, document the simulated transient waveforms and frequency response, and adjust the circuit where the observed behavior does not meet the design goals. Conclusions about gain, delivered power, distortion, and bandwidth will require verified simulation data and, later, experimental testing.
+\end{document}
+
+
+
