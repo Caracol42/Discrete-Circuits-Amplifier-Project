@@ -6,6 +6,12 @@
 \usepackage{graphicx}
 \usepackage{cite}
 \usepackage{booktabs}
+\usepackage{float}
+\usepackage{url}
+\usepackage{balance}
+
+% Keep paragraph spacing consistent without stretching the columns.
+\raggedbottom
 
 \title{Discrete Electronics Project: Class AB Audio Amplifier\\\large Design and Simulation Progress Report}
 
@@ -31,8 +37,14 @@ Tecnológico de Costa Rica (TEC)
 
 \begin{document}
 \maketitle
+
+% Leave one line between paragraphs throughout the document body.
+% Apply this after the title to preserve the author-block layout.
+\setlength{\parskip}{\baselineskip}
+\setlength{\parindent}{0pt}
+
 \begin{abstract}
-This paper outlines the design and simulation progress of a discrete-component Class AB audio amplifier developed in collaboration with Analog One. The proposed system is organized into three functional stages: preamplification, amplification, and power amplification. The preliminary circuit also includes an audio input network, volume adjustment, a low-pass filter, and a nominal $8\,\Omega$ speaker load. This report describes the planned simulation methodology for checking the DC operating points, time-domain signal behavior, and frequency response. Numerical findings will be incorporated after they have been confirmed in the circuit simulator.
+This paper outlines the design and simulation progress of a discrete-component Class AB audio amplifier developed in collaboration with Analog One. The system is organized into three functional stages: preamplification, amplification, and power amplification. The proposed arrangement includes an audio input network, volume adjustment, a low-pass filter, and a nominal $8\,\Omega$ loudspeaker load. The power stage has already been tested in simulation using $\pm24\,\mathrm{V}$ supplies. This report describes its operation and component selection, together with the analysis methods used to assess the amplifier. Numerical results and simulation plots will be incorporated as they are documented.
 \end{abstract}
 
 
@@ -44,51 +56,138 @@ Class AB amplifier, discrete electronics, audio amplification, MOSFET, Multisim,
 \section{Introduction}
 An audio amplifier must increase the level of an input signal while maintaining sufficient signal quality to drive a loudspeaker. Designing an amplifier using discrete electronic components requires attention to transistor biasing, coupling networks, gain, frequency response, and the electrical conditions of the output stage. In particular, a Class AB output stage aims to reduce the high quiescent dissipation associated with Class A operation while limiting distortion around the transition between output devices.
 
-The Discrete Electronics Project, developed in collaboration with Analog One, focuses on a Class AB audio amplifier. Its architecture is divided into three functional sections: a preamplifier, an amplifier, and a power stage. The circuit is being studied through simulation before proceeding to further implementation and validation. This report summarizes the proposed organization and the simulation tests relevant to the current design stage.
+The Discrete Electronics Project, developed in collaboration with Analog One, focuses on a Class AB audio amplifier. Its architecture is divided into three functional sections: a preamplifier, an amplifier, and a power stage. The power stage has already been tested in simulation as part of the development process. This report summarizes the proposed organization, explains the component choices in that stage, and describes the analysis methods relevant to the complete amplifier.
+
 \section{Circuit Description}
+
 \subsection{Preamplification Stage}
 The preamplification stage receives the audio input and prepares a suitable signal level for the following stage. The preliminary input arrangement includes signal mixing, volume control, and an RC low-pass filter. The filter uses proposed values of $R_{LP}=1\,\mathrm{k}\Omega$ and $C_{LP}=7.5\,\mathrm{nF}$. An ideal isolated RC estimate is
 \begin{equation}
  f_c=\frac{1}{2\pi R_{LP}C_{LP}}\approx21.2\,\mathrm{kHz}.
 \end{equation}
+
 The effective frequency response must still be checked in the integrated circuit because the surrounding impedances affect the result.
+
 \subsection{Amplification Stage}
 The amplification section provides additional voltage gain before the signal reaches the output stage. In the preliminary schematic, BS170 MOSFET common-source circuits appear within the gain path. Their bias points, gain, and interaction with the coupling capacitors must be evaluated using the corresponding transistor models.
+
 \subsection{Class AB Power Stage}
-The final section is intended to supply the load current required by the speaker. The preliminary Class AB schematic uses IRF510 and IRF9510 MOSFETs in the output arrangement, with a nominal $8\,\Omega$ load and proposed $\pm12\,\mathrm{V}$ supply rails. The output-stage bias must be evaluated to check whether the waveform is reproduced without excessive clipping or crossover distortion. These schematic values are preliminary and do not establish validated output-power performance.
+The power stage shown in Fig.~\ref{fig:class_ab_power_stage} has already been tested in Multisim. Its role is to supply the current needed by the $8\,\Omega$ loudspeaker while following the audio signal received from the amplification stage. The $+24\,\mathrm{V}$ and $-24\,\mathrm{V}$ supplies provide room for the output signal to move in both directions around its resting level.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\columnwidth]{fig/Esquematicpowersupply.pdf}
+    \caption{Class AB power stage tested in simulation with an $8\,\Omega$ loudspeaker load and $\pm24\,\mathrm{V}$ supply rails.}
+    \label{fig:class_ab_power_stage}
+\end{figure}
+
+The IRF510 (M1) and IRF9510 (M2) were selected as a complementary pair of power transistors. Their opposite operating polarities allow M1 to mainly handle the positive portion of the signal and M2 the negative portion. These devices provide the current-handling function required at the output, and their packages allow heat sinks to be attached for physical implementation~\cite{irf510,irf9510}.
+
+Resistors $R_1=550\,\mathrm{k}\Omega$, $R_2=100\,\mathrm{k}\Omega$, $R_3=100\,\mathrm{k}\Omega$, and $R_5=605\,\mathrm{k}\Omega$ establish the resting conditions of the two transistors. The separate resistor ratios set their operating levels independently, while the high resistance values keep the current consumed by these networks small. Their purpose is to support a slight overlap between the activity of the devices, reducing distortion during the transition between positive and negative signal portions.
+
+Capacitors $C_1$ and $C_2$, both $4.7\,\mu\mathrm{F}$, pass the audio signal while keeping the steady voltage of the preceding stage separate from the transistor operating levels. Together with the input resistances, their capacitance keeps attenuation of low-frequency audio small.
+
+The $100\,\Omega$ resistors $R_{\mathrm{G1}}$ and $R_{\mathrm{G2}}$ help suppress unwanted rapid oscillations at the transistor inputs. Their role is to support stable operation while allowing the audio signal to reach both devices~\cite{mosfet_audio}.
+
+The $0.22\,\Omega$ resistors $R_{\mathrm{S1}}$ and $R_{\mathrm{S2}}$ help stabilize the current through the output devices. Their low resistance keeps the signal voltage lost across them small. The $5\,\mathrm{W}$ rating provides capacity to dissipate the heat produced by the current flowing through these resistors.
+
+At the output, the $4700\,\mu\mathrm{F}$ capacitor $C_3$ separates the loudspeaker from any steady voltage offset at the transistor output. This large capacitance was included because the $8\,\Omega$ load requires a substantial coupling capacitor to pass low-frequency audio with little attenuation.
+
+The branch formed by $R_{\mathrm{Zobel}}=10\,\Omega$ and $C_4=100\,\mathrm{nF}$ helps the stage operate with a more predictable load at high frequencies. This network was included because a real loudspeaker behaves differently as frequency changes. It provides a path for high-frequency current that helps reduce unwanted oscillations, while drawing little current at lower audio frequencies~\cite{mosfet_audio}.
+
+For the standalone simulation, XFG1 provides the test signal and S4 connects or disconnects it from the stage. In the complete amplifier, the preceding amplification stage supplies this input. The numerical results from the simulation will be presented separately from this description of the circuit and its component choices.
+
 \section{Simulation Description}
+
 \subsection{Simulation Environment}
-The circuit has been prepared as a Multisim design file. The device models, component values, source settings, and simulation conditions must be documented before numerical results are reported. Each simulation should use a specified load and defined supply voltages so that its behavior can be evaluated consistently.
+
+Multisim and LTspice were used to simulate the audio amplifier, including the preamplification, amplification, and power stages. Both programs use mathematical models of the components to calculate voltages and currents throughout the circuit. This allows the design to be examined before physical assembly and helps identify how changes in one stage affect the others.
+
+Multisim provides a graphical workspace with virtual instruments, such as signal generators and oscilloscopes, that support observation of the amplifier response. LTspice provides schematic-based simulation and waveform plots for examining voltages, currents, and frequency response. Both environments support the analysis of resting conditions, signal behavior over time, and operation across different frequencies.
+
+A consistent comparison between the two simulators requires equivalent component values, supply voltages, input signals, and loudspeaker loads. The transistor models and simulation settings must also be considered when interpreting differences. For the complete amplifier, the analysis includes the connections between stages, since these connections influence the signal level and frequency response delivered to the loudspeaker.
+
 \subsection{DC Operating-Point Analysis}
-A DC operating-point analysis is used to inspect transistor terminal voltages and currents. This allows the bias conditions of the preamplification, amplification, and Class AB output stage to be checked before analyzing their time-domain response. Any values reported in the final paper should be obtained directly from the simulator.
+
+The DC operating-point analysis establishes the amplifier conditions without an applied audio signal. It calculates the steady voltages and currents that determine how the transistors are prepared to process the incoming signal. These conditions provide the starting point for interpreting the remaining simulations.
+
+\subsubsection{Class AB Power Stage}
+
+The DC operating-point analysis examines the resting conditions of the power stage with the $+24\,\mathrm{V}$ and $-24\,\mathrm{V}$ supplies connected. The input source is configured without a DC offset, allowing the resistor networks to establish the operating levels of M1 and M2 independently of the incoming audio signal.
+
+The analysis focuses on the transistor voltages and the current present when no audio signal is applied. These conditions determine how the devices remain ready to reproduce the positive and negative portions of the signal and how much power is consumed while the stage is idle.
+
+The internal output voltage is examined before capacitor $C_3$, which separates the loudspeaker from any steady voltage at this point. The resting transistor voltages and currents are obtained from the operating-point results, separately from the measurements recorded during the audio signal test.
 \subsection{Transient Analysis}
-A sinusoidal audio input can be applied to observe the signal at the input, between functional stages, and across the load. The resulting waveforms allow evaluation of amplification, clipping, asymmetry, and possible crossover distortion at the output. Input amplitude, frequency, volume setting, simulation time, and load must accompany each waveform.
+
+Transient analysis shows how the amplifier voltages and currents change over time when an audio signal is applied. Comparing the input and output waveforms allows examination of signal amplification, changes in waveform shape, and the response of the connected stages. The input amplitude, frequency, load, and simulation interval define the conditions of each test.
+\subsubsection{Class AB Power Stage}
+
+The proposed input to the power stage is represented by a sinusoidal test signal at $10\,\mathrm{kHz}$, with a peak amplitude of $22\,\mathrm{V}$, equivalent to $44\,\mathrm{V}$ peak-to-peak. This source represents the drive signal that the preceding amplification stage is intended to provide.
+
+With the $8\,\Omega$ load connected, the simulation recorded an output voltage of approximately $38.1\,\mathrm{V}$ peak-to-peak, equivalent to an effective value of $13.4\,\mathrm{V}$rms. The corresponding load current was approximately $1.68\,\mathrm{A}$rms, and the reported average power delivered to the load was $22.5\,\mathrm{W}$ under this test condition.
+
+The output voltage is somewhat lower than the input voltage, consistent with the role of this stage: following the incoming signal while supplying the current required by the loudspeaker. M1 mainly handles the positive portion of the signal, while M2 mainly handles the negative portion.
+
+The same test reported an average voltage component of approximately $1.41\,\mathrm{mV}$ across the load. This small value is consistent with capacitor $C_3$ separating the loudspeaker from the steady voltage at the transistor output.
+
+The input and output waveforms are also examined for flattened peaks and irregularities near the transition between the two transistors. This waveform review complements the reported voltage, current, and power values when assessing signal quality.
+
 \subsection{AC Sweep and Frequency Response}
-An AC frequency sweep can be used to obtain the overall gain and phase response. The analysis should determine the midband gain and estimate the lower and upper cutoff frequencies relative to the simulated midband level. Particular attention should be paid to the low-pass filter near the upper part of the audio band and to the effects of interstage coupling.
+
+The AC sweep examines how the amplifier responds as the input frequency changes. The resulting plots show the voltage gain and the relative phase between the input and output signals. This analysis identifies the frequency range over which the amplifier maintains a reasonably consistent response and the regions where the signal begins to decrease.
+
+\subsubsection{Class AB Power Stage}
+
+The frequency-response analysis examines how consistently the power stage transfers the audio signal as frequency changes. The voltage across the loudspeaker is compared with the input voltage before capacitors $C_1$ and $C_2$, allowing the response of this stage to be assessed separately from the preceding amplification stages.
+
+The signal test at $10\,\mathrm{kHz}$ provides a reference condition, with an input of $44\,\mathrm{V}$ peak-to-peak and a recorded output of approximately $38.1\,\mathrm{V}$ peak-to-peak. These measurements describe the response during that specific signal test. The AC sweep extends the assessment across a range of frequencies using small changes around the resting operating conditions.
+
+At low frequencies, capacitors $C_1$, $C_2$, and $C_3$ influence how much of the signal reaches the loudspeaker. At higher frequencies, the transistor characteristics, input resistors, and connections between stages influence the output level. The complete frequency-response plot is used to identify the lower and upper limits of the useful operating range.
+
+The power-stage response is considered together with the filter and the preceding stages when assessing the audio range of the complete amplifier. The reported $22.5\,\mathrm{W}$ output belongs to the signal test at $10\,\mathrm{kHz}$; power delivery at other frequencies is assessed through the corresponding time-based tests.
+% Balance the columns in the closing part of the report.
+\balance
 \section{Results to Be Documented}
-The following table is provided as a reporting structure only; no simulated numerical values have yet been verified for this manuscript.
-\begin{table}[t]
-\caption{Class AB Amplifier: Simulation Results Template}
+The power stage has already been tested in simulation. The following table records that progress and identifies the numerical results and plots that still need to be incorporated into this manuscript.
+
+\begin{table}[H]
+\caption{Class AB Amplifier: Simulation Documentation Status}
 \centering
 \begin{tabular}{lc}
 \toprule
-Parameter & Verified result \\
+Parameter & Status \\
 \midrule
-DC bias conditions & Pending \\
-Midband voltage gain (dB) & Pending \\
-Lower cutoff frequency (Hz) & Pending \\
-Upper cutoff frequency (Hz) & Pending \\
-Output waveform and distortion & Pending \\
-Output voltage across $8\,\Omega$ & Pending \\
+Power-stage simulation & Tested \\
+DC bias conditions & To be documented \\
+Midband voltage gain (dB) & To be documented \\
+Lower cutoff frequency (Hz) & To be documented \\
+Upper cutoff frequency (Hz) & To be documented \\
+Output waveform and distortion & To be documented \\
+Output voltage across $8\,\Omega$ & To be documented \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-% Insert the actual Class AB Multisim schematic and verified simulation plots here.
-% Example: \includegraphics[width=\columnwidth]{figures/class_ab_schematic.png}
 \section{Conclusions and Next Steps}
-The current proposal organizes the Class AB audio amplifier into preamplification, amplification, and power stages. The next steps are to verify the MOSFET operating points, document the simulated transient waveforms and frequency response, and adjust the circuit where the observed behavior does not meet the design goals. Conclusions about gain, delivered power, distortion, and bandwidth will require verified simulation data and, later, experimental testing.
+The current design organizes the Class AB audio amplifier into preamplification, amplification, and power stages. The power stage has already been tested in simulation, and its component choices support current delivery, separation of steady voltages between stages, and stable signal handling. The next steps are to incorporate the numerical results and plots, assess the behavior of the connected stages, and prepare for physical implementation. Conclusions about gain, delivered power, distortion, bandwidth, and cooling requirements should be supported by the corresponding simulation records and, later, experimental measurements.
+
+\begin{thebibliography}{3}
+
+\bibitem{irf510}
+Vishay Siliconix, ``IRF510: Power MOSFET,'' datasheet, document 91015, rev. D, Aug. 2021. [Online]. Available: \url{https://www.vishay.com/docs/91015/irf510.pdf}
+
+\bibitem{irf9510}
+Vishay Siliconix, ``IRF9510: Power MOSFET,'' datasheet, document 91072, rev. C, Aug. 2021. [Online]. Available: \url{https://www.vishay.com/doc?91072=}
+
+\bibitem{mosfet_audio}
+Texas Instruments, ``AN-1645 LM4702 Driving a MOSFET Output Stage,'' application report SNAA045A, May 2013, secs. 7.1--7.2. [Online]. Available: \url{https://www.ti.com/lit/an/snaa045a/snaa045a.pdf}
+
+\end{thebibliography}
+
 \end{document}
+
+
 
 
 
