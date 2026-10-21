@@ -1,15 +1,16 @@
 LTspice 26.0.2 for Windows
-Circuit: C:\Users\alvar\OneDrive\Documentos\II Semestre 2026\Circuitos discretos\Discrete-Circuits-Amplifier-Challenge\Week 1\Developer 1\Preamplificacion_LTspice.net
-Start Time: Fri Oct 16 19:03:13 2026
+Circuit: C:\Users\alvar\OneDrive\Documentos\II Semestre 2026\Circuitos discretos\Discrete-Circuits-Amplifier-Project\Week 1\Developer 1\Preamplificacion_LTspice.net
+Start Time: Wed Oct 21 01:25:52 2026
 solver = Normal
 Maximum thread count: 16
 tnom = 27
 temp = 27
 method = trap
 Direct Newton iteration succeeded in finding operating point.
-Total elapsed time: 9.295 seconds.
+Total elapsed time: 9.573 seconds.
 
 Files loaded:
-C:\Users\alvar\OneDrive\Documentos\II Semestre 2026\Circuitos discretos\Discrete-Circuits-Amplifier-Challenge\Week 1\Developer 1\Preamplificacion_LTspice.net
+C:\Users\alvar\OneDrive\Documentos\II Semestre 2026\Circuitos discretos\Discrete-Circuits-Amplifier-Project\Week 1\Developer 1\Preamplificacion_LTspice.net
 C:\Users\alvar\AppData\Local\LTspice\lib\cmp\standard.bjt
+C:\Users\alvar\AppData\Local\LTspice\lib\sub\pot.sub
 
