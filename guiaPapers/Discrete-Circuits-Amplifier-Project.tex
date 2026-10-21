@@ -20,7 +20,7 @@
 \IEEEauthorblockN{
 María Fernanda Morales Calderón,
 Ian José Álvarez Arrieta,\\
-Óscar Felipe Montejo Cordero,
+Oscar Felipe Montejo Cordero,
 Bryan Alessandro Elizondo Fallas,
 Andrés Obregón López
 }
@@ -63,7 +63,41 @@ Voltage-divider biasing is established by $R_{B1} = 150\,\mathrm{k}\Omega$ ($R_{
 Coupling capacitors $C_{in} = 10\,\mu\mathrm{F}$ ($C_4$) and $C_{out} = 10\,\mu\mathrm{F}$ ($C_2$) isolate DC bias levels between stages. To ensure a completely flat frequency response across the entire human audible spectrum up to $22\,\mathrm{kHz}$, the input low-pass filtering capacitor $C_1$ was set to $100\,\mathrm{pF}$ (or $1\,\mathrm{nF}$). Combined with series input resistances, the high-frequency cutoff is pushed well into the megahertz range ($f_H \approx 1.59\,\mathrm{MHz}$ for $100\,\mathrm{pF}$), guaranteeing $0.0\,\mathrm{dB}$ attenuation at $22\,\mathrm{kHz}$.
 
 \subsection{Amplification Stage}
-The amplification section provides additional voltage gain before the signal reaches the output stage. In the preliminary schematic, BS170 MOSFET common-source circuits appear within the gain path. Their bias points, gain, and interaction with the coupling capacitors must be evaluated using the corresponding transistor models.
+The purpose of the voltage amplification stage is to increase the signal voltage before it reaches the power stage. It does not drive the loudspeaker directly. The final design target was approximately $22\,\mathrm{V}$ peak at the output, using a $2\,\mathrm{V_{RMS}}$ sinusoidal input and $\pm24\,\mathrm{V}$ supplies. For a sine wave, this output is approximately $44\,\mathrm{V}$ peak-to-peak or $15.56\,\mathrm{V_{RMS}}$, requiring a voltage gain of about $7.8\,\mathrm{V/V}$.
+
+Early tests used two BS170 transistors and $\pm30\,\mathrm{V}$ supplies, reaching approximately $13\,\mathrm{V_{RMS}}$. The design was then revised to meet the agreed $\pm24\,\mathrm{V}$ supply and $22\,\mathrm{V}$ peak output requirements. The amplification stage uses three MOSFETs: two BS170 devices for voltage amplification and one IRF9510 to support the second stage. This stayed within the three-device allocation discussed for this section.
+
+The two BS170 devices use a common-source arrangement. Each reverses the signal, so their two reversals give an overall output with the same polarity as the input in the middle of the audio range. The IRF9510 acts as an active load: it supplies current to the second BS170 instead of using only a resistor connected to the positive supply. It is not an additional common-drain amplifier or a loudspeaker driver.
+
+The following component names refer to \texttt{SigAmpModule\_LTspice.asc}. M1 and M2 are the BS170 devices, and M3 is the IRF9510. M1 uses a $330\,\mathrm{k}\Omega$ and $100\,\mathrm{k}\Omega$ gate divider, a $4.7\,\mathrm{k}\Omega$ drain resistor, and a $2.09\,\mathrm{k}\Omega$ source resistor. The source resistance was originally represented in Multisim by $1.27\,\mathrm{k}\Omega$ and $820\,\Omega$ in series. It has no bypass capacitor. A $4.7\,\mu\mathrm{F}$ capacitor connects the first stage to the second through a $53.3\,\mathrm{k}\Omega$ resistor.
+
+M2 uses a $100\,\Omega$ source resistor connected to $-24\,\mathrm{V}$. Its gate connects to $-24\,\mathrm{V}$ through $22\,\mathrm{k}\Omega$ and to its drain through $220\,\mathrm{k}\Omega$. This feedback connection helps set its resting condition and control the gain. M3 connects to $+24\,\mathrm{V}$ through another $100\,\Omega$ resistor. Its gate divider uses $1\,\mathrm{k}\Omega$ toward $+24\,\mathrm{V}$ and $5.3\,\mathrm{k}\Omega$ toward ground. The drains of M2 and M3 join at the internal output. A second $4.7\,\mu\mathrm{F}$ capacitor couples this node to the external output.
+
+\begin{table}[H]
+\caption{Final Component Values in the Amplification Stage LTspice Module}
+\label{tab:amplification_components}
+\centering
+\small
+\begin{tabular}{ll}
+\toprule
+Component & Value or device \\
+\midrule
+M1, M2 & BS170 \\
+M3 & IRF9510 \\
+R1, R2 & $330\,\mathrm{k}\Omega$, $100\,\mathrm{k}\Omega$ \\
+R3, R4 & $4.7\,\mathrm{k}\Omega$, $2.09\,\mathrm{k}\Omega$ \\
+R5, R6 & $53.3\,\mathrm{k}\Omega$, $22\,\mathrm{k}\Omega$ \\
+R7, R8 & $100\,\Omega$, $220\,\mathrm{k}\Omega$ \\
+R9 & $100\,\Omega$ \\
+R10, R11 & $5.3\,\mathrm{k}\Omega$, $1\,\mathrm{k}\Omega$ \\
+C1, C2 & $4.7\,\mu\mathrm{F}$ each \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The standalone Multisim test used a $43\,\mathrm{k}\Omega$ output load as a resistive approximation of the following stage. The later LTspice test with the preamplifier used a $1\,\mathrm{M}\Omega$ output load. These are different test conditions. Connecting the actual power stage remains a separate check.
+
+In Multisim, a nonpolar $1\,\mu\mathrm{F}$ capacitor coupled the standalone signal generator to the first BS170 gate. In the connected LTspice version, the preamplifier's output coupling capacitor provides the DC separation at this interface. The gain-stage input therefore retains its own resting gate voltage.
 
 \subsection{Class AB Power Stage}
 The power stage shown in Fig.~\ref{fig:class_ab_power_stage} has already been tested in Multisim. Its role is to supply the current needed by the $8\,\Omega$ loudspeaker while following the audio signal received from the amplification stage. The $+24\,\mathrm{V}$ and $-24\,\mathrm{V}$ supplies provide room for the output signal to move in both directions around its resting level.
@@ -106,6 +140,34 @@ The DC operating-point analysis establishes the amplifier conditions without an 
 \subsubsection{Preamplifier Stage}
 The DC operating-point simulation for the 2N2222A common-emitter preamplifier verified a stable Q-point under $V_{CC} = +24\,\mathrm{V}$. The base voltage set by the $R_{10}$--$R_{11}$ resistor divider yields $V_B \approx 3.07\,\mathrm{V}$, establishing an emitter voltage $V_E \approx 2.37\,\mathrm{V}$ and an emitter current $I_E \approx 1.08\,\mathrm{mA}$ across $R_8 = 2.2\,\mathrm{k}\Omega$. Collector voltage rests at $V_C \approx 19.36\,\mathrm{V}$, providing symmetric dynamic margin above ground to accommodate dynamic signal swings without saturating or clipping the transistor.
 
+\subsubsection{Amplification Stage}
+The resting condition of M3 was adjusted first, with the Multisim input amplitude set to zero. Its initial gate divider used $10\,\mathrm{k}\Omega$ toward the positive supply. The resistor toward ground was adjusted until the shared drain voltage was close to zero and the current through the upper $100\,\Omega$ resistor was about $2\,\mathrm{mA}$. The selected divider initially used $10\,\mathrm{k}\Omega$ and $53\,\mathrm{k}\Omega$. Both values were later reduced by a factor of ten to improve the signal behavior without changing the divider ratio.
+
+After the transfer to LTspice, a DC operating-point analysis was run from the main connected schematic. Internal nodes were saved explicitly so that the transistor resting voltages could be read. The results in Table~\ref{tab:amplification_dc} agreed closely with the earlier Multisim adjustment.
+
+\begin{table}[H]
+\caption{Measured DC Voltages in the Amplification Stage in LTspice}
+\label{tab:amplification_dc}
+\centering
+\begin{tabular}{lr}
+\toprule
+Measurement & Voltage \\
+\midrule
+Positive / negative supply & $+24 / -24\,\mathrm{V}$ \\
+M1 gate & $5.5814\,\mathrm{V}$ \\
+M1 drain & $15.9317\,\mathrm{V}$ \\
+M2 source & $-23.8063\,\mathrm{V}$ \\
+M3 source & $23.7963\,\mathrm{V}$ \\
+Shared M2--M3 drain & $0.177945\,\mathrm{V}$ \\
+External output after capacitor & Approximately $0\,\mathrm{V}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The resistor voltage drops give approximately $2.037\,\mathrm{mA}$ through M3's source resistor and $1.937\,\mathrm{mA}$ through M2's source resistor. Their difference, about $0.100\,\mathrm{mA}$, flows through the feedback and gate-bias branch. M1's drain resistor gives a current of approximately $1.717\,\mathrm{mA}$. With its $2.09\,\mathrm{k}\Omega$ source resistance, the calculated M1 source voltage is approximately $3.59\,\mathrm{V}$. This last value is calculated from the measured drain voltage rather than recorded as a separate node measurement.
+
+The shared drain rests close to zero instead of either supply rail. These readings support the intended resting condition of the amplification stage; they do not, by themselves, prove that every possible input signal will remain free of clipping.
+
 \subsubsection{Class AB Power Stage}
 The DC operating-point analysis examines the resting conditions of the power stage with the $+24\,\mathrm{V}$ and $-24\,\mathrm{V}$ supplies connected. The input source is configured without a DC offset, allowing the resistor networks to establish the operating levels of M1 and M2 independently of the incoming audio signal.
 
@@ -118,6 +180,43 @@ Transient analysis shows how the amplifier voltages and currents change over tim
 
 \subsubsection{Preamplifier Stage}
 Time-domain transient simulations (\texttt{.tran 0 10s 1s}) were executed using a direct audio file stream (\texttt{golden\_hour.wav}, $\text{AC} = 1$). Omitting the initial $1.0\,\mathrm{s}$ interval avoids transient DC coupling capacitor charging artifacts. Across the load $R_L = 1\,\mathrm{M}\Omega$ connected directly at node \texttt{out}, peak audio signal swings reach $\pm1.0\,\mathrm{V_{peak}}$, corresponding to $0.707\,\mathrm{V_{RMS}}$ peak equivalent. Due to the crest factor and dynamic range of the audio material, the integrated RMS voltage over the $9\,\mathrm{s}$ window measures approximately $290\,\mathrm{mV_{RMS}}$. Exporting the audio directly via LTspice directive \texttt{.wave "amp\_golden.wav" 16 48k V(out)} yields a clean, unclipped audio file matching standard digital full-scale limits.
+
+\subsubsection{Amplification Stage: Sine-Wave Tests}
+The standalone stage was tested in Multisim at $1\,\mathrm{kHz}$, increasing the input gradually. With the interstage resistor adjusted to $53.3\,\mathrm{k}\Omega$, an input of $0.2\,\mathrm{V_{RMS}}$ produced approximately $1.56\,\mathrm{V_{RMS}}$, and $1\,\mathrm{V_{RMS}}$ produced approximately $7.80\,\mathrm{V_{RMS}}$. Both tests supported the intended gain of about $7.8\,\mathrm{V/V}$.
+
+At $2\,\mathrm{V_{RMS}}$, the output initially reached approximately $15.5\,\mathrm{V_{RMS}}$, but a visible bend appeared near the positive peak. The waveform at M1's drain appeared smoother, so the investigation focused on the M2--M3 section. Measurements across M3's source resistor showed a current variation coinciding with the bend. The M3 gate voltage also moved by roughly $170\,\mathrm{mV}$ peak-to-peak.
+
+A trial $1\,\mu\mathrm{F}$ capacitor across the upper gate-divider resistor did not improve the observed waveform and was removed. Reducing the simulation maximum time step to $1\,\mu\mathrm{s}$ also did not remove the bend. The gate divider was then changed from $10\,\mathrm{k}\Omega$ and $53\,\mathrm{k}\Omega$ to $1\,\mathrm{k}\Omega$ and $5.3\,\mathrm{k}\Omega$. This kept the same nominal gate voltage while making it less sensitive to signal-related changes. The gate variation decreased and the pronounced bend was no longer visible in the output trace.
+
+With the revised divider, a $2\,\mathrm{V_{RMS}}$, $1\,\mathrm{kHz}$ input produced measured output peaks of $+21.965\,\mathrm{V}$ and $-21.992\,\mathrm{V}$, or $43.957\,\mathrm{V}$ peak-to-peak. The reported RMS output was $15.6\,\mathrm{V_{RMS}}$. This met the approximate $22\,\mathrm{V}$ peak target with the $43\,\mathrm{k}\Omega$ test load. The waveform was assessed visually; no numerical total harmonic distortion result was obtained.
+
+\subsubsection{Amplification Stage Connected to the Preamplifier}
+The two blocks were then connected in LTspice using a $20\,\mathrm{s}$ transient simulation and the supplied \texttt{golden\_hour.wav} file. This integration record belongs to the version supplied for that test, whose preamplifier used a $510\,\Omega$ emitter resistor and a $1\,\mathrm{nF}$ input filter capacitor. It is distinct from the $2.2\,\mathrm{k}\Omega$ preamplifier version described elsewhere in this report. The following observations do not claim to validate that later version. The power-stage block was not included in this connected test.
+
+Before testing, the LTspice prefix of M2 was corrected to \texttt{X}, matching the supplied BS170 subcircuit model. The input and output waveforms were then compared. The connection between the blocks had a resting voltage of approximately $5.5814\,\mathrm{V}$, set by M1's gate divider. This value was subtracted only in the plot to display the changing audio signal around zero; the circuit itself was not modified by that plotting operation.
+
+The original input to the amplification stage contained peaks of approximately $4\,\mathrm{V}$ relative to its resting level. At a gain of about 7.8, these peaks would require roughly $31\,\mathrm{V}$ at the output. The $\pm24\,\mathrm{V}$ supplies could not support that voltage, and the plotted output developed flat negative peaks close to $-24\,\mathrm{V}$. Comparing the measured output with 7.8 times the input signal made this clipping visible. A music signal can have large brief peaks, so its RMS level alone does not establish whether it will fit within the amplifier's available output range.
+
+For a controlled integration test, the music amplitude was reduced by half before the preamplifier using a behavioral source:
+\begin{quote}
+\small\ttfamily
+Bscale AUX 0 V=0.5*V(AUX\_RAW)
+\end{quote}
+This was a simulation-level input adjustment, not a change to the resistors or gain of the amplification stage. In the inspected interval from $16$ to $16.02\,\mathrm{s}$, the flat peaks disappeared and the output closely followed the scaled input. The full-song overview showed peaks mostly within approximately $\pm16\,\mathrm{V}$, with a larger initial excursion that was not separately characterized. A physical implementation still needs an appropriate input-level or volume adjustment.
+
+\subsubsection{Audio Export During the Integration Test}
+A separate issue affected the exported WAV file. Directly exporting the amplifier output can clip the audio file because LTspice's WAV output uses a full-scale range of $-1$ to $+1\,\mathrm{V}$. The amplifier output was much larger than this range. A separate behavioral source therefore created a reduced copy for export:
+\begin{quote}
+\small\ttfamily
+Bexport AUDIO\_EXPORT 0 V=V(VSPK)/30
+\end{quote}
+The export command was changed to use that copy at the original file's $48\,\mathrm{kHz}$ sample rate:
+\begin{quote}
+\small\ttfamily
+.wave "AmpOutputMusic\_Normalizado.wav"\par
+16 48000 V(AUDIO\_EXPORT)
+\end{quote}
+The two displayed lines above form one directive in LTspice. Dividing this exported copy by 30 does not reduce the voltage delivered by the simulated amplifier. Playback of the new file was reported to sound clean. This listening check supports the improvement but is not a numerical distortion measurement.
 
 \subsubsection{Class AB Power Stage}
 The proposed input to the power stage is represented by a sinusoidal test signal at $10\,\mathrm{kHz}$, with a peak amplitude of $22\,\mathrm{V}$, equivalent to $44\,\mathrm{V}$ peak-to-peak. This source represents the drive signal that the preceding amplification stage is intended to provide.
@@ -135,6 +234,28 @@ The AC sweep examines how the amplifier responds as the input frequency changes.
 
 \subsubsection{Preamplifier Stage}
 An AC sweep (\texttt{.ac dec 100 1 1e6}) confirmed a constant voltage gain across the entire audible spectrum ($20\,\mathrm{Hz}$ to $22\,\mathrm{kHz}$). Selecting $C_1 = 100\,\mathrm{pF}$ successfully eliminated premature high-frequency attenuation near $10\,\mathrm{kHz}$, extending the upper $-3\,\mathrm{dB}$ cutoff frequency $f_H$ past $1.0\,\mathrm{MHz}$ and maintaining $0.0\,\mathrm{dB}$ relative roll-off at $22\,\mathrm{kHz}$.
+
+\subsubsection{Frequency Check During Amplification Stage Integration}
+A separate copy of the main schematic was used for an AC sweep with the directive \texttt{.ac dec 100 1 1Meg}. The source had an AC amplitude of 1, and the input scaling factor of 0.5 remained in place. The output load was $1\,\mathrm{M}\Omega$. Table~\ref{tab:amplification_ac} records the measured output magnitude, referenced to the original AC source before the scaling block.
+
+\begin{table}[H]
+\caption{Connected Preamplifier and Gain-Stage AC Results}
+\label{tab:amplification_ac}
+\centering
+\begin{tabular}{lrr}
+\toprule
+Frequency & Magnitude & Relative change \\
+\midrule
+$20\,\mathrm{Hz}$ & $24.168\,\mathrm{dB}$ & $-0.009\,\mathrm{dB}$ \\
+$1.002\,\mathrm{kHz}$ & $24.177\,\mathrm{dB}$ & Reference \\
+$20\,\mathrm{kHz}$ & $23.387\,\mathrm{dB}$ & $-0.790\,\mathrm{dB}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The response was nearly constant through most of the audio range. At $20\,\mathrm{kHz}$, the magnitude was about $0.79\,\mathrm{dB}$ below the middle-frequency reference, corresponding to approximately 9\% less amplitude. No pronounced gain peak was visible in the plotted audio band. This small decrease does not explain the severe flat peaks seen in the earlier music test, which were associated with excessive signal amplitude.
+
+These results describe the connected preamplifier and voltage amplifier, including the 0.5 input factor, in the integration version identified above. They are not the isolated gain of the amplification stage and do not include the power stage. An isolated gain-stage response would require plotting its output divided by its own input. Also, the AC sweep examines small signals around the resting conditions; it does not establish the maximum unclipped output at every frequency.
 
 \subsubsection{Class AB Power Stage}
 The frequency-response analysis examines how consistently the power stage transfers the audio signal as frequency changes. The voltage across the loudspeaker is compared with the input voltage before capacitors $C_1$ and $C_2$, allowing the response of this stage to be assessed separately from the preceding amplification stages.
@@ -185,6 +306,36 @@ Output voltage across $8\,\Omega$ & To be documented \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Amplification Stage Results and Remaining Checks}
+The amplification stage design progressed from the initial two-transistor stage to a three-MOSFET circuit operating from $\pm24\,\mathrm{V}$. The standalone $1\,\mathrm{kHz}$ test reached the requested approximate $22\,\mathrm{V}$ output peak with a $2\,\mathrm{V_{RMS}}$ input and a $43\,\mathrm{k}\Omega$ load. The subsequent LTspice operating-point readings closely matched the Multisim resting conditions.
+
+\begin{table}[H]
+\caption{Summary of Amplification Stage Tests}
+\label{tab:amplification_summary}
+\centering
+\small
+\begin{tabular}{p{0.46\columnwidth}p{0.43\columnwidth}}
+\toprule
+Test or quantity & Recorded result \\
+\midrule
+Standalone input & $2\,\mathrm{V_{RMS}}$, $1\,\mathrm{kHz}$ \\
+Supply rails & $\pm24\,\mathrm{V}$ \\
+Standalone output load & $43\,\mathrm{k}\Omega$ \\
+Output peaks & $+21.965 / -21.992\,\mathrm{V}$ \\
+Output peak-to-peak & $43.957\,\mathrm{V}$ \\
+Reported output RMS & $15.6\,\mathrm{V_{RMS}}$ \\
+Approximate voltage gain & $7.8\,\mathrm{V/V}$ \\
+LTspice integration load & $1\,\mathrm{M}\Omega$ \\
+Music test correction & Input multiplied by 0.5 \\
+Audio-file correction & Export copy divided by 30 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The integration tests identified two different sources of distortion: excessive drive into the amplifier and excessive amplitude when writing the WAV file. Lowering the test input addressed the first issue; scaling only the exported copy addressed the second. Neither adjustment changed the voltage gain resistors of the amplification stage.
+
+The remaining checks for this section are operation with the actual power-stage input connected, large-signal tests near the ends of the audio band, and physical measurements. A numerical distortion result and a full characterization of the initial music transient were not obtained. The $1\,\mathrm{M}\Omega$ integration load must not be interpreted as a loudspeaker or as proof of operation with the final power-stage load. These limits keep the documented results tied to the conditions actually tested.
 
 \balance
 
