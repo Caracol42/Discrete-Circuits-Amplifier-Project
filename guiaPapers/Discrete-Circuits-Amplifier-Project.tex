@@ -146,6 +146,264 @@ The signal test at $10\,\mathrm{kHz}$ provides a reference condition, with an in
 At low frequencies, capacitors $C_1$, $C_2$, and $C_3$ influence how much of the signal reaches the loudspeaker. At higher frequencies, the transistor characteristics, input resistors, and connections between stages influence the output level. The complete frequency-response plot is used to identify the lower and upper limits of the useful operating range.
 
 The power-stage response is considered together with the filter and the preceding stages when assessing the audio range of the complete amplifier. The reported $22.5\,\mathrm{W}$ output belongs to the signal test at $10\,\mathrm{kHz}$; power delivery at other frequencies is assessed through the corresponding time-based tests.
+
+
+\section{Device Requirements}
+
+This part debriefs the critical design characteristics for the device: “Analog One 20 Watts Amplifier. Showing the guidelines that need to be achieved of each module that makes up the device. Including several previous tests to ensure the correct operation of the modules as well as the whole device. These tests will provide information about the stability operation of the circuits. In this section will review verifications for each sub module and part input signal, pre-amplifier, signal amplifier, power stage, and the speaker load. 
+
+\begin{table}[!t]
+\centering
+\caption{Smartphone AUX Jack Input Requirements}
+\label{tab:aux_input_requirements}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Description} & \textbf{Estimated Value} & \textbf{Units} & \textbf{Range} \\ \hline
+
+Audio Connector
+& 3.5
+& mm
+& -- \\ \hline
+
+Input Voltage RMS
+& 1
+& V$_{\mathrm{RMS}}$
+& 1 -- 2 V$_{\mathrm{RMS}}$ \\ \hline
+
+Input Voltage Peak
+& 1.414
+& V$_{\mathrm{peak}}$
+& 1.414 -- 2.828 V$_{\mathrm{peak}}$ \\ \hline
+
+DC Component
+& 0
+& V
+& $\approx 0$ V \\ \hline
+
+Audio Frequency Range
+& 20 Hz -- 20 kHz
+& Hz
+& 20 Hz -- 20 kHz \\ \hline
+
+\end{tabular}%
+}
+\end{table}
+
+
+\begin{table}[!t]
+\centering
+\caption{Preamplifier Stage Requirements}
+\label{tab:preamplifier_requirements}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Description} & \textbf{Estimated Value} & \textbf{Units} & \textbf{Range} \\ \hline
+
+Input Voltage RMS
+& 1
+& V$_{\mathrm{RMS}}$
+& 1 -- 2 V$_{\mathrm{RMS}}$ \\ \hline
+
+Nominal Output Voltage RMS
+& 2
+& V$_{\mathrm{RMS}}$
+& $\approx 2$ V$_{\mathrm{RMS}}$ \\ \hline
+
+Output Voltage Peak
+& 2.83
+& V$_{\mathrm{peak}}$
+& -- \\ \hline
+
+Nominal Voltage Gain
+& 2
+& V/V
+& $\approx 2$ \\ \hline
+
+Nominal Voltage Gain
+& 6.02
+& dB
+& $\approx 6$ dB \\ \hline
+
+Frequency Range
+& 20 Hz -- 20 kHz
+& Hz
+& 20 Hz -- 20 kHz \\ \hline
+
+Supply Voltage
+& 24
+& V
+& 24 \\ \hline
+
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[!t]
+\centering
+\caption{Voltage Amplification Stage Requirements}
+\label{tab:amplifier_stage_requirements}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Description} & \textbf{Estimated Value} & \textbf{Units} & \textbf{Range} \\ \hline
+
+Input Voltage RMS
+& 2
+& V$_{\mathrm{RMS}}$
+& $\approx 2$ V$_{\mathrm{RMS}}$ \\ \hline
+
+Output Voltage RMS
+& 20
+& V$_{\mathrm{RMS}}$
+& $\approx 20$ V$_{\mathrm{RMS}}$ \\ \hline
+
+Output Voltage Peak
+& 28.28
+& V$_{\mathrm{peak}}$
+& -- \\ \hline
+
+Nominal Voltage Gain
+& 10
+& V/V
+& $\approx 10$ \\ \hline
+
+Nominal Voltage Gain
+& 20
+& dB
+& $\approx 20$ dB \\ \hline
+
+Frequency Range
+& 20 Hz -- 20 kHz
+& Hz
+& 20 Hz -- 20 kHz \\ \hline
+
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[!t]
+\centering
+\caption{Class-AB Power Stage Requirements}
+\label{tab:power_stage_requirements}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Description} & \textbf{Estimated Value} & \textbf{Units} & \textbf{Range} \\ \hline
+
+Input Voltage RMS
+& 20
+& V$_{\mathrm{RMS}}$
+& $\approx 20$ V$_{\mathrm{RMS}}$ \\ \hline
+
+Output Voltage RMS
+& 12.65
+& V$_{\mathrm{RMS}}$
+& $\geq 12.65$ V$_{\mathrm{RMS}}$ \\ \hline
+
+Output Voltage Peak
+& 17.89
+& V$_{\mathrm{peak}}$
+& -- \\ \hline
+
+Output Current RMS
+& 1.58
+& A$_{\mathrm{RMS}}$
+& $\geq 1.58$ A$_{\mathrm{RMS}}$ \\ \hline
+
+Output Current Peak
+& 2.24
+& A$_{\mathrm{peak}}$
+& $\geq 2.24$ A$_{\mathrm{peak}}$ \\ \hline
+
+Output Power
+& 20
+& W$_{\mathrm{RMS}}$
+& $\geq 20$ W \\ \hline
+
+Quiescent Current
+& 100
+& mA
+& 90 -- 110 mA \\ \hline
+
+Source Resistor Voltage
+& 22
+& mV
+& 20 -- 24 mV \\ \hline
+
+Output DC Offset
+& 0
+& V
+& $<50$ mV \\ \hline
+
+Load Impedance
+& 8
+& $\Omega$
+& 4 -- 16 $\Omega$ \\ \hline
+
+Frequency Range
+& 20 Hz -- 20 kHz
+& Hz
+& 20 Hz -- 20 kHz \\ \hline
+
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[!t]
+\centering
+\caption{Speaker Load Requirements}
+\label{tab:speaker_load_requirements}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Description} & \textbf{Estimated Value} & \textbf{Units} & \textbf{Range} \\ \hline
+
+Output Power Consumption RMS
+& 20
+& Watts RMS
+& 20 W -- 100 W \\ \hline
+
+Frequency Range
+& 40 Hz -- 20 kHz
+& Hz
+& 40 Hz -- 20 kHz \\ \hline
+
+Minimum Audible Distance
+& 20
+& meters
+& $>20$ m \\ \hline
+
+Speaker Impedance
+& 8
+& $\Omega$
+& 4 $\Omega$ -- 16 $\Omega$ \\ \hline
+
+Output Voltage RMS
+& 12.65
+& V$_{\mathrm{RMS}}$
+& -- \\ \hline
+
+Output Voltage Signal Range
+& 17.89
+& V$_{\mathrm{peak}}$
+& -- \\ \hline
+
+Output Current Consumption RMS
+& 1.58
+& A$_{\mathrm{RMS}}$
+& -- \\ \hline
+
+Output Current Signal Range
+& 2.24
+& A$_{\mathrm{peak}}$
+& -- \\ \hline
+
+\end{tabular}%
+}
+\end{table}
+
+
 % Balance the columns in the closing part of the report.
 \balance
 \section{Results to Be Documented}
