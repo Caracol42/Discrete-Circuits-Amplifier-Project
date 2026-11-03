@@ -162,6 +162,7 @@ network combines a resistor and a capacitor.}
 
 \subsection{Voltage Amplification Stage}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Class AB Power Stage}
 
 Figure~\ref{fig:schematic} presents the power-stage circuit. The design
@@ -180,19 +181,23 @@ MOSFETs.}
 
 \subsubsection{Output Power Requirement}
 
+
 The design reference is $20\,\W$ delivered to an $8\,\Ohm$ load.
 For a sinusoidal signal, the average power is
 \begin{equation}
 P_L=\frac{V_{L,\mathrm{rms}}^2}{R_L}.
 \label{eq:power}
 \end{equation}
+
 Here, RMS is the effective voltage value used to calculate average
-power. The required voltage and current are
+power of a signal audio. For this project the required voltage and current of this signal is:
+
 \begin{align}
-V_{L,\mathrm{rms}}&=\sqrt{(20)(8)}=12.65\,\V,\\
-V_{L,p}&=\sqrt{2}(12.65)=17.89\,\V,\\
-I_{L,\mathrm{rms}}&=\frac{12.65}{8}=1.58\,\A.
+V_{LOAD,\mathrm{rms}}&=\sqrt{(20)(8)}\approx12.65\,\V,\\
+V_{LOAD,peak}&=\sqrt{2}(12.65)\approx17.89\,\V,\\
+I_{LOAD,\mathrm{rms}}&=\frac{12.65}{8}\approx1.58\,\A.
 \end{align}
+
 These values define the load requirements. With the specified
 $20\,\V$ peak input, the output power depends on the voltage transfer
 of the stage. Table~\ref{tab:loadcalc} summarizes the calculated values.
@@ -220,7 +225,9 @@ Load peak current & $2.24\,\A$\\
 
 Bias sets the transistor operating conditions before an audio signal
 is applied. The design adopts a resting-current target of
-$I_Q=100\,\mathrm{mA}$ in each branch. This small current provides
+$I_D=50\,\mathrm{mA}$ in each branch. This resting-current is established to keep on the transistors in a operating point to represent always all the audio signal variations.
+
+This small current provides
 the intended overlap between the two transistors near the signal
 transition \cite[sec.~7--2]{floyd}.
 
@@ -228,16 +235,20 @@ The $0.22\,\Ohm$ source resistors help control branch current and
 provide a simple reference for adjustment. At the selected target,
 the voltage across each resistor is
 \begin{equation}
-V_{RS,Q}=I_QR_S=(0.100)(0.22)=22\,\mathrm{mV}.
+V_{RS,Q}=I_QR_S=(0.50)(0.22)=11\,\mathrm{mV}.
 \end{equation}
-The internal output is centered close to $0\,\V$ under this condition.
+The internal output is centered close to $0\,\V$ DC under this condition. To ensure the load (Speaker) only receives the audio signal.
 
 The gate voltages are set by resistor dividers. For the resistor
-connected toward either supply rail, its effective value follows
+connected toward either supply rail, its effective value follows a voltage divider:
+
+
 \begin{equation}
 R_{\mathrm{bias}}=100\,\kohm
-\left(\frac{24\,\V}{|V_G|}-1\right).
+\left(\frac{24\,\V}{|V_G|}-1\right)
 \end{equation}
+
+
 Using nominal gate settings of $+3.6243\,\V$ and $-3.6123\,\V$
 gives effective resistances of $562.2\,\kohm$ and $564.4\,\kohm$.
 Each branch therefore uses a commercial $560\,\kohm$ resistor in
@@ -250,21 +261,16 @@ current is assessed through the source-resistor voltage drops.
 Table~\ref{tab:biascalc} keeps these design references separate from
 the recorded signal measurements.
 
-\subsubsection{Coupling and Heat Dissipation}
+\subsubsection{Signal Coupling}
 
-C1 and C2 pass the audio signal to the transistor gates while keeping
-their DC bias settings separate from the preceding stage. C3 couples
-the output to the loudspeaker and blocks steady DC current through it.
-Its calculated low-frequency corner is
-\begin{equation}
-f_{C3}\simeq\frac{1}{2\pi R_LC3}
-=\frac{1}{2\pi(8)(4700\times10^{-6})}
-=4.23\,\Hz.
-\end{equation}
+The signal coupling is a factor to consider to keep isolated each stage of DC signals of polarization. Achieving that C1 and C2 pass the audio signal to the transistor gates while keeping their DC bias settings separate from the preceding stage.
+
+
 This places the output coupling-network corner below $20\,\Hz$,
 helping preserve low-frequency audio.
 
-Class AB bias also produces heat when no audio signal is present.
+\subsubsection{Heat Dissipation}
+For the Class AB configuration when it always be  bias also produces heat when no audio signal is present.
 At the selected resting-current target, each transistor dissipates
 approximately
 \begin{equation}

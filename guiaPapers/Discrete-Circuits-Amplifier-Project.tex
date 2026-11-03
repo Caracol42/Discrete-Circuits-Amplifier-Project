@@ -26,7 +26,7 @@ Andrés Obregón López
 }
 \IEEEauthorblockA{
 School of Electronics Engineering\\
-Tecnológico de Costa Rica (TEC)
+Tecnológico de Costa Rica
 }
 }
 
@@ -42,7 +42,7 @@ This paper outlines the design and simulation progress of a discrete-component C
 \end{abstract}
 
 \begin{IEEEkeywords}
-Class AB amplifier, preamplifier, discrete electronics, BJT, MOSFET, audio amplification, LTspice, simulation.
+Music Audio System, Class AB amplifier, preamplifier, discrete electronics, BJT, MOSFET, audio amplification.
 \end{IEEEkeywords}
 
 \section{Introduction}
@@ -52,8 +52,14 @@ The Discrete Electronics Project, developed in collaboration with Analog One, fo
 
 \section{Circuit Description}
 
+%%%%%%%%%%%%%%%%%Agregar Diagrama Bloques del sistema%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Preamplification Stage}
 The preamplification stage processes the incoming analog audio signal—tested using the raw waveform of ``golden hour'' by JVKE—and conditions it for the subsequent gain stage. Powered from a single $V_{CC} = +24\,\mathrm{V}$ supply, the circuit employs a 2N2222A BJT in a common-emitter (CE) topology configured to drive a nominal load of $R_L = 1\,\mathrm{M}\Omega$.
+
+%%%%%%%%%%%%%%%%%Agregar Circuito e Preamp %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Voltage-divider biasing is established by $R_{B1} = 150\,\mathrm{k}\Omega$ ($R_{10}$) and $R_{B2} = 22\,\mathrm{k}\Omega$ ($R_{11}$), maintaining $V_B \approx 3.07\,\mathrm{V}$. The collector resistor is set to $R_C = 4.3\,\mathrm{k}\Omega$ ($R_9$). To adjust the AC voltage gain so that the output signal peak remains within the $\pm1.0\,\mathrm{V_{peak}}$ range ($0\,\mathrm{dBFS}$ digital full-scale) without requiring external attenuator resistor dividers at the output, the emitter resistor $R_E$ ($R_8$) was selected as $2.2\,\mathrm{k}\Omega$. The emitter bypass capacitor ($C_E$) was deliberately omitted to provide negative feedback, stabilizing midband gain and preserving linear performance across wide dynamic ranges:
 \begin{equation}
@@ -64,6 +70,9 @@ Coupling capacitors $C_{in} = 10\,\mu\mathrm{F}$ ($C_4$) and $C_{out} = 10\,\mu\
 
 \subsection{Amplification Stage}
 The purpose of the voltage amplification stage is to increase the signal voltage before it reaches the power stage. It does not drive the loudspeaker directly. The final design target was approximately $22\,\mathrm{V}$ peak at the output, using a $2\,\mathrm{V_{RMS}}$ sinusoidal input and $\pm24\,\mathrm{V}$ supplies. For a sine wave, this output is approximately $44\,\mathrm{V}$ peak-to-peak or $15.56\,\mathrm{V_{RMS}}$, requiring a voltage gain of about $7.8\,\mathrm{V/V}$.
+
+%%%%%%%%%%%%%%%%%Agregar Circuito e Preamp %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Early tests used two BS170 transistors and $\pm30\,\mathrm{V}$ supplies, reaching approximately $13\,\mathrm{V_{RMS}}$. The design was then revised to meet the agreed $\pm24\,\mathrm{V}$ supply and $22\,\mathrm{V}$ peak output requirements. The amplification stage uses three MOSFETs: two BS170 devices for voltage amplification and one IRF9510 to support the second stage. This stayed within the three-device allocation discussed for this section.
 
