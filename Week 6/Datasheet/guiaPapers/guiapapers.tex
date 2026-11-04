@@ -1,0 +1,735 @@
+
+\documentclass[10pt,letterpaper]{article}
+
+% ==========================================
+% PACKAGES
+% ==========================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{fancyhdr}
+
+% ==========================================
+% COLORS
+% ==========================================
+\definecolor{datasheetblue}{rgb}{0.07,0.21,0.35}
+\definecolor{lightblue}{rgb}{0.90,0.94,0.98}
+
+% ==========================================
+% DOCUMENT CONFIGURATION
+% ==========================================
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.25}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ANALOG ONE}
+\fancyhead[R]{\small Class AB Audio Amplifier}
+\fancyfoot[L]{\small Technical Datasheet}
+\fancyfoot[R]{\small Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\headheight}{14pt}
+
+% Section formatting without titlesec
+\newcommand{\datasheetsection}[1]{
+    \vspace{0.3cm}
+    {\large\bfseries\color{datasheetblue}#1}
+    \par\vspace{0.1cm}
+    \hrule
+    \vspace{0.15cm}
+}
+
+\newcommand{\datasheetsubsection}[1]{
+    \vspace{0.15cm}
+    {\normalsize\bfseries\color{datasheetblue}#1}
+    \par
+}
+
+\begin{document}
+
+% ==========================================
+% TITLE
+% ==========================================
+\begin{center}
+
+{\Large\bfseries\color{datasheetblue}
+ANALOG ONE}
+
+\vspace{0.3cm}
+
+{\Huge\bfseries
+CLASS AB AUDIO AMPLIFIER}
+
+\vspace{0.2cm}
+
+{\large
+Discrete-Component Audio Power Amplifier}
+
+\vspace{0.4cm}
+
+\fcolorbox{datasheetblue}{lightblue}{
+\parbox{0.85\textwidth}{
+\centering
+\Large\bfseries 20 W\\[2mm]
+\normalsize
+Class AB Audio Amplifier\\
+Complementary MOSFET Output Stage\\
+8 $\Omega$ Loudspeaker Application
+}
+}
+
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{tabular}{ll}
+\hline
+Document Type & Technical Datasheet\\
+Product & Class AB Audio Amplifier\\
+Developer & Analog One\\
+Institution & Tecnologico de Costa Rica\\
+Technology & Discrete BJT and MOSFET\\
+\hline
+\end{tabular}
+
+% ==========================================
+% GENERAL DESCRIPTION
+% ==========================================
+\datasheetsection{1. General Description}
+
+The Analog One Class AB Audio Amplifier is a
+discrete-component amplification system designed
+to increase audio signal amplitude and deliver
+power to an 8 $\Omega$ loudspeaker.
+
+The amplifier consists of three functional stages:
+a BJT preamplifier, a MOSFET voltage amplification
+stage, and a complementary MOSFET Class AB
+power output stage.
+
+The preamplifier performs initial signal conditioning
+and voltage amplification.
+
+The intermediate stage provides the required
+voltage swing, while the Class AB output stage
+supplies the current necessary to drive the
+loudspeaker.
+
+The voltage and power amplification stages
+operate with nominal symmetrical
+$\pm24$ V power supplies.
+
+The reference output power is 20 W.
+
+A separate power-stage simulation recorded
+22.8 W of average power delivered to an
+8 $\Omega$ load under the specified test conditions.
+
+% ==========================================
+% FEATURES
+% ==========================================
+\datasheetsection{2. Key Features}
+
+\begin{itemize}
+
+\item Discrete-component audio amplifier.
+
+\item Three-stage amplification architecture.
+
+\item Common-emitter BJT preamplifier.
+
+\item MOSFET voltage amplification stage.
+
+\item Complementary Class AB output topology.
+
+\item Nominal $\pm24$ V supply rails.
+
+\item 20 W reference output power.
+
+\item 8 $\Omega$ nominal loudspeaker load.
+
+\item Adjustable MOSFET bias.
+
+\item Source resistors for current stabilization.
+
+\item Output RC stabilization network.
+
+\item AC-coupled signal interfaces.
+
+\end{itemize}
+
+% ==========================================
+% FUNCTIONAL DIAGRAM
+% ==========================================
+\datasheetsection{3. Functional Block Diagram}
+
+\begin{figure}[htbp]
+\centering
+
+\fbox{
+\begin{minipage}{0.75\textwidth}
+\centering
+
+\textbf{AUDIO INPUT}
+
+\vspace{0.2cm}
+$\downarrow$
+\vspace{0.2cm}
+
+\fcolorbox{datasheetblue}{lightblue}{
+\parbox{0.65\textwidth}{
+\centering
+\textbf{BJT PREAMPLIFIER}\\
+2N2222 Common-Emitter Stage
+}
+}
+
+\vspace{0.2cm}
+
+$\downarrow$
+
+\vspace{0.2cm}
+
+\fcolorbox{datasheetblue}{lightblue}{
+\parbox{0.65\textwidth}{
+\centering
+\textbf{VOLTAGE AMPLIFIER}\\
+IRF530 / IRF9540
+}
+}
+
+\vspace{0.2cm}
+
+$\downarrow$
+
+\vspace{0.2cm}
+
+\fcolorbox{datasheetblue}{lightblue}{
+\parbox{0.65\textwidth}{
+\centering
+\textbf{CLASS AB POWER STAGE}\\
+IRFZ44N / IRF4905
+}
+}
+
+\vspace{0.2cm}
+
+$\downarrow$
+
+\vspace{0.2cm}
+
+\fcolorbox{datasheetblue}{lightblue}{
+\parbox{0.65\textwidth}{
+\centering
+\textbf{8 $\Omega$ LOUDSPEAKER}
+}
+}
+
+\end{minipage}
+}
+
+\caption{Functional architecture of the complete amplifier.}
+
+\end{figure}
+
+The input signal passes through the
+preamplifier, voltage amplification stage,
+and Class AB output stage before
+reaching the loudspeaker.
+
+% ==========================================
+% ELECTRICAL SPECIFICATIONS
+% ==========================================
+\datasheetsection{4. Electrical Specifications}
+
+\begin{table}[htbp]
+\centering
+\small
+
+\begin{tabular}{p{7.2cm}cc}
+\hline
+\textbf{Parameter} &
+\textbf{Value} &
+\textbf{Unit}\\
+\hline
+
+Positive supply voltage & +24 & V\\
+
+Negative supply voltage & -24 & V\\
+
+Nominal load resistance & 8 & $\Omega$\\
+
+Reference output power & 20 & W\\
+
+Simulated power-stage output & 22.8 & W\\
+
+Reference RMS output voltage & 12.65 & V\\
+
+Reference peak output voltage & 17.89 & V\\
+
+Reference RMS output current & 1.58 & A\\
+
+Reference peak output current & 2.24 & A\\
+
+\hline
+\end{tabular}
+
+\caption{Main electrical characteristics.}
+\end{table}
+
+The reference electrical quantities correspond
+to the calculated requirements for a
+20 W sinusoidal output into an 8 $\Omega$ load.
+
+The simulated 22.8 W result corresponds
+to a separate power-stage test.
+
+% ==========================================
+% PREAMPLIFIER
+% ==========================================
+\datasheetsection{5. Preamplifier Stage}
+
+\datasheetsubsection{5.1 Description}
+
+The preamplifier uses a 2N2222 NPN
+bipolar junction transistor operating
+in a common-emitter configuration.
+
+The emitter resistor provides
+negative feedback and stabilizes
+the operating point.
+
+Input and output coupling capacitors
+block unwanted DC components.
+
+\datasheetsubsection{5.2 Electrical Parameters}
+
+\begin{table}[htbp]
+\centering
+\small
+
+\begin{tabular}{p{7cm}cc}
+\hline
+Parameter & Value & Unit\\
+\hline
+
+Transistor & 2N2222 & --\\
+
+Supply voltage & 24 & V\\
+
+Base voltage & 7.39 & V\\
+
+Emitter voltage & 6.69 & V\\
+
+Collector voltage & 9.81 & V\\
+
+Quiescent collector current & 3.02 & mA\\
+
+Collector-emitter voltage & 3.12 & V\\
+
+Voltage gain & -2.13 & V/V\\
+
+Transistor power dissipation & 9.42 & mW\\
+
+Estimated junction temperature & 26.88 & $^\circ$C\\
+
+\hline
+\end{tabular}
+
+\caption{Calculated preamplifier characteristics.}
+\end{table}
+
+% ==========================================
+% VOLTAGE AMPLIFIER
+% ==========================================
+\datasheetsection{6. Voltage Amplification Stage}
+
+\datasheetsubsection{6.1 Description}
+
+The voltage amplification stage consists
+of two IRF530 N-channel MOSFETs and
+one IRF9540 P-channel MOSFET.
+
+The IRF530 transistors provide
+voltage amplification.
+
+The IRF9540 operates as an active load.
+
+The stage is designed to produce
+approximately 20 V peak output
+from a 2 V RMS input signal.
+
+\datasheetsubsection{6.2 Electrical Characteristics}
+
+\begin{table}[htbp]
+\centering
+\small
+
+\begin{tabular}{p{7cm}cc}
+\hline
+Parameter & Value & Unit\\
+\hline
+
+Supply voltage & $\pm24$ & V\\
+
+Input test voltage & 2 & V RMS\\
+
+Target output voltage & 20 & V peak\\
+
+Target voltage gain & 7.07 & V/V\\
+
+Simulated gain at 1 kHz & 7.118 & V/V\\
+
+Simulated gain at 20 Hz & 6.930 & V/V\\
+
+Output fundamental at 1 kHz & 20.112 & V peak\\
+
+Total harmonic distortion & 1.183 & \%\\
+
+Test load resistance & 43 & k$\Omega$\\
+
+\hline
+\end{tabular}
+
+\caption{Voltage amplification characteristics.}
+\end{table}
+
+The total harmonic distortion value
+corresponds to the individual
+voltage amplification stage,
+measured through the ninth harmonic.
+
+% ==========================================
+% POWER STAGE
+% ==========================================
+\datasheetsection{7. Class AB Power Stage}
+
+\datasheetsubsection{7.1 Description}
+
+The power output stage uses
+a complementary MOSFET arrangement.
+
+The IRFZ44N N-channel MOSFET and
+IRF4905 P-channel MOSFET reproduce
+the positive and negative portions
+of the amplified audio waveform.
+
+The Class AB configuration reduces
+crossover distortion while maintaining
+moderate quiescent power consumption.
+
+Adjustable bias networks establish
+the transistor operating conditions.
+
+\datasheetsubsection{7.2 Output Characteristics}
+
+\begin{table}[htbp]
+\centering
+\small
+
+\begin{tabular}{p{7cm}cc}
+\hline
+Parameter & Value & Unit\\
+\hline
+
+Nominal load resistance & 8 & $\Omega$\\
+
+Reference output power & 20 & W\\
+
+Simulated load power & 22.8 & W\\
+
+Simulated RMS output voltage & 13.5 & V\\
+
+Simulated RMS output current & 1.69 & A\\
+
+Peak-to-peak output voltage & 38.2 & V\\
+
+Peak-to-peak output current & 4.78 & A\\
+
+Simulation frequency & 10 & kHz\\
+
+\hline
+\end{tabular}
+
+\caption{Recorded Class AB power-stage results.}
+\end{table}
+
+% ==========================================
+% POWER SUPPLY
+% ==========================================
+\datasheetsection{8. Power Supply Requirements}
+
+The voltage and power amplification stages
+operate from symmetrical DC supply rails.
+
+\begin{table}[htbp]
+\centering
+
+\begin{tabular}{p{7cm}cc}
+\hline
+Supply & Voltage & Unit\\
+\hline
+
+Positive rail & +24 & V\\
+
+Negative rail & -24 & V\\
+
+Reference ground & 0 & V\\
+
+\hline
+\end{tabular}
+
+\caption{Main supply requirements.}
+\end{table}
+
+The preamplifier uses a nominal
+24 V single-supply configuration.
+
+All stages must share a suitable
+signal reference when interconnected.
+
+% ==========================================
+% THERMAL CHARACTERISTICS
+% ==========================================
+\datasheetsection{9. Thermal Characteristics}
+
+The Class AB power stage dissipates
+energy through the output MOSFETs.
+
+Adequate thermal management is
+necessary to maintain safe
+operating temperatures.
+
+\begin{table}[htbp]
+\centering
+
+\begin{tabular}{p{7cm}cc}
+\hline
+Device & Dissipation & Unit\\
+\hline
+
+IRFZ44N & 6.58 & W\\
+
+IRF4905 & 6.63 & W\\
+
+Combined dissipation & 13.21 & W\\
+
+\hline
+\end{tabular}
+
+\caption{Recorded output-stage power dissipation.}
+\end{table}
+
+These values correspond to the
+10 kHz reference simulation.
+
+Suitable heat sinks are recommended
+for the output MOSFETs.
+
+Heat-sink selection must consider
+ambient temperature, junction
+temperature limits, and
+thermal resistance.
+
+% ==========================================
+% COMPONENT SUMMARY
+% ==========================================
+\datasheetsection{10. Component Summary}
+
+\small
+
+\begin{longtable}{p{3cm}p{3.5cm}p{8cm}}
+
+\hline
+\textbf{Stage} &
+\textbf{Component} &
+\textbf{Function}\\
+\hline
+
+Preamplifier &
+2N2222 &
+Common-emitter voltage amplification\\
+
+Voltage stage &
+IRF530 &
+N-channel voltage amplification\\
+
+Voltage stage &
+IRF9540 &
+P-channel active load\\
+
+Power stage &
+IRFZ44N &
+Positive output current delivery\\
+
+Power stage &
+IRF4905 &
+Negative output current return\\
+
+Power stage &
+0.22 $\Omega$, 5 W &
+MOSFET source resistors\\
+
+Power stage &
+100 $\Omega$ &
+MOSFET gate resistors\\
+
+Power stage &
+10 k$\Omega$ &
+Adjustable bias trimmers\\
+
+Power stage &
+4.7 $\mu$F &
+Signal coupling capacitors\\
+
+Output network &
+10 $\Omega$, 2 W &
+Zobel stabilization resistor\\
+
+Output network &
+100 nF &
+Zobel stabilization capacitor\\
+
+Load &
+8 $\Omega$, 30 W &
+Nominal loudspeaker rating\\
+
+\hline
+
+\caption{Main amplifier components.}
+
+\end{longtable}
+
+\normalsize
+
+% ==========================================
+% TYPICAL APPLICATION
+% ==========================================
+\datasheetsection{11. Typical Application}
+
+The Analog One amplifier is intended
+for audio signal amplification
+using an external loudspeaker.
+
+The typical operating sequence is:
+
+\begin{enumerate}
+
+\item Audio signal input.
+
+\item BJT signal conditioning.
+
+\item MOSFET voltage amplification.
+
+\item Complementary Class AB current amplification.
+
+\item Audio output to an 8 $\Omega$ loudspeaker.
+
+\end{enumerate}
+
+The implementation requires
+proper supply connections,
+bias adjustment, grounding,
+and thermal management.
+
+% ==========================================
+% OPERATING NOTES
+% ==========================================
+\datasheetsection{12. Operating Recommendations}
+
+\begin{itemize}
+
+\item Verify power supply polarity before operation.
+
+\item Adjust the quiescent bias without an input signal.
+
+\item Verify the DC output voltage before connecting
+the loudspeaker.
+
+\item Use appropriate heat sinks for the
+output MOSFETs.
+
+\item Use correctly rated power resistors.
+
+\item Keep high-current output connections short.
+
+\item Verify the complete amplifier after
+interconnecting all three stages.
+
+\end{itemize}
+
+% ==========================================
+% PERFORMANCE VERIFICATION
+% ==========================================
+\datasheetsection{13. Performance Verification}
+
+The documented electrical results
+were obtained through circuit simulation.
+
+The Class AB power-stage reference
+simulation used a 10 kHz input signal
+and an 8 $\Omega$ load.
+
+The recorded average output power
+was 22.8 W.
+
+The voltage amplification stage
+was separately evaluated using
+a 2 V RMS input signal at 1 kHz.
+
+The simulated voltage gain was
+7.118 V/V, with total harmonic
+distortion of 1.183\%.
+
+These results correspond to
+individual stage evaluations.
+
+Further testing is necessary
+to determine the complete
+amplifier frequency response,
+harmonic distortion, noise,
+and continuous output-power rating.
+
+% ==========================================
+% DOCUMENT INFORMATION
+% ==========================================
+\datasheetsection{14. Document Information}
+
+\begin{tabular}{ll}
+\hline
+Developer & Analog One\\
+
+Product & Class AB Audio Amplifier\\
+
+Institution & Tecnologico de Costa Rica\\
+
+Department & School of Electronics Engineering\\
+
+Document & Technical Datasheet\\
+
+Status & Design and Simulation\\
+\hline
+\end{tabular}
+
+\vspace{0.8cm}
+
+\begin{center}
+
+\textcolor{datasheetblue}{
+\textbf{
+ANALOG ONE -- AUDIO AMPLIFICATION SYSTEMS
+}
+}
+
+\end{center}
+
+\end{document}
