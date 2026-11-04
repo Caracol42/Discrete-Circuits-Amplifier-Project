@@ -111,7 +111,24 @@ signal to delivering power to the loudspeaker.
 \FloatBarrier
 
 \subsection{Preamplification Stage}
+Figure~\ref{fig:block_preamp} shows the functional structure of the preamplification stage. The incoming signal passes through an AC-coupling network to remove any DC offset before reaching the discrete BJT amplifier. The single-ended Common-Emitter (CE) topology provides the necessary voltage amplification, while an unbypassed emitter resistor stabilizes the bias point and thermal drift. Finally, an output coupling network blocks the collector DC level, delivering a clean audio AC waveform centered at $0\text{~V}$ DC to the downstream mixing and power stages.
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=4mm]
+\node[blk] (incoup) {Audio Input\\Coupling};
+\node[blk,right=of incoup] (bjt) {BJT CE Voltage\\amplification};
+\node[blk,right=of bjt] (outcoup) {Output DC\\blocking};
+\draw[arr] (incoup)--(bjt);
+\draw[arr] (bjt)--(outcoup);
+\node[below=2mm of incoup,font=\scriptsize] {Audio Signal input};
+\node[below=2mm of bjt,font=\scriptsize] {2N2222 Active stage};
+\node[below=2mm of outcoup,font=\scriptsize] {$0\,\text{V}$ DC interface};
+\end{tikzpicture}
+\caption{Functional blocks of the BJT preamplifier stage.}
+\label{fig:block_preamp}
+\end{figure}
+\FloatBarrier
 \subsection{Voltage Amplification Stage}
 
 \subsection{Class AB Power Stage}
@@ -157,6 +174,93 @@ voltage level \cite[sec.~9--2]{floyd}.
 
 \section{Design Considerations and Calculated Values}
 \subsection{Preamplification Stage}
+The preamplifier uses a 2N2222 NPN BJT in a Common-Emitter (CE) configuration powered by a single positive supply $V_{CC} = 24\text{~V}$ (or $+12\text{~V}$ single rail domain). Figure~\ref{fig:foto_pre} presents the complete schematic diagram of the stage. The design uses an unbypassed emitter resistor $R_4$ to fix the AC voltage gain independently of transistor parameter variations ($\beta$) and to minimize thermal drift.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{fig/pre_diam}
+    \caption{Preamplifier schematic stage featuring 2N2222 BJT.}
+    \label{fig:pre_diam}
+\end{figure}
+
+\subsubsection{DC Operating Point Analysis}
+The DC bias network is established by the base voltage divider $R_1$ and $R_2$, collector resistor $R_3$, and emitter resistor $R_4$. Coupling capacitors $C_1$ and $C_2$ act as open circuits for DC.
+
+The base Thévenin equivalent resistance $R_{Th}$ and voltage $V_{Th}$ are:
+\begin{equation}
+    R_{Th} = R_1 \parallel R_2 = \frac{(68\text{~k}\Omega)(33\text{~k}\Omega)}{68\text{~k}\Omega + 33\text{~k}\Omega} \approx 22.22\text{~k}\Omega
+\end{equation}
+\begin{equation}
+    V_{Th} = V_{CC} \left( \frac{R_2}{R_1 + R_2} \right) = 24\text{~V} \left( \frac{33\text{~k}\Omega}{68\text{~k}\Omega + 33\text{~k}\Omega} \right) \approx 7.84\text{~V}
+\end{equation}
+
+Assuming $V_{BE} = 0.7\text{~V}$ and a nominal current gain $\beta = 150$, the base bias current $I_{BQ}$ is:
+\begin{equation}
+    I_{BQ} = \frac{V_{Th} - V_{BE}}{R_{Th} + (\beta + 1)R_4} = \frac{7.84\text{~V} - 0.7\text{~V}}{22.22\text{~k}\Omega + (151)(2.2\text{~k}\Omega)} \approx 20.14\text{~}\mu\text{A}
+\end{equation}
+
+The quiescent collector current $I_{CQ}$ and emitter current $I_{EQ}$ are:
+\begin{equation}
+    I_{CQ} = \beta I_{BQ} = (150)(20.14\text{~}\mu\text{A}) \approx 3.02\text{~mA}
+\end{equation}
+\begin{equation}
+    I_{EQ} = (\beta + 1) I_{BQ} \approx 3.04\text{~mA}
+\end{equation}
+
+The resulting DC voltages at the emitter ($V_E$), collector ($V_C$), and collector-to-emitter ($V_{CEQ}$) are calculated as:
+\begin{equation}
+    V_E = I_{EQ} R_4 = (3.04\text{~mA})(2.2\text{~k}\Omega) \approx 6.69\text{~V}
+\end{equation}
+\begin{equation}
+    V_C = V_{CC} - I_{CQ} R_3 = 24\text{~V} - (3.02\text{~mA})(4.7\text{~k}\Omega) \approx 9.81\text{~V}
+\end{equation}
+\begin{equation}
+    V_{CEQ} = V_C - V_E = 9.81\text{~V} - 6.69\text{~V} = 3.12\text{~V}
+\end{equation}
+The Q-point $(V_{CEQ}, I_{CQ}) = (3.12\text{~V}, 3.02\text{~mA})$ ensures stable operation within the linear active region.
+
+\subsubsection{Small-Signal AC Voltage Gain}
+The dynamic emitter resistance $r_e$ at room temperature ($V_T \approx 25.85\text{~mV}$) is:
+\begin{equation}
+    r_re = \frac{V_T}{I_{CQ}} = \frac{25.85\text{~mV}}{3.02\text{~mA}} \approx 8.56\text{~}\Omega
+\end{equation}
+
+Because the emitter resistor $R_4$ is fully unbypassed to control gain and prevent distortion/clipping, the small-signal voltage gain $A_v$ of the stage is given by:
+\begin{equation}
+    A_v = \frac{v_{out}}{v_{in}} \approx -\frac{R_3 \parallel R_L}{r_e + R_4} \approx -\frac{4.7\text{~k}\Omega}{8.56\text{~}\Omega + 2.2\text{~k}\Omega} \approx -2.13\text{~V/V}
+\end{equation}
+
+\subsubsection{Thermal and Power Dissipation Analysis}
+At ambient temperature $T_A = 25^\circ\text{C}$, the quiescent power dissipation of the transistor $Q_1$ is:
+\begin{equation}
+    P_{D,Q1} = V_{CEQ} I_{CQ} = (3.12\text{~V})(3.02\text{~mA}) \approx 9.42\text{~mW}
+\end{equation}
+
+Using the junction-to-ambient thermal resistance $\theta_{JA} = 200^\circ\text{C/W}$ for the TO-92 package, the operating junction temperature $T_J$ is:
+\begin{equation}
+    T_J = T_A + P_{D,Q1} \theta_{JA} = 25^\circ\text{C} + (0.00942\text{~W})(200^\circ\text{C/W}) \approx 26.88^\circ\text{C}
+\end{equation}
+This negligible temperature rise ($\Delta T \approx 1.88^\circ\text{C}$) confirms that no external heat sink is required.
+
+\begin{table}[htbp]
+\caption{CALCULATED PREAMPLIFIER BIAS AND PERFORMANCE PARAMETERS}
+\label{tab:preamp_calc}
+\centering
+\begin{tabular}{l|c}
+\hline
+\textbf{Parameter} & \textbf{Calculated Value} \\
+\hline
+Base Voltage ($V_B$) & $7.39\text{~V}$ \\
+Emitter Voltage ($V_E$) & $6.69\text{~V}$ \\
+Collector Voltage ($V_C$) & $9.81\text{~V}$ \\
+Quiescent Current ($I_{CQ}$) & $3.02\text{~mA}$ \\
+Collector-Emitter Voltage ($V_{CEQ}$) & $3.12\text{~V}$ \\
+Stage AC Voltage Gain ($A_v$) & $-2.13\text{~V/V}$ \\
+Transistor Power Dissipation ($P_{D,Q1}$) & $9.42\text{~mW}$ \\
+Estimated Junction Temp. ($T_J$) & $26.88^\circ\text{C}$ \\
+\hline
+\end{tabular}
+\end{table}
 
 \subsection{Voltage Amplification Stage}
 
@@ -440,6 +544,35 @@ losses are analytical estimates.}
 
 \section{Component Selection Criteria}
 \subsection{Preamplification Stage}
+The selection of passive and active components for the preamplifier focuses on signal integrity, gain stability, and minimal noise introduction. Table~\ref{tab:preamp_components} summarizes the chosen components and their design specifications.
+
+\begin{table}[htbp]
+\caption{PREAMPLIFIER COMPONENTS AND SELECTION RATINGS}
+\label{tab:preamp_components}
+\centering
+\begin{tabular}{l|c|l}
+\hline
+\textbf{Reference} & \textbf{Nominal Value} & \textbf{Selection Rating / Purpose} \\
+\hline
+$Q_1$ & 2N2222 & NPN BJT, general-purpose switching/amp \\
+$R_1$ & $68\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Upper Bias) \\
+$R_2$ & $33\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Lower Bias) \\
+$R_3$ & $4.7\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Collector Load) \\
+$R_4$ & $2.2\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Feedback Emitter) \\
+$R_5$ & $100\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Output Pull-down) \\
+$C_1$ & $470\text{~nF}$ & Film/Ceramic, $50\text{~V}$ (Input AC Coupling) \\
+$C_2$ & $2.2\text{~}\mu\text{F}$ & Electrolytic/Film, $50\text{~V}$ (Output DC Block) \\
+$C_3$ & $1\text{~nF}$ & Ceramic, $50\text{~V}$ (High-Freq Noise Filtering) \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+    \item \textbf{Transistor ($Q_1$):} The 2N2222 general-purpose NPN transistor was chosen due to its wide linear operational range, high gain-bandwidth product ($f_T > 250\text{~MHz}$), and ready availability in TO-92 packages.
+    \item \textbf{Emitter Resistor ($R_4$):} Left unbypassed to introduce negative local feedback. This lowers non-linear distortion and prevents gain drift caused by temperature or $\beta$ variations.
+    \item \textbf{Coupling Capacitors ($C_1, C_2$):} Sized to maintain a lower cutoff corner frequency well below the audible spectrum ($f_L < 20\text{~Hz}$), preventing baseline attenuation of low-frequency audio content.
+    \item \textbf{Output Pull-down ($R_5$):} Provides a continuous reference to ground at the output side of $C_2$, guaranteeing a zero DC baseline before entering the operational amplifier mixing stage.
+\end{itemize}
 
 \subsection{Voltage Amplification Stage}
 
@@ -589,6 +722,9 @@ received by the load.
 
 \section{Analysis and Integration}
 \subsection{Preamplification Stage}
+The calculated small-signal gain $A_v \approx -2.13\text{~V/V}$ provides moderate, highly controlled amplification without driving the output into saturation or cut-off under standard audio line-level inputs. By setting the quiescent collector voltage $V_C$ to approximately $9.81\text{~V}$, the collector node retains ample headroom for positive and negative voltage swings.
+
+When integrated into the complete audio system, the preamplifier's output node connects via $C_2$ to the input resistor of the TL081-based summer/inverting stage ($R_{11} = 2.2\text{~k}\Omega$). The output coupling network ($C_2$ and $R_5$) successfully eliminates the $+9.81\text{~V}$ DC offset from the colector of $Q_1$, ensuring the TL081 receiving terminal operates centered at $0\text{~V}$ DC. Furthermore, the unbypassed topology eliminates clipping at the peak excursions, matching the downstream headroom requirements of the Class AB output driver stage.
 
 \subsection{Voltage Amplification Stage}
 
@@ -624,6 +760,14 @@ the audio test signal applied.
 
 \section{Conclusions and Next Steps}
 \subsection{Preamplification Stage}
+The discrete 2N2222 BJT preamplifier stage was successfully designed and mathematically verified. By employing an unbypassed emitter topology, the stage achieves stable AC voltage gain while preserving signal linearity and preventing clipping. The DC bias point ($V_{CEQ} = 3.12\text{~V}, I_{CQ} = 3.02\text{~mA}$) ensures linear active operation, with a negligible thermal dissipation of $9.42\text{~mW}$ that keeps operating temperatures near $26.88^\circ\text{C}$.
+
+\textbf{Next Steps:}
+\begin{itemize}
+    \item Perform transient sweep simulations in LTspice/Multisim to confirm dynamic AC parameters, frequency response, and Total Harmonic Distortion (THD).
+    \item Verify experimental integration with the TL081 mixing stage to adjust overall systemic gains.
+    \item Validate physical breadboard performance against calculated bias points.
+\end{itemize}
 
 \subsection{Voltage Amplification Stage}
 
