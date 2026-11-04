@@ -1,5 +1,5 @@
 \documentclass[conference,letterpaper]{IEEEtran}
-\pdfminorversion=7
+\ifdefined\pdfminorversion\pdfminorversion=7\relax\fi
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -130,6 +130,22 @@ Figure~\ref{fig:block_preamp} shows the functional structure of the preamplifica
 \end{figure}
 \FloatBarrier
 \subsection{Voltage Amplification Stage}
+
+The voltage amplifier connects the preamplifier to the input of the power stage. Figure~\ref{fig:va_blocks} follows the signal from left to right. Each IRF530 inverts the signal at its drain, so the two stages together preserve the input polarity near midband. The IRF9540 supplies current to the second stage.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=3mm]
+\node[blk,text width=18mm] (a) {Input coupling\\$C_1$};
+\node[blk,right=of a,text width=16mm] (b) {First gain\\$Q_4$};
+\node[blk,right=of b,text width=22mm] (c) {Second gain\\$Q_1$ with $Q_2$};
+\draw[arr] (a)--(b);
+\draw[arr] (b)--(c);
+\node[below=2mm of c,font=\scriptsize] {Output through $C_4$};
+\end{tikzpicture}
+\caption{Signal path through the voltage amplification stage.}
+\label{fig:va_blocks}
+\end{figure}
 
 \subsection{Class AB Power Stage}
 
@@ -263,6 +279,47 @@ Estimated Junction Temp. ($T_J$) & $26.88^\circ\text{C}$ \\
 \end{table}
 
 \subsection{Voltage Amplification Stage}
+
+Figure~\ref{fig:va_schematic} shows the Multisim circuit used for the final test. The design target was a $20\,\V$ peak sine wave at the power-stage input from a $2\,\V$ RMS signal, using $\pm24\,\V$ supplies. The corresponding output voltage and required gain are
+\begin{align}
+V_{\mathrm{out,rms}}&=20/\sqrt{2}=14.14\,\V,\\
+A_{v,\mathrm{target}}&=14.14/2=7.07\,\mathrm{V/V}.
+\end{align}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{fig/AS.png}
+\caption{Voltage amplification stage as tested in Multisim. VC4 is the common drain node before the output capacitor. The $43\,\kohm$ resistor represents the load used for this stage test.}
+\label{fig:va_schematic}
+\end{figure}
+
+\subsubsection{DC operating point}
+At zero input, $C_1$ isolates the gate of $Q_4$ from the source. Neglecting gate current, its bias divider gives
+\begin{align}
+V_{G4}&=24\,\V\frac{100}{240+100}=7.06\,\V,\\
+R_{S4}&=R_5+R_6=2.09\,\kohm .
+\end{align}
+Using the simulated $Q_4$ drain level of $16.89\,\V$ and the $4.7\,\kohm$ drain resistor, the first-stage bias can be reconstructed without assuming a fixed MOSFET threshold:
+\begin{align}
+I_{D4}&=(24-16.89)\,\V/R_1=1.51\,\mathrm{mA},\\
+V_{S4}&=I_{D4}R_{S4}=3.16\,\V,\\
+V_{GS4}&=7.06-3.16=3.90\,\V,\\
+V_{DS4}&=16.89-3.16=13.73\,\V .
+\end{align}
+For $Q_2$, the $1.0\,\kohm$ and $5.3\,\kohm$ divider sets the gate voltage to $24(5.3/6.3)=20.19\,\V$. In the second stage, $R_{13}$ feeds the drain voltage back to the gate of $Q_1$, and $R_9$ returns the gate to $-24\,\V$. With the simulated resting voltage $V_X=-0.125\,\V$ at VC4, and negligible gate current, the DC path gives
+\begin{align}
+I_{\mathrm{fb}} &= (V_X+24\,\V)/(R_{13}+R_9)
+                   =0.715\,\mathrm{mA},\\
+V_{G1} &= -24\,\V+I_{\mathrm{fb}}R_9=-19.78\,\V .
+\end{align}
+This places the internal output close to the midpoint of the supplies. A $20\,\V$ excursion about that point leaves approximately $4\,\V$ to each rail, before allowing for voltage drops in the devices and source resistors.
+
+\subsubsection{Signal coupling and power}
+The input resistance set by the gate divider is $R_2\parallel R_4=70.6\,\kohm$. With the ideal test source, the input coupling corner is $1/(2\pi C_1(R_2\parallel R_4))=2.25\,\Hz$. At the output, $C_4$ blocks the internal DC level while $R_3$ returns Vout to ground. At the target amplitude the load draws $14.14\,\V/43\,\kohm=0.329\,\mathrm{mA}$ RMS and dissipates $14.14^2/43000=4.65\,\mathrm{mW}$.
+
+At rest, $Q_4$ dissipates approximately $V_{DS4}I_{D4}=20.8\,\mathrm{mW}$. The $Q_2$ gate divider draws $24\,\V/(6.3\,\kohm)=3.81\,\mathrm{mA}$. Its resistor losses, calculated as $I^2R$, are $14.5\,\mathrm{mW}$ in $R_{11}$ and $76.9\,\mathrm{mW}$ in $R_{14}$.
+
+For an estimate of the second-stage resting losses, take $V_{GS1}\approx3.91\,\V$, based on the observed gate-to-source voltage. Then $V_{S1}\approx-23.69\,\V$ and $I_{D1}\approx(V_{S1}+24\,\V)/R_8=3.07\,\mathrm{mA}$. The active load supplies both this current and the feedback current, giving $I_{Q2}\approx3.79\,\mathrm{mA}$ and $V_{S2}\approx24\,\V-I_{Q2}R_{10}=23.62\,\V$. Multiplying each drain-to-source voltage magnitude by its estimated current gives approximately $72\,\mathrm{mW}$ for $Q_1$ and $90\,\mathrm{mW}$ for $Q_2$. These are nominal bias estimates, distinct from the losses under signal drive.
 
 \subsection{Class AB Power Stage}
 
@@ -576,6 +633,32 @@ $C_3$ & $1\text{~nF}$ & Ceramic, $50\text{~V}$ (High-Freq Noise Filtering) \\
 
 \subsection{Voltage Amplification Stage}
 
+Two IRF530 N-channel MOSFETs~\cite{va_irf530} were selected for voltage gain and an IRF9540 P-channel MOSFET~\cite{va_irf9540} for the active load. Its maximum drain-to-source voltage is $-100\,\V$. Both models were available in the Multisim library and listed by the local supplier reviewed for the project. The source resistors provide local feedback. The values of the input and feedback resistors were tested together because they affect both the gain of $Q_1$ and the load seen by $Q_4$.
+
+\begin{table}[htbp]
+\centering
+\caption{Voltage-stage component values used in the final simulation.}
+\label{tab:va_parts}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Reference & Value & Function\\
+\midrule
+$Q_4$, $Q_1$ & IRF530 & Common-source gain\\
+$Q_2$ & IRF9540 & Active load\\
+$R_2$, $R_4$ & $240$, $100\,\kohm$ & $Q_4$ gate bias\\
+$R_1$ & $4.7\,\kohm$ & $Q_4$ drain load\\
+$R_5$, $R_6$ & $1.27\,\kohm$, $820\,\Ohm$ & $Q_4$ source path\\
+$R_{12}$, $R_{13}$ & $3.48$, $27.5\,\kohm$ & Input and feedback\\
+$R_9$ & $5.9\,\kohm$ & Return to $-24\,\V$\\
+$R_8$, $R_{10}$ & $100\,\Ohm$ each & Source resistors\\
+$R_{11}$, $R_{14}$ & $1$, $5.3\,\kohm$ & $Q_2$ gate bias\\
+$R_3$ & $43\,\kohm$ & Output test load\\
+$C_1$ & $1\,\uF$ & Nonpolar input coupling\\
+$C_3$, $C_4$ & $4.7\,\uF$ each & Interstage and output\\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Class AB Power Stage}
 
 The selected components retain the circuit topology and use commercial
@@ -640,6 +723,14 @@ The simulation of the BJT preamplifier stage was conducted in both LTspice and N
 
 \subsection{Voltage Amplification Stage}
 
+The voltage stage was tested separately in Multisim using the $43\,\kohm$ load in Fig.~\ref{fig:va_schematic}. First, the source amplitude was set to zero and the voltage at VC4 was recorded. Next, a $2\,\V$ RMS, $1\,\kHz$ sine wave was applied. Cursors on the output trace measured the positive and negative peaks relative to ground.
+
+The Fourier analysis used a $1\,\kHz$ fundamental, nine harmonics and a $2\,\mathrm{s}$ stop time to allow the coupling capacitors to settle. Distortion was calculated from harmonic amplitudes $V_n$ measured using the same convention:
+\begin{equation}
+\mathrm{THD}_{2:9}=100\,\frac{\sqrt{\sum_{n=2}^{9}V_n^2}}{V_1}\,\%.
+\end{equation}
+Here $V_1$ in the equation denotes the output fundamental. A separate small-signal AC sweep measured $|V_{\mathrm{out}}/V_{\mathrm{in}}|$ with a unit AC input. Output amplitude and distortion were assessed from the driven sine-wave test.
+
 \subsection{Class AB Power Stage}
 \subsubsection{DC Operating Point}
 
@@ -701,6 +792,38 @@ Under dynamic excitation, the output audio signal exhibits symmetric voltage exc
 \end{figure}
 
 \subsection{Voltage Amplification Stage}
+
+The final circuit delivered $+19.919\,\V$ and $-20.056\,\V$ at the output (Fig.~\ref{fig:va_scope}). Their difference is $39.975\,\V$ peak to peak, within $0.07\%$ of the $40\,\V$ peak-to-peak target. The resulting gain from the time-domain extrema is
+\begin{equation}
+A_v=\frac{39.975}{2\sqrt{2}\,(2)}=7.07\,\mathrm{V/V}.
+\end{equation}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{fig/Voltage_Amplification_1kHz.png}
+\caption{Multisim test at $2\,\V$ RMS and $1\,\kHz$. Channel A (red) shows Vout. The cursors mark opposite peaks.}
+\label{fig:va_scope}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Final voltage-stage results with the $43\,\kohm$ load.}
+\label{tab:va_results}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Quantity & Simulation result\\
+\midrule
+Internal output at rest (VC4) & $-0.125\,\V$\\
+Output DC, Fourier record & $0.996\,\mathrm{mV}$\\
+Output fundamental at $1\,\kHz$ & $20.112\,\V$ peak\\
+Second / third harmonic & $0.077 / 0.193\,\V$ peak\\
+THD through the ninth harmonic & $1.183\%$\\
+Small-signal gain near $20\,\Hz$ & $6.930\,\mathrm{V/V}$\\
+Small-signal gain near $1\,\kHz$ & $7.118\,\mathrm{V/V}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+The fundamental corresponds to $20.112/\sqrt{2}=14.22\,\V$ RMS. Its peak amplitude differs slightly from either oscilloscope cursor because the waveform also contains harmonics.
 
 \subsection{Class AB Power Stage}
 
@@ -767,6 +890,10 @@ When integrated into the complete audio system, the preamplifier's output node c
 
 \subsection{Voltage Amplification Stage}
 
+The resistor changes were evaluated at comparable output levels. At $1\,\kHz$, one intermediate network produced $15.2\,\V$ RMS with $4.87\%$ THD. A lower-resistance network produced $15.1\,\V$ RMS with $2.85\%$ THD. In the final network, increasing $R_{12}$ from $3.3$ to $3.48\,\kohm$ brought the measured swing from $40.80$ to $39.98\,\V$ peak to peak and reduced THD from $1.37\%$ to $1.18\%$. The final choice therefore reflects both the voltage required at the interface and the shape of the signal.
+
+The standalone test establishes the voltage available to drive the next block. The $43\,\kohm$ load draws a fraction of a milliampere, whereas the Class AB stage supplies the loudspeaker current. When the stages are connected, the input bias network of the power stage becomes an additional load. The corresponding interface check is to measure the voltage at the power-stage input under that load.
+
 \subsection{Class AB Power Stage}
 
 The recorded reference output voltage supports the average-power result.
@@ -810,6 +937,8 @@ The discrete 2N2222 BJT preamplifier stage was successfully designed and mathema
 
 \subsection{Voltage Amplification Stage}
 
+At $1\,\kHz$ the simulated voltage stage converted a $2\,\V$ RMS input into a $39.975\,\V$ peak-to-peak output across $43\,\kohm$. The two measured peaks were within $0.1\,\V$ of the nominal $\pm20\,\V$ interface level, with $1.18\%$ THD. For the prototype, the first checks are the resting voltage at VC4 and the output swing with the power-stage input connected. Comparing those readings with the standalone results will show the effects of loading and device variation.
+
 \subsection{Class AB Power Stage}
 
 The complementary IRFZ44N/IRF4905 stage retains the Class AB topology
@@ -831,7 +960,7 @@ $64.5\,{}^\circ\mathrm{C}$ and $59.8\,{}^\circ\mathrm{C}$.
 Frequency-response, signal-quality, and connected-stage assessments
 complete the evaluation framework for the amplifier.
 
-\begin{thebibliography}{3}
+\begin{thebibliography}{5}
 \bibitem{floyd}
 T. L. Floyd, \emph{Dispositivos electrónicos}, 8th ed.
 Mexico: Pearson Educación, 2008, secs.~7--2 and 9--2.
@@ -843,5 +972,13 @@ datasheet, document PD-94787B, pp.~1--4.
 \bibitem{irf4905}
 Infineon Technologies, ``IRF4905PbF: HEXFET power MOSFET,''
 datasheet, rev.~2.1, Apr.~8, 2026, pp.~1--4.
+\bibitem{va_irf530}
+ON Semiconductor, ``IRF530: TMOS E-FET Power Field Effect Transistor,''
+datasheet, publication IRF530/D, rev.~2, Aug. 2006.
+
+\bibitem{va_irf9540}
+Vishay Siliconix, ``IRF9540 Power MOSFET,'' datasheet, document 91078,
+rev.~C, Aug.~16, 2021. \url{https://www.vishay.com/docs/91078/91078.pdf}.
+
 \end{thebibliography}
 \end{document}
