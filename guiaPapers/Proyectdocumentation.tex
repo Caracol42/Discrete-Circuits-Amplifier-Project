@@ -1,4 +1,3 @@
-% Compile twice with pdfLaTeX. The bibliography is included below.
 \documentclass[conference,letterpaper]{IEEEtran}
 \pdfminorversion=7
 \usepackage[T1]{fontenc}
@@ -58,8 +57,8 @@ signal conditioning, voltage amplification, and a power stage to drive
 an $8\,\Ohm$ loudspeaker. The design uses commercial component values
 and considers signal quality, transistor bias, and heat dissipation.
 The main calculations establish a $20\,\W$ output reference. In the
-reported power-stage test, a $20\,\V$ peak input at $10\,\kHz$
-produces $22.8\,\W$ of average load power. Calculated requirements
+recorded reference test, a $20\,\V$ peak input at $10\,\kHz$
+produced $22.8\,\W$ of average load power. Calculated requirements
 and simulation readings are presented in separate tables to support
 a clear assessment of the design.
 \end{abstract}
@@ -117,17 +116,17 @@ signal to delivering power to the loudspeaker.
 
 \subsection{Class AB Power Stage}
 
-The power stage uses an IRFZ44N and an IRF4905 MOSFET. These are
-complementary transistors: one provides most of the current during the
-positive portion of the signal, while the other handles most of the
-negative portion. Class AB bias keeps both slightly conducting around
-the transition, helping reduce crossover distortion
-\cite[sec.~7--2]{floyd}.
+The Class AB arrangement was selected because it combines a smooth
+transition between the two portions of an audio signal with moderate
+resting power consumption. Its overlapping conduction helps reduce
+crossover distortion, which is particularly relevant when reproducing
+small changes in the waveform \cite[sec.~7--2]{floyd}.
 
-The stage mainly increases the available current. Its output voltage
-follows the input with the same polarity and a small reduction in
-amplitude, as expected from a source-follower arrangement
-\cite[sec.~9--2]{floyd}.
+The selected circuit also provides the current needed by the
+loudspeaker while preserving the signal polarity and most of its
+voltage amplitude. These features make it suitable as the final stage
+of an amplifier whose preceding stages already provide the required
+voltage level \cite[sec.~9--2]{floyd}.
 
 \begin{figure}[H]
 \centering
@@ -135,15 +134,15 @@ amplitude, as expected from a source-follower arrangement
 \node[blk,text width=31mm] (input) at (0,0)
     {Audio signal\\Input coupling};
 \node[blk,text width=30mm] (n) at (-2,-1.65)
-    {IRFZ44N\\Positive portion};
+    {Positive portion\\Current delivery};
 \node[blk,text width=30mm] (p) at (2,-1.65)
-    {IRF4905\\Negative portion};
+    {Negative portion\\Current return};
 \node[blk,text width=31mm] (sum) at (0,-3.3)
-    {Combined output\\Source resistors};
+    {Combined\\output signal};
 \node[blk,text width=31mm] (speaker) at (0,-4.95)
-    {Output coupling\\$8\,\Ohm$ loudspeaker};
+    {Direct output\\$8\,\Ohm$ loudspeaker};
 \node[aux,text width=22mm] (z) at (3.3,-3.3)
-    {High-frequency\\RC network};
+    {High-frequency\\stabilization};
 \draw[arr] (input.south)--++(0,-.25)-|(n.north);
 \draw[arr] (input.south)--++(0,-.25)-|(p.north);
 \draw[arr] (n.south)--++(0,-.3)-|(sum.north);
@@ -151,8 +150,7 @@ amplitude, as expected from a source-follower arrangement
 \draw[arr] (sum)--(speaker);
 \draw[arr] (sum)--(z);
 \end{tikzpicture}
-\caption{Functional blocks of the Class AB power stage. The RC
-network combines a resistor and a capacitor.}
+\caption{Functional blocks of the selected Class AB output arrangement.}
 \label{fig:powerblock}
 \end{figure}
 \FloatBarrier
@@ -162,17 +160,17 @@ network combines a resistor and a capacitor.}
 
 \subsection{Voltage Amplification Stage}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Class AB Power Stage}
 
 Figure~\ref{fig:schematic} presents the power-stage circuit. The design
 retains the complementary output arrangement, with nominal supplies
-of $+24\,\V$ and $-24\,\V$.
+of $+24\,\V$ and $-24\,\V$. The load is connected directly
+to VOUT, the junction between RS1 and RS2.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\columnwidth,
-    trim=95bp 10bp 110bp 15bp,clip]{pot20w.pdf}
+    trim=84.5bp 11bp 115.5bp 3bp,clip]{pot20w(3).pdf}
 \caption{Class AB power-stage schematic with IRFZ44N and IRF4905
 MOSFETs.}
 \label{fig:schematic}
@@ -190,7 +188,7 @@ P_L=\frac{V_{L,\mathrm{rms}}^2}{R_L}.
 \end{equation}
 
 Here, RMS is the effective voltage value used to calculate average
-power of a signal audio. For this project the required voltage and current of this signal is:
+audio power. The required load voltage and current are
 
 \begin{align}
 V_{LOAD,\mathrm{rms}}&=\sqrt{(20)(8)}\approx12.65\,\V,\\
@@ -202,7 +200,7 @@ These values define the load requirements. With the specified
 $20\,\V$ peak input, the output power depends on the voltage transfer
 of the stage. Table~\ref{tab:loadcalc} summarizes the calculated values.
 
-\begin{table}[!htb]
+\begin{table}[H]
 \caption{Calculated Output Requirements for the $20\,\W$ Reference}
 \label{tab:loadcalc}
 \centering\footnotesize
@@ -222,92 +220,221 @@ Load peak current & $2.24\,\A$\\
 \FloatBarrier
 
 \subsubsection{Class AB Bias Adjustment}
-
 Bias sets the transistor operating conditions before an audio signal
-is applied. The design adopts a resting-current target of
-$I_D=50\,\mathrm{mA}$ in each branch. This resting-current is established to keep on the transistors in a operating point to represent always all the audio signal variations.
+is applied. The design adopts a quiescent drain-current target of
+$I_{DQ}=50\,\mathrm{mA}$ in each branch. This small resting current
+provides the intended overlap between the two transistors near the
+signal transition \cite[sec.~7--2]{floyd}.
 
-This small current provides
-the intended overlap between the two transistors near the signal
-transition \cite[sec.~7--2]{floyd}.
-
-The $0.22\,\Ohm$ source resistors help control branch current and
-provide a simple reference for adjustment. At the selected target,
-the voltage across each resistor is
+The $0.22\,\Ohm$ source resistors provide a convenient current
+reference. At the selected target, the drop across each resistor is
 \begin{equation}
-V_{RS,Q}=I_QR_S=(0.50)(0.22)=11\,\mathrm{mV}.
+V_{RS,Q}=I_{DQ}R_S=(0.050)(0.22)=11\,\mathrm{mV}.
+\label{eq:rsq}
 \end{equation}
-The internal output is centered close to $0\,\V$ DC under this condition. To ensure the load (Speaker) only receives the audio signal.
+Bias adjustment targets these drops while keeping VOUT close to
+$0\,\V$ DC. Because SPK2 is connected directly to this node,
+the same DC voltage appears across the load.
 
-The gate voltages are set by resistor dividers. For the resistor
-connected toward either supply rail, its effective value follows a voltage divider:
+The updated component labels give the effective bias resistances
+\begin{align}
+R_N&=R2+R1_{\mathrm{eff}},\\
+R_P&=R5+R6_{\mathrm{eff}}.
+\end{align}
+The nominal gate voltages follow the two dividers:
+\begin{align}
+V_{G,U1}&=24\,\V\frac{R3}{R_N+R3},\\
+V_{G,U2}&=-24\,\V\frac{R4}{R_P+R4}.
+\end{align}
+With $R3=R4=100\,\kohm$, the initial gate references of
+$+3.6243\,\V$ and $-3.6123\,\V$ correspond to
+$R_N=562.2\,\kohm$ and $R_P=564.4\,\kohm$. Commercial
+$560\,\kohm$ resistors R2 and R5 are combined with $10\,\kohm$
+trimmers R1 and R6. Their nominal effective settings are
+$2.2\,\kohm$ and $4.4\,\kohm$, respectively, or $22\%$ and
+$44\%$ of the trimmer range.
 
+These divider settings provide the initial gate voltages. The
+$50\,\mathrm{mA}$ target is assessed through the separate DC
+operating-point analysis and the drops in (\ref{eq:rsq}).
 
-\begin{equation}
-R_{\mathrm{bias}}=100\,\kohm
-\left(\frac{24\,\V}{|V_G|}-1\right)
-\end{equation}
-
-
-Using nominal gate settings of $+3.6243\,\V$ and $-3.6123\,\V$
-gives effective resistances of $562.2\,\kohm$ and $564.4\,\kohm$.
-Each branch therefore uses a commercial $560\,\kohm$ resistor in
-series with a $10\,\kohm$ trimmer. The effective trimmer settings
-are $2.2\,\kohm$ and $4.4\,\kohm$, corresponding to $22\%$ and
-$44\%$ of their nominal range.
-
-The gate settings provide the initial bias references. The resting
-current is assessed through the source-resistor voltage drops.
-Table~\ref{tab:biascalc} keeps these design references separate from
-the recorded signal measurements.
-
-\subsubsection{Signal Coupling}
-
-The signal coupling is a factor to consider to keep isolated each stage of DC signals of polarization. Achieving that C1 and C2 pass the audio signal to the transistor gates while keeping their DC bias settings separate from the preceding stage.
-
-
-This places the output coupling-network corner below $20\,\Hz$,
-helping preserve low-frequency audio.
-
-\subsubsection{Heat Dissipation}
-For the Class AB configuration when it always be  bias also produces heat when no audio signal is present.
-At the selected resting-current target, each transistor dissipates
-approximately
-\begin{equation}
-P_{D,Q}\simeq V_{CC}I_Q=(24)(0.100)=2.40\,\W.
-\end{equation}
-During audio operation, dissipation is evaluated from the average
-power absorbed by each transistor, including the overlapping conduction
-of the Class AB stage.
-
-A $10\,\W$ thermal design allowance per transistor provides margin
-above the recorded losses of $6.58\,\W$ and $6.63\,\W$. The
-heat-sink selection uses a thermal resistance of no more than
-$4\,{}^\circ\mathrm{C/W}$ per device. A lower thermal resistance
-allows heat to leave the transistor more easily. The selection also considers the device thermal data provided in
-the transistor datasheets \cite{irfz44n,irf4905}.
-
-\begin{table}[!htb]
-\caption{Calculated Bias and Coupling Design References}
+\begin{table}[H]
+\caption{Calculated Bias References and Adjustment Targets}
 \label{tab:biascalc}
 \centering\footnotesize
 \begin{tabular}{@{}p{.61\columnwidth}p{.34\columnwidth}@{}}
 \toprule
 Quantity & Design reference\\
 \midrule
-Upper gate bias, initial & $+3.6243\,\V$\\
-Lower gate bias, initial & $-3.6123\,\V$\\
-Upper effective bias resistance & $562.2\,\kohm$\\
-Lower effective bias resistance & $564.4\,\kohm$\\
-R4 effective setting & $2.2\,\kohm$\\
+U1 gate bias, initial & $+3.6243\,\V$\\
+U2 gate bias, initial & $-3.6123\,\V$\\
+$R_N=R2+R1_{\mathrm{eff}}$ & $562.2\,\kohm$\\
+$R_P=R5+R6_{\mathrm{eff}}$ & $564.4\,\kohm$\\
+R1 effective setting & $2.2\,\kohm$\\
 R6 effective setting & $4.4\,\kohm$\\
-Resting current, target per branch & $100\,\mathrm{mA}$\\
-Source-resistor drop at target & $22\,\mathrm{mV}$ each\\
-Internal output at rest, target & $0\,\V$\\
-Resting transistor loss, estimate & $2.40\,\W$ each\\
-Output coupling corner, estimate & $4.23\,\Hz$\\
+$I_{DQ}$, target per MOSFET & $50\,\mathrm{mA}$\\
+RS1 and RS2 drop at target & $11\,\mathrm{mV}$ each\\
+VOUT at rest, target & $0\,\V$ DC\\
 \bottomrule
 \end{tabular}
+\end{table}
+
+\subsubsection{Signal Coupling}
+C1 and C2 transfer the audio signal to the gates while keeping their
+DC bias settings separate from the preceding stage. Each capacitor
+is $4.7\,\uF$. With a low-impedance driving source, the divider
+resistance seen by each capacitor is approximately $84.9\,\kohm$,
+giving an input coupling corner near $0.40\,\Hz$.
+C1 and C2 are polarized electrolytics. With zero DC at VIN, the positive
+terminal of C1 faces the upper bias node, while the positive terminal
+of C2 faces VIN.
+
+The output is connected directly to the $8\,\Ohm$ load. RZobel1
+and C3 form the series output RC network, with values of
+$10\,\Ohm$ and $100\,\nF$. This branch provides a high-frequency
+load in parallel with the loudspeaker.
+
+\subsubsection{Heat Dissipation}
+All thermal calculations use an ambient temperature of
+$T_A=25\,{}^\circ\mathrm{C}$, both at rest and during signal operation.
+The analysis relates each component's power loss to its estimated
+steady-state temperature. Table~\ref{tab:thermal} summarizes the
+results and the thermal-resistance parameters used in the calculation.
+
+\emph{Power losses:}
+At $I_{DQ}=50\,\mathrm{mA}$, the resting losses in each MOSFET
+and source resistor are
+\begin{align}
+P_{D,Q}&=(24-I_{DQ}R_S)I_{DQ}\simeq1.20\,\W,\\
+P_{RS,Q}&=I_{DQ}^{2}R_S=0.55\,\mathrm{mW}.
+\end{align}
+Resistor losses follow $P_R=I_{\mathrm{rms}}^2R$. For example,
+the recorded gate RMS voltage gives
+\begin{equation}
+P_{R3}=P_{R4}=\frac{14.6^2}{100000}=2.13\,\mathrm{mW}.
+\end{equation}
+The same calculation gives $1.09\,\mathrm{mW}$ in R2 and
+$1.08\,\mathrm{mW}$ in R5. R1 and R6 dissipate
+$4.28\,\mu\W$ and $8.50\,\mu\W$, respectively.
+
+For the gate-resistor loss calculation, the estimated RMS currents
+are $1.306\,\mathrm{mA}$ and $3.022\,\mathrm{mA}$:
+\begin{align}
+P_{RG1}&=(1.306\times10^{-3})^2(100)
+\simeq0.171\,\mathrm{mW},\\
+P_{RG2}&=(3.022\times10^{-3})^2(100)
+\simeq0.913\,\mathrm{mW}.
+\end{align}
+Capacitor losses follow $P_C=I_{C,\mathrm{rms}}^2r_{ESR}$,
+where ESR represents the capacitor's series loss resistance.
+Using a fixed ESR of $34\,\Ohm$ and estimated currents of
+$1.317\,\mathrm{mA}$ and $3.026\,\mathrm{mA}$ gives
+\begin{align}
+P_{C1}&=(1.317\times10^{-3})^2(34)
+\simeq0.0590\,\mathrm{mW},\\
+P_{C2}&=(3.026\times10^{-3})^2(34)
+\simeq0.311\,\mathrm{mW}.
+\end{align}
+These gate and input-capacitor currents are calculated with a
+constant input-capacitance approximation for the MOSFETs.
+
+At $10\,\kHz$, the C3 loss calculation uses
+$\tan\delta=0.025$:
+\begin{align}
+X_{C3}&=\frac{1}{2\pi fC3}=159.15\,\Ohm,\\
+r_{ESR,3}&=\tan\delta\,X_{C3}=3.98\,\Ohm.
+\end{align}
+The Zobel-branch current is
+\begin{equation}
+I_Z=\frac{13.5}{\sqrt{(10+3.98)^2+159.15^2}}
+\simeq84.50\,\mathrm{mA}.
+\end{equation}
+Therefore,
+\begin{align}
+P_{\mathrm{RZobel1}}&=I_Z^2(10)\simeq0.0714\,\W,\\
+P_{C3}&=I_Z^2r_{ESR,3}\simeq0.0284\,\W.
+\end{align}
+The source-resistor sizing calculation includes the load current,
+the Zobel-branch current, and $I_{DQ}$:
+\begin{equation}
+P_{RS,\mathrm{design}}=
+0.22(1.69+0.0845+0.050)^2\simeq0.732\,\W.
+\end{equation}
+This power allowance applies to each $5\,\W$ source resistor.
+
+\emph{Component temperatures:}
+The passive-component temperature calculation is
+\begin{equation}
+T_i=T_A+R_{\theta i}P_i.
+\label{eq:thermalpassive}
+\end{equation}
+For example,
+\begin{align}
+T_{RS1}=T_{RS2}&\simeq25+(0.732)(55)
+=65.3\,{}^\circ\mathrm{C},\\
+T_{C3}&\simeq25+(0.0284)(1157)
+=57.9\,{}^\circ\mathrm{C}.
+\end{align}
+The same expression is applied to the remaining passive components
+using the power and thermal resistance listed in Table~\ref{tab:thermal}.
+
+For the MOSFETs, the calculation includes a separate
+$4\,{}^\circ\mathrm{C/W}$ heat sink for each device and a
+$0.5\,{}^\circ\mathrm{C/W}$ mounting interface:
+\begin{equation}
+T_J=T_A+P_D(R_{\theta JC}+R_{\theta CS}+R_{\theta SA}).
+\label{eq:thermalmos}
+\end{equation}
+The datasheet junction-to-case thermal resistances are
+$1.5\,{}^\circ\mathrm{C/W}$ for U1 and
+$0.75\,{}^\circ\mathrm{C/W}$ for U2 \cite{irfz44n,irf4905}.
+Using the recorded transistor losses gives
+\begin{align}
+T_{J,U1}&=25+6.58(1.5+0.5+4)
+\simeq64.5\,{}^\circ\mathrm{C},\\
+T_{J,U2}&=25+6.63(0.75+0.5+4)
+\simeq59.8\,{}^\circ\mathrm{C}.
+\end{align}
+At rest, the calculated junction temperatures are
+$32.2\,{}^\circ\mathrm{C}$ for U1 and
+$31.3\,{}^\circ\mathrm{C}$ for U2. At the
+$10\,\W$ per-device design allowance, they are
+$85\,{}^\circ\mathrm{C}$ and $77.5\,{}^\circ\mathrm{C}$,
+below the selected $100\,{}^\circ\mathrm{C}$ design limit.
+
+\begin{table}[H]
+\caption{Calculated Component Temperatures at $25\,{}^\circ\mathrm{C}$}
+\label{tab:thermal}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{.19\columnwidth}p{.26\columnwidth}p{.25\columnwidth}p{.23\columnwidth}@{}}
+\toprule
+Component & Power used & $R_\theta$ (${}^\circ\mathrm{C/W}$) & Temperature (${}^\circ\mathrm{C}$)\\
+\midrule
+U1 & $6.58\,\W$ & $6.00$ & $64.5$\\
+U2 & $6.63\,\W$ & $5.25$ & $59.8$\\
+R1 & $4.28\,\mu\W$ & $263$ & $25.0$\\
+R2 & $1.09\,\mathrm{mW}$ & $140$ & $25.2$\\
+R3, R4 & $2.13\,\mathrm{mW}$ each & $140$ & $25.3$ each\\
+R5 & $1.08\,\mathrm{mW}$ & $140$ & $25.2$\\
+R6 & $8.50\,\mu\W$ & $263$ & $25.0$\\
+RG1 & $0.171\,\mathrm{mW}$ & $140$ & $25.0$\\
+RG2 & $0.913\,\mathrm{mW}$ & $140$ & $25.1$\\
+RS1, RS2 & $0.732\,\W$ each & $\simeq55$ & $65.3$ each\\
+RZobel1 & $0.0714\,\W$ & $75$ & $30.4$\\
+C1 & $0.0590\,\mathrm{mW}$ & $472$ & $25.0$\\
+C2 & $0.311\,\mathrm{mW}$ & $472$ & $25.1$\\
+C3 & $0.0284\,\W$ & $1157$ & $57.9$\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{.97\columnwidth}{\scriptsize
+Temperatures are steady-state analytical estimates at
+$25\,{}^\circ\mathrm{C}$, rounded to $0.1\,{}^\circ\mathrm{C}$.
+U1/U2 entries are junction temperatures; passive entries are body
+temperatures. The $R_\theta$ column lists the calculation parameters.
+RS1/RS2 use a power allowance for component sizing. Gate and capacitor
+losses are analytical estimates.}
 \end{table}
 \FloatBarrier
 
@@ -322,7 +449,7 @@ The selected components retain the circuit topology and use commercial
 nominal values. Table~\ref{tab:components} lists the main components
 and the ratings considered in their selection.
 
-\begin{table}[!htb]
+\begin{table}[H]
 \caption{Power-Stage Components and Selection Ratings}
 \label{tab:components}
 \centering\footnotesize
@@ -332,15 +459,14 @@ Reference & Value or model & Selection rating\\
 \midrule
 U1 & IRFZ44N & N-channel MOSFET\\
 U2 & IRF4905 & P-channel MOSFET\\
-R1, R5 & $560\,\kohm$ & $1\%$, $0.25\,\W$\\
-R2, R3 & $100\,\kohm$ & $1\%$, $0.25\,\W$\\
-R4, R6 & $10\,\kohm$ & Trimmers, $0.25\,\W$\\
+R2, R5 & $560\,\kohm$ & $1\%$, $0.25\,\W$\\
+R3, R4 & $100\,\kohm$ & $1\%$, $0.25\,\W$\\
+R1, R6 & $10\,\kohm$ & Trimmers, $0.25\,\W$\\
 RG1, RG2 & $100\,\Ohm$ & $0.25\,\W$\\
 RS1, RS2 & $0.22\,\Ohm$ & $5\,\W$\\
-C1, C2 & $4.7\,\uF$ & $50\,\V$, nonpolar\\
-C3 & $4700\,\uF$ & $50\,\V$, nonpolar; suitable ripple rating\\
-$R_Z$ & $10\,\Ohm$ & $2\,\W$\\
-C4 & $100\,\nF$ & $50\,\V$, film\\
+C1, C2 & $4.7\,\uF$ & $50\,\V$, electrolytic\\
+RZobel1 & $10\,\Ohm$ & $2\,\W$\\
+C3 & $100\,\nF$ & $50\,\V$, ceramic, code 104\\
 SPK2 & $8\,\Ohm$ & $30\,\W$ nominal rating\\
 \bottomrule
 \end{tabular}
@@ -353,10 +479,10 @@ $\pm24\,\V$ supplies and the expected signal excursions
 margin for the load current, while the gate resistors and output RC
 network help control high-frequency behavior.
 
-C3 carries the loudspeaker current, so its ripple-current rating
-accounts for the reported $1.69\,\A$ RMS operating value with margin.
-A nonpolar type accommodates the alternating voltage. The heat sinks
-are selected according to the dissipation allowance described above.
+The heat-sink selection follows the stated dissipation allowance.
+The component references in Table~\ref{tab:components} match the
+updated schematic, including C1/C2 as electrolytic coupling capacitors and C3 as the
+$100\,\nF$ ceramic Zobel capacitor marked 104.
 
 \section{Simulation Methodology}
 \subsection{Common Simulation Conditions}
@@ -364,8 +490,9 @@ are selected according to the dissipation allowance described above.
 Multisim provides the circuit environment for the reported test.
 The power-stage input is a $20\,\V$ peak sinusoidal signal at
 $10\,\kHz$, with zero DC offset. The circuit uses nominal
-$\pm24\,\V$ supplies and an $8\,\Ohm$ load. R4 and R6 are set
-to $22\%$ and $44\%$, respectively.
+$\pm24\,\V$ supplies and an $8\,\Ohm$ load. R1 and R6 have nominal settings
+of $22\%$ and $44\%$, respectively. These settings establish the
+initial divider voltages; the DC analysis assesses $I_{DQ}$ separately.
 
 \subsection{Preamplification Stage}
 
@@ -376,8 +503,8 @@ to $22\%$ and $44\%$, respectively.
 
 The DC analysis examines the circuit with no audio input. It identifies
 the transistor bias and the internal output voltage. The design targets
-are $100\,\mathrm{mA}$ in each branch, $22\,\mathrm{mV}$ across
-each source resistor, and an internal output close to zero. These
+are $I_{DQ}=50\,\mathrm{mA}$ in each branch, $11\,\mathrm{mV}$ across
+each source resistor, and VOUT close to zero. These
 references define the intended Class AB resting condition.
 
 \subsubsection{Transient Response}
@@ -405,14 +532,16 @@ to the documented $10\,\kHz$ test.
 
 \subsection{Class AB Power Stage}
 
-Tables~\ref{tab:voltages} and \ref{tab:powers} present the recorded
-values. RMS describes the effective signal level, peak-to-peak describes
+Tables~\ref{tab:voltages} and \ref{tab:powers} retain the available
+$10\,\kHz$ reference readings for comparison and thermal calculations.
+The updated schematic defines a single output node shared by the
+source-resistor junction and SPK2. RMS describes the effective signal level, peak-to-peak describes
 the full voltage or current swing, and mean describes the average DC
 component. The power readings are average values over the measurement
 interval.
 
-\begin{table}[!htb]
-\caption{Simulated Voltages at $10\,\kHz$}
+\begin{table}[H]
+\caption{Recorded Voltage References at $10\,\kHz$}
 \label{tab:voltages}
 \centering\footnotesize
 \setlength{\tabcolsep}{2.5pt}
@@ -422,19 +551,20 @@ Location & Peak-to-peak & RMS & Mean\\
 \midrule
 IRFZ44N gate & $39.9\,\V$ & $14.6\,\V$ & $+3.62\,\V$\\
 IRF4905 gate & $39.8\,\V$ & $14.6\,\V$ & $-3.62\,\V$\\
-Output before C3 & $38.2\,\V$ & $13.5\,\V$ & $+28.2\,\mathrm{mV}$\\
-Loudspeaker load & $38.2\,\V$ & $13.5\,\V$ & $-87.2\,\mu\V$\\
+Output AC reference & $38.2\,\V$ & $13.5\,\V$ & ---\\
 \bottomrule
 \end{tabular}
 \end{table}
 \FloatBarrier
 
-The load voltage is $13.5\,\V$ RMS, with a mean close to zero after
-C3. This is consistent with the capacitor's role in passing the audio
-signal while blocking the steady DC component.
+The output reference is $13.5\,\V$ RMS. The dash indicates that a
+DC measurement for the revised VOUT connection is not included in
+these reference readings. Its DC adjustment target is $0\,\V$.
+The gate means describe signal-on operation; $I_{DQ}$ is assessed
+with the input amplitude set to zero.
 
-\begin{table}[!htb]
-\caption{Simulated Current and Average Power at $10\,\kHz$}
+\begin{table}[H]
+\caption{Recorded Current and Power References at $10\,\kHz$}
 \label{tab:powers}
 \centering\footnotesize
 \begin{tabular}{@{}p{.65\columnwidth}p{.30\columnwidth}@{}}
@@ -443,7 +573,6 @@ Quantity & Simulated value\\
 \midrule
 Load-current peak-to-peak & $4.78\,\A$\\
 Load-current RMS & $1.69\,\A$\\
-Load-current mean & $-235\,\mu\A$\\
 Average loudspeaker-load power & $22.8\,\W$\\
 IRFZ44N average dissipation & $6.58\,\W$\\
 IRF4905 average dissipation & $6.63\,\W$\\
@@ -453,7 +582,7 @@ Signal frequency & $10.0\,\kHz$\\
 \end{table}
 \FloatBarrier
 
-The output-power reading exceeds the $20\,\W$ design reference.
+The reference output-power reading exceeds the $20\,\W$ design reference.
 The transistor dissipation values describe heat produced within the
 output devices and are accounted for separately from the power
 received by the load.
@@ -465,7 +594,7 @@ received by the load.
 
 \subsection{Class AB Power Stage}
 
-The recorded output voltage supports the average-power result.
+The recorded reference output voltage supports the average-power result.
 Applying (\ref{eq:power}) gives
 \begin{equation}
 P_L=\frac{(13.5)^2}{8}=22.78\,\W,
@@ -481,9 +610,9 @@ reduction is consistent with the power stage's role of supplying
 current while preserving the signal polarity and most of its voltage
 amplitude.
 
-At the reported frequency, the delivered power is $14\%$ above the
-$20\,\W$ reference. The stage therefore meets the output-power
-objective under the documented test conditions. The two transistor
+In the recorded reference test, the delivered power is $14\%$ above
+the $20\,\W$ objective. This result provides the comparison baseline
+for the updated power-stage schematic. The two transistor
 losses are similar, and both remain below the $10\,\W$ per-device
 thermal design allowance.
 
@@ -502,18 +631,22 @@ the audio test signal applied.
 
 The complementary IRFZ44N/IRF4905 stage retains the Class AB topology
 and uses commercial component values. Its bias design includes a
-$100\,\mathrm{mA}$ resting-current target, with trimmers for
+$I_{DQ}=50\,\mathrm{mA}$ resting-current target, with trimmers for
 adjustment and source resistors that provide current references.
-Coupling capacitors pass the audio signal between the relevant
-circuit sections, and the thermal selection accounts for transistor
-power losses.
+C1 and C2 couple the input signal to the transistor gates, while
+the load connects directly to VOUT. The thermal assessment covers
+transistor, resistor, and capacitor losses and gives calculated
+temperature estimates for the stage electronics.
 
-With a $20\,\V$ peak input at $10\,\kHz$, the recorded test delivers
+With a $20\,\V$ peak input at $10\,\kHz$, the recorded reference test delivered
 $22.8\,\W$ to an $8\,\Ohm$ load, exceeding the $20\,\W$ design
 reference. The output reaches $13.5\,\V$ RMS and $1.69\,\A$ RMS.
-These results support the power-delivery objective at the stated test
-condition. Frequency-response, signal-quality, and connected-stage
-assessments complete the evaluation framework for the amplifier.
+These reference results support the power-delivery objective for
+the documented test. The updated DC assessment uses the direct
+output connection and the $50\,\mathrm{mA}$ adjustment target. The thermal calculation gives MOSFET junction temperatures of
+$64.5\,{}^\circ\mathrm{C}$ and $59.8\,{}^\circ\mathrm{C}$.
+Frequency-response, signal-quality, and connected-stage assessments
+complete the evaluation framework for the amplifier.
 
 \begin{thebibliography}{3}
 \bibitem{floyd}
