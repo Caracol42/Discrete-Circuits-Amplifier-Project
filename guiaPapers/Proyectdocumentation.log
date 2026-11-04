@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.10.20)  3 NOV 2026 19:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.10.20)  4 NOV 2026 08:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -984,14 +984,23 @@ Overfull \hbox (2.49936pt too wide) in paragraph at lines 553--568
  [][] 
  []
 
-[5] [6]
-Underfull \hbox (badness 1448) in paragraph at lines 801--803
+[5]
+Overfull \hbox (13.55965pt too wide) in paragraph at lines 680--692
+ [][] 
+ []
+
+File: fig/pre_diam.png Graphic file (type png)
+<use fig/pre_diam.png>
+Package pdftex.def Info: fig/pre_diam.png  used on input line 698.
+(pdftex.def)             Requested size: 239.39923pt x 105.94635pt.
+[6]
+Underfull \hbox (badness 1448) in paragraph at lines 840--842
 []\T1/ptm/m/n/8 (+20) International Rec-ti-fier, ``IRFZ44NPbF: HEXFET power MOS
 -FET,''
  []
 
 
-Underfull \hbox (badness 1975) in paragraph at lines 805--807
+Underfull \hbox (badness 1975) in paragraph at lines 844--846
 []\T1/ptm/m/n/8 (+20) Infineon Tech-nolo-gies, ``IRF4905PbF: HEXFET power MOS-F
 ET,''
  []
@@ -1007,9 +1016,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[7
-
-] (Proyectdocumentation.aux)
+[7] (Proyectdocumentation.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
@@ -1022,11 +1029,11 @@ Package rerunfilecheck Info: File `Proyectdocumentation.out' has not changed.
 (rerunfilecheck)             Checksum: 2D7ADD2D4D0EF5A90DD7586858B2BB15;7595.
  ) 
 Here is how much of TeX's memory you used:
- 25526 strings out of 467871
- 474522 string characters out of 5418375
- 925885 words of memory out of 5000000
- 53652 multiletter control sequences out of 15000+600000
- 756005 words of font info for 306 fonts, out of 8000000 for 9000
+ 25544 strings out of 467871
+ 474740 string characters out of 5418375
+ 926090 words of memory out of 5000000
+ 53656 multiletter control sequences out of 15000+600000
+ 756392 words of font info for 312 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,13n,104p,1019b,752s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/alvar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
@@ -1052,9 +1059,9 @@ ta/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/alvar/AppDa
 ta/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/alvar/AppD
 ata/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/alvar/AppD
 ata/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Proyectdocumentation.pdf (7 pages, 356323 bytes).
+Output written on Proyectdocumentation.pdf (7 pages, 364290 bytes).
 PDF statistics:
- 421 PDF objects out of 1000 (max. 8388607)
- 107 named destinations out of 1000 (max. 500000)
+ 429 PDF objects out of 1000 (max. 8388607)
+ 112 named destinations out of 1000 (max. 500000)
  60781 words of extra memory for PDF output out of 61914 (max. 10000000)
 

@@ -628,6 +628,15 @@ of $22\%$ and $44\%$, respectively. These settings establish the
 initial divider voltages; the DC analysis assesses $I_{DQ}$ separately.
 
 \subsection{Preamplification Stage}
+The simulation of the BJT preamplifier stage was conducted in both LTspice and NI Multisim to verify DC biasing, dynamic transient behavior, and overall voltage amplification before physical assembly.
+
+\begin{enumerate}
+    \item \textbf{DC Operating Point Analysis:} The simulation evaluates the circuit under zero-input signal condition ($v_{in} = 0\text{~V}$ AC). It measures the base voltage ($V_B$), emitter voltage ($V_E$), collector voltage ($V_C$), and collector bias current ($I_{CQ}$) of transistor $Q_1$. The objective is to verify that the operating point resides in the linear active region ($V_{CEQ} \approx 3.12\text{~V}$, $I_{CQ} \approx 3.02\text{~mA}$), avoiding saturation or cutoff limits and providing adequate headroom for signal swings.
+
+    \item \textbf{Transient Analysis:} A $1\text{~kHz}$ sinusoidal voltage source ($V_1$) was applied at the input coupling capacitor $C_1$. Transient simulations were run with a time step sufficient to capture multiple complete audio cycles (e.g., $t_{stop} = 10\text{~ms}$). The transient response measures the peak-to-peak input and output voltage waveforms, evaluating the stage voltage gain $A_v = v_{out} / v_{in}$ and checking for asymmetrical clipping or waveform distortion caused by high signal amplitudes.
+
+    \item \textbf{Frequency Response and Filtering:} An AC sweep simulation ($10\text{~Hz}$ to $100\text{~kHz}$) was executed to determine the lower and upper $-3\text{~dB}$ cutoff frequencies ($f_L$ and $f_H$). This analysis assesses the high-pass response determined by coupling capacitors $C_1$ and $C_2$, as well as the high-frequency attenuation introduced by filtering capacitor $C_3$.
+\end{enumerate}
 
 \subsection{Voltage Amplification Stage}
 
@@ -660,6 +669,36 @@ to the documented $10\,\kHz$ test.
 \FloatBarrier
 \section{Simulated Values and Results}
 \subsection{Preamplification Stage}
+The preamplifier stage was simulated in NI Multisim to evaluate both the DC bias point and the transient response under real audio signal excitation. 
+
+Table~\ref{tab:preamp_sim_dc} compares the calculated theoretical DC parameters with the values obtained from the simulation. The results show close agreement, with maximum percentage deviations below $4.3\%$. The simulated collector current $I_{CQ} = 1.055\text{~mA}$ and collector voltage $V_C = 19.466\text{~V}$ confirm that the 2N2222 transistor operates within its linear active region with sufficient voltage swing headroom. Furthermore, the simulated DC voltage at the output node ($V_{out,DC} = 194.66\text{~pV}$) confirms the effectiveness of the output coupling network ($C_2$) in isolating the DC bias from downstream stages.
+
+\begin{table}[htbp]
+\caption{COMPARISON OF CALCULATED AND SIMULATED DC OPERATING PARAMETERS}
+\label{tab:preamp_sim_dc}
+\centering
+\begin{tabular}{l|c|c|c}
+\hline
+\textbf{Parameter} & \textbf{Calculated} & \textbf{Simulated} & \textbf{Deviation (\%)} \\
+\hline
+Base Voltage ($V_B$) & $3.07\text{~V}$ & $3.03\text{~V}$ & $1.30\%$ \\
+Emitter Voltage ($V_E$) & $2.24\text{~V}$ & $2.33\text{~V}$ & $4.02\%$ \\
+Collector Voltage ($V_C$) & $19.65\text{~V}$ & $19.47\text{~V}$ & $0.92\%$ \\
+Collector Current ($I_{CQ}$) & $1.012\text{~mA}$ & $1.055\text{~mA}$ & $4.25\%$ \\
+Collector-Emitter Voltage ($V_{CEQ}$) & $17.41\text{~V}$ & $17.14\text{~V}$ & $1.55\%$ \\
+Output DC Baseline ($V_{out,DC}$) & $0\text{~V}$ & $194.66\text{~pV}$ & $\sim 0\%$ \\
+\hline
+\end{tabular}
+\end{table}
+
+Under dynamic excitation, the output audio signal exhibits symmetric voltage excursions reaching approximately $1\text{~V}_{pp}$ ($\pm 500\text{~mV}_{\text{peak}}$) centered at $0\text{~V}$ DC, demonstrating clean linear amplification without clipping or crossover distortion.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{fig/pre_diam}
+    \caption{Simulated transient audio output signal $V_{out}$ showing symmetric AC swing centered at $0\text{~V}$ DC.}
+    \label{fig:sim_transient_pre}
+\end{figure}
 
 \subsection{Voltage Amplification Stage}
 
