@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.9.11)  4 NOV 2026 11:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.9.8)  9 NOV 2026 08:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -6,9 +6,9 @@ entering extended mode
 (Datasheet_AMP.tex
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-08-10>
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/base\article.cls
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
 Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/base\size10.clo
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo
 File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 )
 \c@part=\count276
@@ -23,15 +23,15 @@ File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 \belowcaptionskip=\skip50
 \bibindent=\dimen150
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/base\inputenc.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
 Package: inputenc 2024/02/08 v1.3d Input encoding file
 \inpenc@prehook=\toks17
 \inpenc@posthook=\toks18
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/base\fontenc.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
 Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/generic/babel\babel.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
 Package: babel 2026/08/21 v26.11 The multilingual framework for LuaLaTeX, pdfLa
 TeX and XeLaTeX
 \babel@savecnt=\count284
@@ -52,7 +52,7 @@ on input line 2138.
 \U@D=\dimen151
 \l@unhyphenated=\language79
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/generic/babel\txtbabel.def)
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
 \bbl@readstream=\read2
 \bbl@dirlevel=\count285
 Package babel Info: Configuration files are deprecated, as
@@ -62,16 +62,16 @@ Package babel Info: Configuration files are deprecated, as
 *************************************
 * Local config file bblopts.cfg used
 *
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/arabi\bblopts.cfg
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/arabi\bblopts.cfg
 File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
  babel
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/generic/babel/locale/en\babel
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/en\babel
 -english.tex)
 Package babel Info: Importing font and identification data for 'english'
 (babel)             from babel-en.ini. Reported on input line 4460.
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/babel-english\english.l
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/babel-english\english.l
 df
 Language: english 2017/06/06 v3.3r English support from the babel system
 Package babel Info: Hyphen rules for 'canadian' set to \l@english
@@ -81,17 +81,17 @@ Package babel Info: Hyphen rules for 'australian' set to \l@ukenglish
 Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
 (babel)             (\language73). Reported on input line 108.
 ))
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/geometry\geometry.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
 Package: geometry 2026/03/07 v6.0 Page Geometry
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/graphics\keyval.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
 Package: keyval 2026-05-17 v1.15 key=value parser (DPC)
 \KV@toks@=\toks19
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/generic/iftex\ifvtex.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/generic/iftex\iftex.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
 ))
 \Gm@cnth=\count286
@@ -107,44 +107,44 @@ Package: iftex 2024/12/12 v1.0g TeX engine tests
 \Gm@layoutvoffset=\dimen159
 \Gm@dimlist=\toks20
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/geometry\geometry.cfg))
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/graphics\graphicx.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
 Package: graphicx 2026-05-17 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/graphics\graphics.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
 Package: graphics 2026-05-17 v1.4h Standard LaTeX Graphics (DPC,SPQR)
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/graphics\trig.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
 Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/graphics-cfg\graphics.c
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.c
 fg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 106.
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/graphics-def\pdftex.def
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
 File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen160
 \Gin@req@width=\dimen161
-) (C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/amsmath\amsmath.sty
+) (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
 Package: amsmath 2026/05/19 v2.18d AMS math features
 \@mathmargin=\skip51
 For additional information on amsmath, use the `?' option.
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/amsmath\amstext.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
 Package: amstext 2024/11/17 v2.01 AMS text
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/amsmath\amsgen.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks21
 \ex@=\dimen162
 ))
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/amsmath\amsbsy.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen163
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/amsmath\amsopn.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
 \inf@bad=\count289
@@ -195,17 +195,17 @@ LaTeX Info: Redefining \Relbar on input line 970.
 LaTeX Info: Redefining \[ on input line 2965.
 LaTeX Info: Redefining \] on input line 2966.
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/amsfonts\amssymb.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/amsfonts\amsfonts.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/tools\array.sty
+)) (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
 Package: array 2026/02/24 v2.7b Tabular extension package (FMi)
 \col@sep=\dimen171
 \ar@mcellbox=\box55
@@ -215,7 +215,7 @@ Package: array 2026/02/24 v2.7b Tabular extension package (FMi)
 \backup@length=\skip55
 \ar@cellbox=\box56
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/tools\longtable.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/tools\longtable.sty
 Package: longtable 2026-01-28 v4.27 Multi-page Table package (DPC)
 \LTleft=\skip56
 \LTright=\skip57
@@ -234,15 +234,15 @@ Package: longtable 2026-01-28 v4.27 Multi-page Table package (DPC)
 \c@LT@chunks=\count305
 \LT@p@ftn=\toks27
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/graphics\color.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics\color.sty
 Package: color 2026-05-17 v1.3f Standard LaTeX Color (DPC)
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/graphics-cfg\color.cfg
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 149.
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/graphics\mathcolor.ltx)
-) (C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/fancyhdr\fancyhdr.sty
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+) (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
 Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 
 \f@nch@headwidth=\skip60
@@ -261,12 +261,11 @@ Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 \f@nch@widthR=\skip73
 \@temptokenb=\toks28
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/l3kernel\l3backend-pdft
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\l3backend-pdft
 ex.def
 File: l3backend-pdftex.def 2026-08-10 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count306
-)
-No file Datasheet_AMP.aux.
+) (Datasheet_AMP.aux)
 \openout1 = `Datasheet_AMP.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
@@ -283,6 +282,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
 LaTeX Font Info:    ... okay on input line 57.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
 LaTeX Font Info:    ... okay on input line 57.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -318,7 +318,7 @@ LaTeX Font Info:    ... okay on input line 57.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/context/base/mkii\supp-pdf.mk
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count307
@@ -333,29 +333,29 @@ ii
 \makeMPintoPDFobject=\count312
 \everyMPtoPDFconversion=\toks30
 )
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/epstopdf-pkg\epstopdf-b
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
 ase.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/00miktex\epstopdf-sys.c
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.c
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package babel Info: Main language set to 'english'.
 LaTeX Font Info:    Trying to load font information for U+msa on input line 88.
 
- (C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/amsfonts\umsa.fd
+ (C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Trying to load font information for U+msb on input line 88.
 
 
-(C:\Users\moral\OneDrive\Documentos\Descargas\tex/latex/amsfonts\umsb.fd
+(C:\Users\andre\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-[1{C:/Users/moral/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
+[1{C:/Users/andre/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
 
 ] [2]
 [3] [4] [5] [6] (Datasheet_AMP.aux)
@@ -365,33 +365,33 @@ L3 programming layer <2026-08-10>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 5265 strings out of 467440
- 86363 string characters out of 5407576
- 518074 words of memory out of 5000000
- 34512 multiletter control sequences out of 15000+600000
+ 5268 strings out of 467440
+ 86820 string characters out of 5407571
+ 518117 words of memory out of 5000000
+ 34514 multiletter control sequences out of 15000+600000
  640566 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,13n,65p,229b,385s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\moral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx
-0900.pk> <C:\Users\moral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
-0\tcrm1000.pk> <C:\Users\moral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
-/dpi600\ecbx1200.pk> <C:\Users\moral\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
-pen/ec/dpi600\ecrm1000.pk> <C:\Users\moral\AppData\Local\MiKTeX\fonts/pk/ljfour
-/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\moral\AppData\Local\MiKTeX\fonts/pk/
-ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\moral\AppData\Local\MiKTeX\fon
-ts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\moral\AppData\Local\MiKT
-eX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\moral\AppData\Loca
-l\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0900.pk><C:/Users/moral/OneDriv
-e/Documentos/Descargas/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/moral
-/OneDrive/Documentos/Descargas/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Use
-rs/moral/OneDrive/Documentos/Descargas/fonts/type1/public/amsfonts/cm/cmr9.pfb>
-<C:/Users/moral/OneDrive/Documentos/Descargas/fonts/type1/public/amsfonts/cm/cm
-sy10.pfb><C:/Users/moral/OneDrive/Documentos/Descargas/fonts/type1/public/amsfo
-nts/cm/cmsy6.pfb><C:/Users/moral/OneDrive/Documentos/Descargas/fonts/type1/publ
+ <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx
+0900.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
+0\tcrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
+/dpi600\ecbx1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
+pen/ec/dpi600\ecrm1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/ljfour
+/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\andre\AppData\Local\MiKTeX\fonts/pk/
+ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\andre\AppData\Local\MiKTeX\fon
+ts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\andre\AppData\Local\MiKT
+eX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\andre\AppData\Loca
+l\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0900.pk><C:/Users/andre/AppData
+/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/andre
+/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Use
+rs/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb>
+<C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cm
+sy10.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfo
+nts/cm/cmsy6.pfb><C:/Users/andre/AppData/Local/Programs/MiKTeX/fonts/type1/publ
 ic/amsfonts/cm/cmsy9.pfb>
-Output written on Datasheet_AMP.pdf (6 pages, 167819 bytes).
+Output written on Datasheet_AMP.pdf (6 pages, 168464 bytes).
 PDF statistics:
- 378 PDF objects out of 1000 (max. 8388607)
+ 380 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
