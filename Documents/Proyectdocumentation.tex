@@ -32,6 +32,7 @@
     aux/.style={blk,dashed}
 }
 \setlength{\tabcolsep}{3.5pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
 \renewcommand{\arraystretch}{1.12}
 
 \title{Discrete Electronics Project: Class AB Audio Amplifier\\
@@ -47,52 +48,38 @@ Tecnológico de Costa Rica (TEC)\\
 Analog One}
 }
 
+\raggedbottom
 \begin{document}
 \maketitle
-
 \begin{abstract}
-This paper presents the design and simulation of a discrete-component
-Class AB audio amplifier developed by Analog One. The system combines
-signal conditioning, voltage amplification, and a power stage to drive
-an $8\,\Ohm$ loudspeaker. The design uses commercial component values
-and considers signal quality, transistor bias, and heat dissipation.
-The main calculations establish a $20\,\W$ output reference. In the
-recorded reference test, a $20\,\V$ peak input at $10\,\kHz$
-produced $22.8\,\W$ of average load power. Calculated requirements
-and simulation readings are presented in separate tables to support
-a clear assessment of the design.
+Analog One develops a discrete audio amplifier that combines
+preamplification, voltage gain, and a Class AB power stage for an
+$8\,\Ohm$ loudspeaker. The design targets $20\,\W$ of output power
+and uses commercial component values. Calculated values and simulation
+results are organized in tables to summarize bias, signal levels,
+and heat dissipation. The power-stage test delivered $22.8\,\W$
+at $10\,\kHz$. The report also identifies the interstage checks
+needed to assess the complete amplifier.
 \end{abstract}
 \begin{IEEEkeywords}
-Class AB, audio amplifier, discrete circuits, MOSFET, circuit simulation.
+Audio amplifier, Class AB, discrete circuits, MOSFET, simulation.
 \end{IEEEkeywords}
 
 \section{Project Description}
-
-The project develops an audio amplifier that increases the level of an
-incoming audio signal and supplies the power needed by an $8\,\Ohm$
-loudspeaker. Developed by Analog One, the design aims to reproduce the
-signal at a useful output level while limiting distortion and power
-losses.
-
-The amplifier contains three stages. The preamplifier conditions the
-incoming signal, the voltage amplifier increases its amplitude, and the
-power stage provides the current required by the loudspeaker. The
-Class AB output arrangement uses two complementary transistors that
-share the audio waveform. A small resting current helps smooth the
-transition between the positive and negative portions of the signal.
-
-The design combines calculations, commercial component values, and
-circuit simulation. The evaluation considers output power, signal
-transfer, bias adjustment, and heat dissipation, together with the
-interaction between the stages.
+The amplifier prepares an incoming audio signal, increases its voltage,
+and delivers current to a loudspeaker. A BJT preamplifier provides
+initial signal conditioning, a MOSFET voltage amplifier establishes the
+power-stage input level, and a complementary Class AB output stage
+drives the load. The design considers signal transfer, stable bias,
+and component heating. Each stage is evaluated separately before the
+complete signal path is assessed. A common $\pm24\,\V$ supply
+serves the system: the preamplifier uses the positive rail and ground,
+while the voltage and power stages use both rails.
 
 \section{Block Diagrams}
 \subsection{Overall Amplifier}
-
-Figure~\ref{fig:overall} shows how the signal moves through the
-amplifier. Each stage has a specific role, from preparing the incoming
-signal to delivering power to the loudspeaker.
-
+The three stages divide signal conditioning, voltage gain, and
+loudspeaker drive into distinct functions.
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=5mm]
@@ -109,10 +96,10 @@ signal to delivering power to the loudspeaker.
 \label{fig:overall}
 \end{figure}
 \FloatBarrier
-
 \subsection{Preamplification Stage}
-Figure~\ref{fig:block_preamp} shows the functional structure of the preamplification stage. The incoming signal passes through an AC-coupling network to remove any DC offset before reaching the discrete BJT amplifier. The single-ended Common-Emitter (CE) topology provides the necessary voltage amplification, while an unbypassed emitter resistor stabilizes the bias point and thermal drift. Finally, an output coupling network blocks the collector DC level, delivering a clean audio AC waveform centered at $0\text{~V}$ DC to the downstream mixing and power stages.
-
+The common-emitter stage increases the input signal level. Emitter
+feedback helps stabilize its gain, while coupling capacitors keep the
+DC bias separate from the adjacent stages.
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=4mm]
@@ -130,9 +117,9 @@ Figure~\ref{fig:block_preamp} shows the functional structure of the preamplifica
 \end{figure}
 \FloatBarrier
 \subsection{Voltage Amplification Stage}
-
-The voltage amplifier connects the preamplifier to the input of the power stage. Figure~\ref{fig:va_blocks} follows the signal from left to right. Each IRF530 inverts the signal at its drain, so the two stages together preserve the input polarity near midband. The IRF9540 supplies current to the second stage.
-
+Two common-source stages provide voltage gain while preserving the
+signal polarity overall. An active load supplies current to the
+second stage.
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=3mm]
@@ -146,35 +133,27 @@ The voltage amplifier connects the preamplifier to the input of the power stage.
 \caption{Signal path through the voltage amplification stage.}
 \label{fig:va_blocks}
 \end{figure}
-
+\FloatBarrier
 \subsection{Class AB Power Stage}
-
-The Class AB arrangement was selected because it combines a smooth
-transition between the two portions of an audio signal with moderate
-resting power consumption. Its overlapping conduction helps reduce
-crossover distortion, which is particularly relevant when reproducing
-small changes in the waveform \cite[sec.~7--2]{floyd}.
-
-The selected circuit also provides the current needed by the
-loudspeaker while preserving the signal polarity and most of its
-voltage amplitude. These features make it suitable as the final stage
-of an amplifier whose preceding stages already provide the required
-voltage level \cite[sec.~9--2]{floyd}.
-
+Class AB operation was selected for its smooth transition between the
+positive and negative portions of the signal and moderate resting
+power consumption. The output stage supplies loudspeaker current
+while retaining most of the input voltage amplitude
+\cite[secs.~7--2 and 9--2]{floyd}.
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
 \node[blk,text width=31mm] (input) at (0,0)
     {Audio signal\\Input coupling};
-\node[blk,text width=30mm] (n) at (-2,-1.65)
+\node[blk,text width=30mm] (n) at (-2,-1.35)
     {Positive portion\\Current delivery};
-\node[blk,text width=30mm] (p) at (2,-1.65)
+\node[blk,text width=30mm] (p) at (2,-1.35)
     {Negative portion\\Current return};
-\node[blk,text width=31mm] (sum) at (0,-3.3)
+\node[blk,text width=31mm] (sum) at (0,-2.7)
     {Combined\\output signal};
-\node[blk,text width=31mm] (speaker) at (0,-4.95)
+\node[blk,text width=31mm] (speaker) at (0,-4.05)
     {Direct output\\$8\,\Ohm$ loudspeaker};
-\node[aux,text width=22mm] (z) at (3.3,-3.3)
+\node[aux,text width=22mm] (z) at (3.3,-2.7)
     {High-frequency\\stabilization};
 \draw[arr] (input.south)--++(0,-.25)-|(n.north);
 \draw[arr] (input.south)--++(0,-.25)-|(p.north);
@@ -190,144 +169,106 @@ voltage level \cite[sec.~9--2]{floyd}.
 
 \section{Design Considerations and Calculated Values}
 \subsection{Preamplification Stage}
-The preamplifier uses a 2N2222 NPN BJT in a Common-Emitter (CE) configuration powered by a single positive supply $V_{CC} = 24\text{~V}$ (or $+12\text{~V}$ single rail domain). Figure~\ref{fig:foto_pre} presents the complete schematic diagram of the stage. The design uses an unbypassed emitter resistor $R_4$ to fix the AC voltage gain independently of transistor parameter variations ($\beta$) and to minimize thermal drift.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\linewidth]{fig/pre_diam}
-    \caption{Preamplifier schematic stage featuring 2N2222 BJT.}
-    \label{fig:pre_diam}
-\end{figure}
-
-\subsubsection{DC Operating Point Analysis}
-The DC bias network is established by the base voltage divider $R_1$ and $R_2$, collector resistor $R_3$, and emitter resistor $R_4$. Coupling capacitors $C_1$ and $C_2$ act as open circuits for DC.
-
-The base Thévenin equivalent resistance $R_{Th}$ and voltage $V_{Th}$ are:
-\begin{equation}
-    R_{Th} = R_1 \parallel R_2 = \frac{(68\text{~k}\Omega)(33\text{~k}\Omega)}{68\text{~k}\Omega + 33\text{~k}\Omega} \approx 22.22\text{~k}\Omega
-\end{equation}
-\begin{equation}
-    V_{Th} = V_{CC} \left( \frac{R_2}{R_1 + R_2} \right) = 24\text{~V} \left( \frac{33\text{~k}\Omega}{68\text{~k}\Omega + 33\text{~k}\Omega} \right) \approx 7.84\text{~V}
-\end{equation}
-
-Assuming $V_{BE} = 0.7\text{~V}$ and a nominal current gain $\beta = 150$, the base bias current $I_{BQ}$ is:
-\begin{equation}
-    I_{BQ} = \frac{V_{Th} - V_{BE}}{R_{Th} + (\beta + 1)R_4} = \frac{7.84\text{~V} - 0.7\text{~V}}{22.22\text{~k}\Omega + (151)(2.2\text{~k}\Omega)} \approx 20.14\text{~}\mu\text{A}
-\end{equation}
-
-The quiescent collector current $I_{CQ}$ and emitter current $I_{EQ}$ are:
-\begin{equation}
-    I_{CQ} = \beta I_{BQ} = (150)(20.14\text{~}\mu\text{A}) \approx 3.02\text{~mA}
-\end{equation}
-\begin{equation}
-    I_{EQ} = (\beta + 1) I_{BQ} \approx 3.04\text{~mA}
-\end{equation}
-
-The resulting DC voltages at the emitter ($V_E$), collector ($V_C$), and collector-to-emitter ($V_{CEQ}$) are calculated as:
-\begin{equation}
-    V_E = I_{EQ} R_4 = (3.04\text{~mA})(2.2\text{~k}\Omega) \approx 6.69\text{~V}
-\end{equation}
-\begin{equation}
-    V_C = V_{CC} - I_{CQ} R_3 = 24\text{~V} - (3.02\text{~mA})(4.7\text{~k}\Omega) \approx 9.81\text{~V}
-\end{equation}
-\begin{equation}
-    V_{CEQ} = V_C - V_E = 9.81\text{~V} - 6.69\text{~V} = 3.12\text{~V}
-\end{equation}
-The Q-point $(V_{CEQ}, I_{CQ}) = (3.12\text{~V}, 3.02\text{~mA})$ ensures stable operation within the linear active region.
-
-\subsubsection{Small-Signal AC Voltage Gain}
-The dynamic emitter resistance $r_e$ at room temperature ($V_T \approx 25.85\text{~mV}$) is:
-\begin{equation}
-    r_re = \frac{V_T}{I_{CQ}} = \frac{25.85\text{~mV}}{3.02\text{~mA}} \approx 8.56\text{~}\Omega
-\end{equation}
-
-Because the emitter resistor $R_4$ is fully unbypassed to control gain and prevent distortion/clipping, the small-signal voltage gain $A_v$ of the stage is given by:
-\begin{equation}
-    A_v = \frac{v_{out}}{v_{in}} \approx -\frac{R_3 \parallel R_L}{r_e + R_4} \approx -\frac{4.7\text{~k}\Omega}{8.56\text{~}\Omega + 2.2\text{~k}\Omega} \approx -2.13\text{~V/V}
-\end{equation}
-
-\subsubsection{Thermal and Power Dissipation Analysis}
-At ambient temperature $T_A = 25^\circ\text{C}$, the quiescent power dissipation of the transistor $Q_1$ is:
-\begin{equation}
-    P_{D,Q1} = V_{CEQ} I_{CQ} = (3.12\text{~V})(3.02\text{~mA}) \approx 9.42\text{~mW}
-\end{equation}
-
-Using the junction-to-ambient thermal resistance $\theta_{JA} = 200^\circ\text{C/W}$ for the TO-92 package, the operating junction temperature $T_J$ is:
-\begin{equation}
-    T_J = T_A + P_{D,Q1} \theta_{JA} = 25^\circ\text{C} + (0.00942\text{~W})(200^\circ\text{C/W}) \approx 26.88^\circ\text{C}
-\end{equation}
-This negligible temperature rise ($\Delta T \approx 1.88^\circ\text{C}$) confirms that no external heat sink is required.
-
-\begin{table}[htbp]
-\caption{CALCULATED PREAMPLIFIER BIAS AND PERFORMANCE PARAMETERS}
-\label{tab:preamp_calc}
-\centering
-\begin{tabular}{l|c}
-\hline
-\textbf{Parameter} & \textbf{Calculated Value} \\
-\hline
-Base Voltage ($V_B$) & $7.39\text{~V}$ \\
-Emitter Voltage ($V_E$) & $6.69\text{~V}$ \\
-Collector Voltage ($V_C$) & $9.81\text{~V}$ \\
-Quiescent Current ($I_{CQ}$) & $3.02\text{~mA}$ \\
-Collector-Emitter Voltage ($V_{CEQ}$) & $3.12\text{~V}$ \\
-Stage AC Voltage Gain ($A_v$) & $-2.13\text{~V/V}$ \\
-Transistor Power Dissipation ($P_{D,Q1}$) & $9.42\text{~mW}$ \\
-Estimated Junction Temp. ($T_J$) & $26.88^\circ\text{C}$ \\
-\hline
-\end{tabular}
-\end{table}
-
-\subsection{Voltage Amplification Stage}
-
-Figure~\ref{fig:va_schematic} shows the Multisim circuit used for the final test. The design target was a $20\,\V$ peak sine wave at the power-stage input from a $2\,\V$ RMS signal, using $\pm24\,\V$ supplies. The corresponding output voltage and required gain are
-\begin{align}
-V_{\mathrm{out,rms}}&=20/\sqrt{2}=14.14\,\V,\\
-A_{v,\mathrm{target}}&=14.14/2=7.07\,\mathrm{V/V}.
-\end{align}
-
+The preamplifier uses a common-emitter 2N2222 with an unbypassed
+emitter resistor. Its bias network uses the positive supply rail and
+ground. Table~\ref{tab:preamp_calc} summarizes the nominal
+operating point of this configuration.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\columnwidth]{fig/AS.png}
-\caption{Voltage amplification stage as tested in Multisim. VC4 is the common drain node before the output capacitor. The $43\,\kohm$ resistor represents the load used for this stage test.}
+\includegraphics[width=\columnwidth]{pre_diam.png}
+\caption{2N2222 preamplifier test circuit.}
+\label{fig:pre_diam}
+\end{figure}
+\FloatBarrier
+\begin{table}[H]
+\caption{Calculated Preamplifier Design Values}
+\label{tab:preamp_calc}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.62\columnwidth}p{0.33\columnwidth}@{}}
+\toprule
+Quantity & Value\\
+\midrule
+Base-network equivalent resistance & $19.19\,\kohm$\\
+Base-network open-circuit voltage & $3.07\,\V$\\
+Base current & $6.744\,\mu\A$\\
+Base voltage & $2.94\,\V$\\
+Emitter voltage & $2.24\,\V$\\
+Collector voltage & $19.65\,\V$\\
+Collector current & $1.012\,\mathrm{mA}$\\
+Emitter current & $1.018\,\mathrm{mA}$\\
+Collector-to-emitter voltage & $17.41\,\V$\\
+Dynamic emitter resistance & $25.55\,\Ohm$\\
+Nominal unloaded voltage gain & $-1.93\,\mathrm{V/V}$\\
+Transistor resting loss & $17.61\,\mathrm{mW}$\\
+Estimated junction temperature & $28.52\,{}^\circ\mathrm{C}$\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{.97\columnwidth}{\scriptsize Nominal calculation uses the $+24\,\V$ rail, ground, a current-gain parameter of 150, a base-to-emitter drop of $0.70\,\V$, and $25\,{}^\circ\mathrm{C}$ ambient.}
+\end{table}
+\FloatBarrier
+\subsection{Voltage Amplification Stage}
+The voltage stage establishes the signal level required by the power
+stage. Table~\ref{tab:va_calc} summarizes its calculated interface
+values. Bias estimates include the recorded resting drain voltages.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{AS.png}
+\caption{MOSFET voltage amplifier with an active load and a
+$43\,\kohm$ test load.}
 \label{fig:va_schematic}
 \end{figure}
-
-\subsubsection{DC operating point}
-At zero input, $C_1$ isolates the gate of $Q_4$ from the source. Neglecting gate current, its bias divider gives
-\begin{align}
-V_{G4}&=24\,\V\frac{100}{240+100}=7.06\,\V,\\
-R_{S4}&=R_5+R_6=2.09\,\kohm .
-\end{align}
-Using the simulated $Q_4$ drain level of $16.89\,\V$ and the $4.7\,\kohm$ drain resistor, the first-stage bias can be reconstructed without assuming a fixed MOSFET threshold:
-\begin{align}
-I_{D4}&=(24-16.89)\,\V/R_1=1.51\,\mathrm{mA},\\
-V_{S4}&=I_{D4}R_{S4}=3.16\,\V,\\
-V_{GS4}&=7.06-3.16=3.90\,\V,\\
-V_{DS4}&=16.89-3.16=13.73\,\V .
-\end{align}
-For $Q_2$, the $1.0\,\kohm$ and $5.3\,\kohm$ divider sets the gate voltage to $24(5.3/6.3)=20.19\,\V$. In the second stage, $R_{13}$ feeds the drain voltage back to the gate of $Q_1$, and $R_9$ returns the gate to $-24\,\V$. With the simulated resting voltage $V_X=-0.125\,\V$ at VC4, and negligible gate current, the DC path gives
-\begin{align}
-I_{\mathrm{fb}} &= (V_X+24\,\V)/(R_{13}+R_9)
-                   =0.715\,\mathrm{mA},\\
-V_{G1} &= -24\,\V+I_{\mathrm{fb}}R_9=-19.78\,\V .
-\end{align}
-This places the internal output close to the midpoint of the supplies. A $20\,\V$ excursion about that point leaves approximately $4\,\V$ to each rail, before allowing for voltage drops in the devices and source resistors.
-
-\subsubsection{Signal coupling and power}
-The input resistance set by the gate divider is $R_2\parallel R_4=70.6\,\kohm$. With the ideal test source, the input coupling corner is $1/(2\pi C_1(R_2\parallel R_4))=2.25\,\Hz$. At the output, $C_4$ blocks the internal DC level while $R_3$ returns Vout to ground. At the target amplitude the load draws $14.14\,\V/43\,\kohm=0.329\,\mathrm{mA}$ RMS and dissipates $14.14^2/43000=4.65\,\mathrm{mW}$.
-
-At rest, $Q_4$ dissipates approximately $V_{DS4}I_{D4}=20.8\,\mathrm{mW}$. The $Q_2$ gate divider draws $24\,\V/(6.3\,\kohm)=3.81\,\mathrm{mA}$. Its resistor losses, calculated as $I^2R$, are $14.5\,\mathrm{mW}$ in $R_{11}$ and $76.9\,\mathrm{mW}$ in $R_{14}$.
-
-For an estimate of the second-stage resting losses, take $V_{GS1}\approx3.91\,\V$, based on the observed gate-to-source voltage. Then $V_{S1}\approx-23.69\,\V$ and $I_{D1}\approx(V_{S1}+24\,\V)/R_8=3.07\,\mathrm{mA}$. The active load supplies both this current and the feedback current, giving $I_{Q2}\approx3.79\,\mathrm{mA}$ and $V_{S2}\approx24\,\V-I_{Q2}R_{10}=23.62\,\V$. Multiplying each drain-to-source voltage magnitude by its estimated current gives approximately $72\,\mathrm{mW}$ for $Q_1$ and $90\,\mathrm{mW}$ for $Q_2$. These are nominal bias estimates, distinct from the losses under signal drive.
-
+\FloatBarrier
+\begin{table}[H]
+\caption{Calculated Voltage-Stage Interface Values}
+\label{tab:va_calc}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.62\columnwidth}p{0.33\columnwidth}@{}}
+\toprule
+Quantity & Value\\
+\midrule
+Required output, peak & $20.00\,\V$\\
+Required output, RMS & $14.14\,\V$\\
+Required voltage gain & $7.07\,\mathrm{V/V}$\\
+Input resistance & $70.6\,\kohm$\\
+Input coupling corner & $2.25\,\Hz$\\
+Load current at target, RMS & $0.329\,\mathrm{mA}$\\
+Load power at target & $4.65\,\mathrm{mW}$\\
+First-stage source resistance & $2.09\,\kohm$\\
+DC feedback-path current & $0.715\,\mathrm{mA}$\\
+Active-load bias-divider current & $3.81\,\mathrm{mA}$\\
+R11 resting loss & $14.5\,\mathrm{mW}$\\
+R14 resting loss & $76.9\,\mathrm{mW}$\\
+Q4 gate-to-source voltage & $3.90\,\V$\\
+Q4 drain-to-source voltage & $13.73\,\V$\\
+\bottomrule
+\end{tabular}
+\end{table}
+\FloatBarrier
+\begin{table}[H]
+\caption{Calculated Voltage-Stage Bias and Resting Losses}
+\label{tab:va_bias}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.11\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.19\columnwidth}p{0.21\columnwidth}@{}}
+\toprule
+Device & Gate (V) & Source (V) & Current (mA) & Loss (mW)\\
+\midrule
+Q4 & $7.06$ & $3.16$ & $1.51$ & $20.8$\\
+Q1 & $-19.78$ & $-23.69$ & $3.07$ & $72$\\
+Q2 & $20.19$ & $23.62$ & $3.79$ & $90$\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{.97\columnwidth}{\scriptsize Q1 and Q2 entries are nominal resting estimates.}
+\end{table}
+\FloatBarrier
 \subsection{Class AB Power Stage}
-
-Figure~\ref{fig:schematic} presents the power-stage circuit. The design
-retains the complementary output arrangement, with nominal supplies
-of $+24\,\V$ and $-24\,\V$. The load is connected directly
-to VOUT, the junction between RS1 and RS2.
-
+The complementary source followers supply current directly to the
+loudspeaker. Adjustable gate bias sets a small resting drain current
+and keeps the output near zero DC.
 \begin{figure}[H]
 \centering
 \includegraphics[width=\columnwidth,
@@ -337,334 +278,153 @@ MOSFETs.}
 \label{fig:schematic}
 \end{figure}
 \FloatBarrier
-
-\subsubsection{Output Power Requirement}
-
-
-The design reference is $20\,\W$ delivered to an $8\,\Ohm$ load.
-For a sinusoidal signal, the average power is
-\begin{equation}
-P_L=\frac{V_{L,\mathrm{rms}}^2}{R_L}.
-\label{eq:power}
-\end{equation}
-
-Here, RMS is the effective voltage value used to calculate average
-audio power. The required load voltage and current are
-
-\begin{align}
-V_{LOAD,\mathrm{rms}}&=\sqrt{(20)(8)}\approx12.65\,\V,\\
-V_{LOAD,peak}&=\sqrt{2}(12.65)\approx17.89\,\V,\\
-I_{LOAD,\mathrm{rms}}&=\frac{12.65}{8}\approx1.58\,\A.
-\end{align}
-
-These values define the load requirements. With the specified
-$20\,\V$ peak input, the output power depends on the voltage transfer
-of the stage. Table~\ref{tab:loadcalc} summarizes the calculated values.
-
 \begin{table}[H]
-\caption{Calculated Output Requirements for the $20\,\W$ Reference}
-\label{tab:loadcalc}
-\centering\footnotesize
-\begin{tabular}{@{}p{.61\columnwidth}p{.34\columnwidth}@{}}
-\toprule
-Quantity & Calculated value\\
-\midrule
-Average output power, reference & $20\,\W$\\
-Load RMS voltage & $12.65\,\V$\\
-Load peak voltage & $17.89\,\V$\\
-Load peak-to-peak voltage & $35.78\,\V$\\
-Load RMS current & $1.58\,\A$\\
-Load peak current & $2.24\,\A$\\
-\bottomrule
-\end{tabular}
-\end{table}
-\FloatBarrier
-
-\subsubsection{Class AB Bias Adjustment}
-Bias sets the transistor operating conditions before an audio signal
-is applied. The design adopts a quiescent drain-current target of
-$I_{DQ}=50\,\mathrm{mA}$ in each branch. This small resting current
-provides the intended overlap between the two transistors near the
-signal transition \cite[sec.~7--2]{floyd}.
-
-The $0.22\,\Ohm$ source resistors provide a convenient current
-reference. At the selected target, the drop across each resistor is
-\begin{equation}
-V_{RS,Q}=I_{DQ}R_S=(0.050)(0.22)=11\,\mathrm{mV}.
-\label{eq:rsq}
-\end{equation}
-Bias adjustment targets these drops while keeping VOUT close to
-$0\,\V$ DC. Because SPK2 is connected directly to this node,
-the same DC voltage appears across the load.
-
-The updated component labels give the effective bias resistances
-\begin{align}
-R_N&=R2+R1_{\mathrm{eff}},\\
-R_P&=R5+R6_{\mathrm{eff}}.
-\end{align}
-The nominal gate voltages follow the two dividers:
-\begin{align}
-V_{G,U1}&=24\,\V\frac{R3}{R_N+R3},\\
-V_{G,U2}&=-24\,\V\frac{R4}{R_P+R4}.
-\end{align}
-With $R3=R4=100\,\kohm$, the initial gate references of
-$+3.6243\,\V$ and $-3.6123\,\V$ correspond to
-$R_N=562.2\,\kohm$ and $R_P=564.4\,\kohm$. Commercial
-$560\,\kohm$ resistors R2 and R5 are combined with $10\,\kohm$
-trimmers R1 and R6. Their nominal effective settings are
-$2.2\,\kohm$ and $4.4\,\kohm$, respectively, or $22\%$ and
-$44\%$ of the trimmer range.
-
-These divider settings provide the initial gate voltages. The
-$50\,\mathrm{mA}$ target is assessed through the separate DC
-operating-point analysis and the drops in (\ref{eq:rsq}).
-
-\begin{table}[H]
-\caption{Calculated Bias References and Adjustment Targets}
-\label{tab:biascalc}
-\centering\footnotesize
-\begin{tabular}{@{}p{.61\columnwidth}p{.34\columnwidth}@{}}
-\toprule
-Quantity & Design reference\\
-\midrule
-U1 gate bias, initial & $+3.6243\,\V$\\
-U2 gate bias, initial & $-3.6123\,\V$\\
-$R_N=R2+R1_{\mathrm{eff}}$ & $562.2\,\kohm$\\
-$R_P=R5+R6_{\mathrm{eff}}$ & $564.4\,\kohm$\\
-R1 effective setting & $2.2\,\kohm$\\
-R6 effective setting & $4.4\,\kohm$\\
-$I_{DQ}$, target per MOSFET & $50\,\mathrm{mA}$\\
-RS1 and RS2 drop at target & $11\,\mathrm{mV}$ each\\
-VOUT at rest, target & $0\,\V$ DC\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsubsection{Signal Coupling}
-C1 and C2 transfer the audio signal to the gates while keeping their
-DC bias settings separate from the preceding stage. Each capacitor
-is $4.7\,\uF$. With a low-impedance driving source, the divider
-resistance seen by each capacitor is approximately $84.9\,\kohm$,
-giving an input coupling corner near $0.40\,\Hz$.
-C1 and C2 are polarized electrolytics. With zero DC at VIN, the positive
-terminal of C1 faces the upper bias node, while the positive terminal
-of C2 faces VIN.
-
-The output is connected directly to the $8\,\Ohm$ load. RZobel1
-and C3 form the series output RC network, with values of
-$10\,\Ohm$ and $100\,\nF$. This branch provides a high-frequency
-load in parallel with the loudspeaker.
-
-\subsubsection{Heat Dissipation}
-All thermal calculations use an ambient temperature of
-$T_A=25\,{}^\circ\mathrm{C}$, both at rest and during signal operation.
-The analysis relates each component's power loss to its estimated
-steady-state temperature. Table~\ref{tab:thermal} summarizes the
-results and the thermal-resistance parameters used in the calculation.
-
-\emph{Power losses:}
-At $I_{DQ}=50\,\mathrm{mA}$, the resting losses in each MOSFET
-and source resistor are
-\begin{align}
-P_{D,Q}&=(24-I_{DQ}R_S)I_{DQ}\simeq1.20\,\W,\\
-P_{RS,Q}&=I_{DQ}^{2}R_S=0.55\,\mathrm{mW}.
-\end{align}
-Resistor losses follow $P_R=I_{\mathrm{rms}}^2R$. For example,
-the recorded gate RMS voltage gives
-\begin{equation}
-P_{R3}=P_{R4}=\frac{14.6^2}{100000}=2.13\,\mathrm{mW}.
-\end{equation}
-The same calculation gives $1.09\,\mathrm{mW}$ in R2 and
-$1.08\,\mathrm{mW}$ in R5. R1 and R6 dissipate
-$4.28\,\mu\W$ and $8.50\,\mu\W$, respectively.
-
-For the gate-resistor loss calculation, the estimated RMS currents
-are $1.306\,\mathrm{mA}$ and $3.022\,\mathrm{mA}$:
-\begin{align}
-P_{RG1}&=(1.306\times10^{-3})^2(100)
-\simeq0.171\,\mathrm{mW},\\
-P_{RG2}&=(3.022\times10^{-3})^2(100)
-\simeq0.913\,\mathrm{mW}.
-\end{align}
-Capacitor losses follow $P_C=I_{C,\mathrm{rms}}^2r_{ESR}$,
-where ESR represents the capacitor's series loss resistance.
-Using a fixed ESR of $34\,\Ohm$ and estimated currents of
-$1.317\,\mathrm{mA}$ and $3.026\,\mathrm{mA}$ gives
-\begin{align}
-P_{C1}&=(1.317\times10^{-3})^2(34)
-\simeq0.0590\,\mathrm{mW},\\
-P_{C2}&=(3.026\times10^{-3})^2(34)
-\simeq0.311\,\mathrm{mW}.
-\end{align}
-These gate and input-capacitor currents are calculated with a
-constant input-capacitance approximation for the MOSFETs.
-
-At $10\,\kHz$, the C3 loss calculation uses
-$\tan\delta=0.025$:
-\begin{align}
-X_{C3}&=\frac{1}{2\pi fC3}=159.15\,\Ohm,\\
-r_{ESR,3}&=\tan\delta\,X_{C3}=3.98\,\Ohm.
-\end{align}
-The Zobel-branch current is
-\begin{equation}
-I_Z=\frac{13.5}{\sqrt{(10+3.98)^2+159.15^2}}
-\simeq84.50\,\mathrm{mA}.
-\end{equation}
-Therefore,
-\begin{align}
-P_{\mathrm{RZobel1}}&=I_Z^2(10)\simeq0.0714\,\W,\\
-P_{C3}&=I_Z^2r_{ESR,3}\simeq0.0284\,\W.
-\end{align}
-The source-resistor sizing calculation includes the load current,
-the Zobel-branch current, and $I_{DQ}$:
-\begin{equation}
-P_{RS,\mathrm{design}}=
-0.22(1.69+0.0845+0.050)^2\simeq0.732\,\W.
-\end{equation}
-This power allowance applies to each $5\,\W$ source resistor.
-
-\emph{Component temperatures:}
-The passive-component temperature calculation is
-\begin{equation}
-T_i=T_A+R_{\theta i}P_i.
-\label{eq:thermalpassive}
-\end{equation}
-For example,
-\begin{align}
-T_{RS1}=T_{RS2}&\simeq25+(0.732)(55)
-=65.3\,{}^\circ\mathrm{C},\\
-T_{C3}&\simeq25+(0.0284)(1157)
-=57.9\,{}^\circ\mathrm{C}.
-\end{align}
-The same expression is applied to the remaining passive components
-using the power and thermal resistance listed in Table~\ref{tab:thermal}.
-
-For the MOSFETs, the calculation includes a separate
-$4\,{}^\circ\mathrm{C/W}$ heat sink for each device and a
-$0.5\,{}^\circ\mathrm{C/W}$ mounting interface:
-\begin{equation}
-T_J=T_A+P_D(R_{\theta JC}+R_{\theta CS}+R_{\theta SA}).
-\label{eq:thermalmos}
-\end{equation}
-The datasheet junction-to-case thermal resistances are
-$1.5\,{}^\circ\mathrm{C/W}$ for U1 and
-$0.75\,{}^\circ\mathrm{C/W}$ for U2 \cite{irfz44n,irf4905}.
-Using the recorded transistor losses gives
-\begin{align}
-T_{J,U1}&=25+6.58(1.5+0.5+4)
-\simeq64.5\,{}^\circ\mathrm{C},\\
-T_{J,U2}&=25+6.63(0.75+0.5+4)
-\simeq59.8\,{}^\circ\mathrm{C}.
-\end{align}
-At rest, the calculated junction temperatures are
-$32.2\,{}^\circ\mathrm{C}$ for U1 and
-$31.3\,{}^\circ\mathrm{C}$ for U2. At the
-$10\,\W$ per-device design allowance, they are
-$85\,{}^\circ\mathrm{C}$ and $77.5\,{}^\circ\mathrm{C}$,
-below the selected $100\,{}^\circ\mathrm{C}$ design limit.
-
-\begin{table}[H]
-\caption{Calculated Component Temperatures at $25\,{}^\circ\mathrm{C}$}
-\label{tab:thermal}
+\caption{Calculated Power-Stage Design Values}
+\label{tab:power_calc}
 \centering\footnotesize
 \setlength{\tabcolsep}{2pt}
-\begin{tabular}{@{}p{.19\columnwidth}p{.26\columnwidth}p{.25\columnwidth}p{.23\columnwidth}@{}}
+\begin{tabular}{@{}p{0.62\columnwidth}p{0.33\columnwidth}@{}}
 \toprule
-Component & Power used & $R_\theta$ (${}^\circ\mathrm{C/W}$) & Temperature (${}^\circ\mathrm{C}$)\\
+Quantity & Value\\
 \midrule
-U1 & $6.58\,\W$ & $6.00$ & $64.5$\\
-U2 & $6.63\,\W$ & $5.25$ & $59.8$\\
-R1 & $4.28\,\mu\W$ & $263$ & $25.0$\\
-R2 & $1.09\,\mathrm{mW}$ & $140$ & $25.2$\\
-R3, R4 & $2.13\,\mathrm{mW}$ each & $140$ & $25.3$ each\\
-R5 & $1.08\,\mathrm{mW}$ & $140$ & $25.2$\\
-R6 & $8.50\,\mu\W$ & $263$ & $25.0$\\
-RG1 & $0.171\,\mathrm{mW}$ & $140$ & $25.0$\\
-RG2 & $0.913\,\mathrm{mW}$ & $140$ & $25.1$\\
-RS1, RS2 & $0.732\,\W$ each & $\simeq55$ & $65.3$ each\\
-RZobel1 & $0.0714\,\W$ & $75$ & $30.4$\\
-C1 & $0.0590\,\mathrm{mW}$ & $472$ & $25.0$\\
-C2 & $0.311\,\mathrm{mW}$ & $472$ & $25.1$\\
-C3 & $0.0284\,\W$ & $1157$ & $57.9$\\
+Output-power target & $20\,\W$\\
+Required load voltage, RMS & $12.65\,\V$\\
+Required load voltage, peak & $17.89\,\V$\\
+Required load voltage, peak-to-peak & $35.78\,\V$\\
+Required load current, RMS & $1.58\,\A$\\
+Required load current, peak & $2.24\,\A$\\
+Upper gate bias, initial & $+3.6243\,\V$\\
+Lower gate bias, initial & $-3.6123\,\V$\\
+Upper effective bias resistance & $562.2\,\kohm$\\
+Lower effective bias resistance & $564.4\,\kohm$\\
+R1 effective setting & $2.2\,\kohm$ ($22\%$)\\
+R6 effective setting & $4.4\,\kohm$ ($44\%$)\\
+Quiescent drain current, $I_{DQ}$ & $50\,\mathrm{mA}$ per device\\
+Resting drop across RS1 and RS2 & $11\,\mathrm{mV}$ each\\
+Output DC target & $0\,\V$\\
+Input resistance per branch & $84.9\,\kohm$\\
+Input coupling corner & $0.40\,\Hz$\\
+Resting loss per source resistor & $0.55\,\mathrm{mW}$\\
 \bottomrule
 \end{tabular}
 \par\smallskip
-\parbox{.97\columnwidth}{\scriptsize
-Temperatures are steady-state analytical estimates at
-$25\,{}^\circ\mathrm{C}$, rounded to $0.1\,{}^\circ\mathrm{C}$.
-U1/U2 entries are junction temperatures; passive entries are body
-temperatures. The $R_\theta$ column lists the calculation parameters.
-RS1/RS2 use a power allowance for component sizing. Gate and capacitor
-losses are analytical estimates.}
+\parbox{.97\columnwidth}{\scriptsize The initial gate settings are adjusted through the zero-input DC analysis to meet the resting-current and output-DC targets.}
+\end{table}
+\FloatBarrier
+\subsubsection{Heat Dissipation}
+The thermal assessment uses an ambient temperature of
+$25\,{}^\circ\mathrm{C}$ for all components. Each output transistor
+uses a separate NTE495 aluminum heat sink for natural-convection
+cooling \cite{nte495}.
+\begin{table}[H]
+\caption{Power-Stage Losses and Calculated Temperatures}
+\label{tab:thermal}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.25\columnwidth}p{0.36\columnwidth}p{0.32\columnwidth}@{}}
+\toprule
+Component & Power used & Temperature (${}^\circ\mathrm{C}$)\\
+\midrule
+U1 & $6.58\,\W$ & $123.7$\\
+U2 & $6.63\,\W$ & $119.5$\\
+R1 & $4.28\,\mu\W$ & $25.0$\\
+R2 & $1.09\,\mathrm{mW}$ & $25.2$\\
+R3, R4 & $2.13\,\mathrm{mW}$ & $25.3$\\
+R5 & $1.08\,\mathrm{mW}$ & $25.2$\\
+R6 & $8.50\,\mu\W$ & $25.0$\\
+RG1 & $0.171\,\mathrm{mW}$ & $25.0$\\
+RG2 & $0.913\,\mathrm{mW}$ & $25.1$\\
+RS1, RS2 & $0.732\,\W$ & $65.3$\\
+RZobel1 & $0.0714\,\W$ & $30.4$\\
+C1 & $0.0590\,\mathrm{mW}$ & $25.0$\\
+C2 & $0.311\,\mathrm{mW}$ & $25.1$\\
+C3 & $0.0284\,\W$ & $57.9$\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{.97\columnwidth}{\scriptsize Temperatures are analytical estimates. U1/U2 entries refer to the junction; passive entries refer to the body. Grouped values apply to each component. RS1/RS2 use a sizing allowance; U1/U2 powers are recorded test losses.}
+\end{table}
+\FloatBarrier
+\begin{table}[H]
+\caption{Calculated Output-Transistor Thermal Conditions}
+\label{tab:thermal_conditions}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.33\columnwidth}p{0.23\columnwidth}p{0.18\columnwidth}p{0.18\columnwidth}@{}}
+\toprule
+Condition & Loss per device & U1 (${}^\circ\mathrm{C}$) & U2 (${}^\circ\mathrm{C}$)\\
+\midrule
+Resting target & $1.20\,\W$ & $43.0$ & $42.1$\\
+Thermal stress check & $10\,\W$ & $175.0$ & $167.5$\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{.97\columnwidth}{\scriptsize Estimates use a constant-resistance model: one NTE495 per device at $13\,{}^\circ\mathrm{C/W}$ and a $0.5\,{}^\circ\mathrm{C/W}$ mounting interface. The heat-sink rating is specified at a $75\,{}^\circ\mathrm{C}$ rise in natural convection \cite{nte495}. Both MOSFETs have a maximum junction temperature of $175\,{}^\circ\mathrm{C}$ \cite{irfz44n,irf4905}; the $10\,\W$ check leaves no thermal margin for U1.}
 \end{table}
 \FloatBarrier
 
 \section{Component Selection Criteria}
 \subsection{Preamplification Stage}
-The selection of passive and active components for the preamplifier focuses on signal integrity, gain stability, and minimal noise introduction. Table~\ref{tab:preamp_components} summarizes the chosen components and their design specifications.
-
-\begin{table}[htbp]
-\caption{PREAMPLIFIER COMPONENTS AND SELECTION RATINGS}
+The bias divider sets the transistor operating point, while the
+emitter resistor provides local feedback. Coupling capacitors isolate
+the DC levels of adjacent stages.
+\begin{table}[H]
+\caption{Preamplifier Components}
 \label{tab:preamp_components}
-\centering
-\begin{tabular}{l|c|l}
-\hline
-\textbf{Reference} & \textbf{Nominal Value} & \textbf{Selection Rating / Purpose} \\
-\hline
-$Q_1$ & 2N2222 & NPN BJT, general-purpose switching/amp \\
-$R_1$ & $68\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Upper Bias) \\
-$R_2$ & $33\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Lower Bias) \\
-$R_3$ & $4.7\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Collector Load) \\
-$R_4$ & $2.2\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Feedback Emitter) \\
-$R_5$ & $100\text{~k}\Omega$ & Metal film, $1\%$, $0.25\text{~W}$ (Output Pull-down) \\
-$C_1$ & $470\text{~nF}$ & Film/Ceramic, $50\text{~V}$ (Input AC Coupling) \\
-$C_2$ & $2.2\text{~}\mu\text{F}$ & Electrolytic/Film, $50\text{~V}$ (Output DC Block) \\
-$C_3$ & $1\text{~nF}$ & Ceramic, $50\text{~V}$ (High-Freq Noise Filtering) \\
-\hline
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{.20\columnwidth}p{.29\columnwidth}p{.44\columnwidth}@{}}
+\toprule
+Reference & Value & Function\\
+\midrule
+Q1 & 2N2222 & Common-emitter amplifier\\
+R10 & $150\,\kohm$ & Upper bias resistor\\
+R11 & $22\,\kohm$ & Lower bias resistor\\
+R9 & $4.3\,\kohm$ & Collector resistor\\
+R8 & $2.2\,\kohm$ & Emitter feedback\\
+C4, C2 & $10\,\uF$ each & Input and output coupling\\
+R12 & $1\,\mathrm{M}\Ohm$ & Output return\\
+C1 & $1\,\nF$ & High-frequency filtering\\
+R3 & $100\,\Ohm$ & Input series resistor\\
+R4 & $100\,\kohm$ & Input return\\
+R5 & $1\,\kohm$ & Filter resistor\\
+U1 & $10\,\kohm$ & Input volume control\\
+\bottomrule
 \end{tabular}
 \end{table}
-
-\begin{itemize}
-    \item \textbf{Transistor ($Q_1$):} The 2N2222 general-purpose NPN transistor was chosen due to its wide linear operational range, high gain-bandwidth product ($f_T > 250\text{~MHz}$), and ready availability in TO-92 packages.
-    \item \textbf{Emitter Resistor ($R_4$):} Left unbypassed to introduce negative local feedback. This lowers non-linear distortion and prevents gain drift caused by temperature or $\beta$ variations.
-    \item \textbf{Coupling Capacitors ($C_1, C_2$):} Sized to maintain a lower cutoff corner frequency well below the audible spectrum ($f_L < 20\text{~Hz}$), preventing baseline attenuation of low-frequency audio content.
-    \item \textbf{Output Pull-down ($R_5$):} Provides a continuous reference to ground at the output side of $C_2$, guaranteeing a zero DC baseline before entering the operational amplifier mixing stage.
-\end{itemize}
-
+\FloatBarrier
 \subsection{Voltage Amplification Stage}
-
-Two IRF530 N-channel MOSFETs~\cite{va_irf530} were selected for voltage gain and an IRF9540 P-channel MOSFET~\cite{va_irf9540} for the active load. Its maximum drain-to-source voltage is $-100\,\V$. Both models were available in the Multisim library and listed by the local supplier reviewed for the project. The source resistors provide local feedback. The values of the input and feedback resistors were tested together because they affect both the gain of $Q_1$ and the load seen by $Q_4$.
-
-\begin{table}[htbp]
-\centering
-\caption{Voltage-stage component values used in the final simulation.}
+IRF530 devices provide voltage gain, while an IRF9540 acts as the
+active load \cite{va_irf530,va_irf9540}. The input and feedback
+resistances set the gain and loading between the stages.
+\begin{table}[H]
+\centering\footnotesize
+\caption{Voltage-Stage Components}
 \label{tab:va_parts}
-\begin{tabular}{@{}lll@{}}
+\begin{tabular}{@{}p{.21\columnwidth}p{.33\columnwidth}p{.39\columnwidth}@{}}
 \toprule
 Reference & Value & Function\\
 \midrule
 $Q_4$, $Q_1$ & IRF530 & Common-source gain\\
 $Q_2$ & IRF9540 & Active load\\
-$R_2$, $R_4$ & $240$, $100\,\kohm$ & $Q_4$ gate bias\\
+$R_2$, $R_4$ & $240\,\kohm$, $100\,\kohm$ & $Q_4$ gate bias\\
 $R_1$ & $4.7\,\kohm$ & $Q_4$ drain load\\
 $R_5$, $R_6$ & $1.27\,\kohm$, $820\,\Ohm$ & $Q_4$ source path\\
-$R_{12}$, $R_{13}$ & $3.48$, $27.5\,\kohm$ & Input and feedback\\
+$R_{12}$, $R_{13}$ & $3.48\,\kohm$, $27.5\,\kohm$ & Input and feedback\\
 $R_9$ & $5.9\,\kohm$ & Return to $-24\,\V$\\
 $R_8$, $R_{10}$ & $100\,\Ohm$ each & Source resistors\\
-$R_{11}$, $R_{14}$ & $1$, $5.3\,\kohm$ & $Q_2$ gate bias\\
+$R_{11}$, $R_{14}$ & $1\,\kohm$, $5.3\,\kohm$ & $Q_2$ gate bias\\
 $R_3$ & $43\,\kohm$ & Output test load\\
 $C_1$ & $1\,\uF$ & Nonpolar input coupling\\
 $C_3$, $C_4$ & $4.7\,\uF$ each & Interstage and output\\
 \bottomrule
 \end{tabular}
 \end{table}
-
+\FloatBarrier
 \subsection{Class AB Power Stage}
-
-The selected components retain the circuit topology and use commercial
-nominal values. Table~\ref{tab:components} lists the main components
-and the ratings considered in their selection.
-
+The complementary MOSFETs share the load current. Source resistors
+provide bias-current checks, and the output RC network supports
+high-frequency operation \cite{irfz44n,irf4905}.
 \begin{table}[H]
 \caption{Power-Stage Components and Selection Ratings}
 \label{tab:components}
@@ -684,286 +444,230 @@ C1, C2 & $4.7\,\uF$ & $50\,\V$, electrolytic\\
 RZobel1 & $10\,\Ohm$ & $2\,\W$\\
 C3 & $100\,\nF$ & $50\,\V$, ceramic, code 104\\
 SPK2 & $8\,\Ohm$ & $30\,\W$ nominal rating\\
+HS1, HS2 & NTE495 & Two heat sinks, one per MOSFET\\
 \bottomrule
 \end{tabular}
 \end{table}
 \FloatBarrier
 
-The MOSFET voltage ratings are considered together with the
-$\pm24\,\V$ supplies and the expected signal excursions
-\cite{irfz44n,irf4905}. The source-resistor power ratings provide
-margin for the load current, while the gate resistors and output RC
-network help control high-frequency behavior.
-
-The heat-sink selection follows the stated dissipation allowance.
-The component references in Table~\ref{tab:components} match the
-updated schematic, including C1/C2 as electrolytic coupling capacitors and C3 as the
-$100\,\nF$ ceramic Zobel capacitor marked 104.
+\subsubsection{Heat-Sink Recommendations}
+The NTE495 supplied by Teltron is selected for both output devices.
+Table~\ref{tab:heatsink_options} also lists two compact local
+alternatives. Their thermal resistance must be confirmed before
+either replaces the selected model.
+\begin{table}[H]
+\caption{Compact Heat-Sink Options in Costa Rica}
+\label{tab:heatsink_options}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{.34\columnwidth}p{.27\columnwidth}p{.32\columnwidth}@{}}
+\toprule
+Model and supplier & Size (mm) & Thermal information\\
+\midrule
+NTE495, Teltron & $29.9\times25.4\times12.7$ & $13\,{}^\circ\mathrm{C/W}$; selected \cite{nte495}\\
+AD73819, MicroJPM & $43\times17\times30$ & Rating not published \cite{microjpm_heatsink}\\
+DEV-CB0214-68, CRCibern\'etica & $50\times45\times18$ & Rating not published \cite{crc_heatsink}\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{.97\columnwidth}{\scriptsize NTE495 data follow the manufacturer's datasheet. Alternative dimensions follow supplier product specifications; manufacturer datasheets are not provided in those listings.}
+\end{table}
+\FloatBarrier
 
 \section{Simulation Methodology}
-\subsection{Common Simulation Conditions}
-
-Multisim provides the circuit environment for the reported test.
-The power-stage input is a $20\,\V$ peak sinusoidal signal at
-$10\,\kHz$, with zero DC offset. The circuit uses nominal
-$\pm24\,\V$ supplies and an $8\,\Ohm$ load. R1 and R6 have nominal settings
-of $22\%$ and $44\%$, respectively. These settings establish the
-initial divider voltages; the DC analysis assesses $I_{DQ}$ separately.
-
-\subsection{Preamplification Stage}
-The simulation of the BJT preamplifier stage was conducted in both LTspice and NI Multisim to verify DC biasing, dynamic transient behavior, and overall voltage amplification before physical assembly.
-
-\begin{enumerate}
-    \item \textbf{DC Operating Point Analysis:} The simulation evaluates the circuit under zero-input signal condition ($v_{in} = 0\text{~V}$ AC). It measures the base voltage ($V_B$), emitter voltage ($V_E$), collector voltage ($V_C$), and collector bias current ($I_{CQ}$) of transistor $Q_1$. The objective is to verify that the operating point resides in the linear active region ($V_{CEQ} \approx 3.12\text{~V}$, $I_{CQ} \approx 3.02\text{~mA}$), avoiding saturation or cutoff limits and providing adequate headroom for signal swings.
-
-    \item \textbf{Transient Analysis:} A $1\text{~kHz}$ sinusoidal voltage source ($V_1$) was applied at the input coupling capacitor $C_1$. Transient simulations were run with a time step sufficient to capture multiple complete audio cycles (e.g., $t_{stop} = 10\text{~ms}$). The transient response measures the peak-to-peak input and output voltage waveforms, evaluating the stage voltage gain $A_v = v_{out} / v_{in}$ and checking for asymmetrical clipping or waveform distortion caused by high signal amplitudes.
-
-    \item \textbf{Frequency Response and Filtering:} An AC sweep simulation ($10\text{~Hz}$ to $100\text{~kHz}$) was executed to determine the lower and upper $-3\text{~dB}$ cutoff frequencies ($f_L$ and $f_H$). This analysis assesses the high-pass response determined by coupling capacitors $C_1$ and $C_2$, as well as the high-frequency attenuation introduced by filtering capacitor $C_3$.
-\end{enumerate}
-
-\subsection{Voltage Amplification Stage}
-
-The voltage stage was tested separately in Multisim using the $43\,\kohm$ load in Fig.~\ref{fig:va_schematic}. First, the source amplitude was set to zero and the voltage at VC4 was recorded. Next, a $2\,\V$ RMS, $1\,\kHz$ sine wave was applied. Cursors on the output trace measured the positive and negative peaks relative to ground.
-
-The Fourier analysis used a $1\,\kHz$ fundamental, nine harmonics and a $2\,\mathrm{s}$ stop time to allow the coupling capacitors to settle. Distortion was calculated from harmonic amplitudes $V_n$ measured using the same convention:
-\begin{equation}
-\mathrm{THD}_{2:9}=100\,\frac{\sqrt{\sum_{n=2}^{9}V_n^2}}{V_1}\,\%.
-\end{equation}
-Here $V_1$ in the equation denotes the output fundamental. A separate small-signal AC sweep measured $|V_{\mathrm{out}}/V_{\mathrm{in}}|$ with a unit AC input. Output amplitude and distortion were assessed from the driven sine-wave test.
-
-\subsection{Class AB Power Stage}
-\subsubsection{DC Operating Point}
-
-The DC analysis examines the circuit with no audio input. It identifies
-the transistor bias and the internal output voltage. The design targets
-are $I_{DQ}=50\,\mathrm{mA}$ in each branch, $11\,\mathrm{mV}$ across
-each source resistor, and VOUT close to zero. These
-references define the intended Class AB resting condition.
-
-\subsubsection{Transient Response}
-
-The transient analysis follows the input and output signals over time.
-It provides the voltage, current, and average-power measurements
-reported in the results. The method compares settled signal cycles,
-allowing the output level and the transition between the two
-transistors to be examined under the same test conditions.
-
-\subsubsection{Frequency Response and Signal Quality}
-
-Frequency-response evaluation examines how the amplifier handles
-signals at different audio frequencies. Waveform and harmonic analyses
-assess changes in signal shape, including the transition between the
-positive and negative portions. These assessments complement the
-power measurements; the numerical readings presented here correspond
-to the documented $10\,\kHz$ test.
-
+DC analysis evaluates resting bias. Transient tests measure signal
+levels and power, while frequency sweeps and harmonic analysis assess
+signal transfer and distortion. LTspice and Multisim were used for the
+preamplifier; the voltage and power stages were evaluated in Multisim.
+\begin{table}[H]
+\caption{Stage Test Conditions}
+\label{tab:test_conditions}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.35\columnwidth}p{0.28\columnwidth}p{0.3\columnwidth}@{}}
+\toprule
+Stage & Signal & Load or condition\\
+\midrule
+Preamplifier & $1\,\kHz$ transient & DC and AC sweep\\
+Voltage amplifier & $2\,\V$ RMS, $1\,\kHz$ & $43\,\kohm$\\
+Power amplifier & $20\,\V$ peak, $10\,\kHz$ & $8\,\Ohm$\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{.97\columnwidth}{\scriptsize All tests use the common $\pm24\,\V$ supply; the preamplifier draws from $+24\,\V$ and ground. Voltage-stage Fourier analysis includes nine harmonics with a $2\,\mathrm{s}$ stop time to allow settling. Power-stage bias is checked with zero audio input.}
+\end{table}
 \FloatBarrier
+
 \section{Simulated Values and Results}
 \subsection{Preamplification Stage}
-The preamplifier stage was simulated in NI Multisim to evaluate both the DC bias point and the transient response under real audio signal excitation. 
-
-Table~\ref{tab:preamp_sim_dc} compares the calculated theoretical DC parameters with the values obtained from the simulation. The results show close agreement, with maximum percentage deviations below $4.3\%$. The simulated collector current $I_{CQ} = 1.055\text{~mA}$ and collector voltage $V_C = 19.466\text{~V}$ confirm that the 2N2222 transistor operates within its linear active region with sufficient voltage swing headroom. Furthermore, the simulated DC voltage at the output node ($V_{out,DC} = 194.66\text{~pV}$) confirms the effectiveness of the output coupling network ($C_2$) in isolating the DC bias from downstream stages.
-
-\begin{table}[htbp]
-\caption{COMPARISON OF CALCULATED AND SIMULATED DC OPERATING PARAMETERS}
+Table~\ref{tab:preamp_sim_dc} compares the nominal DC bias with
+the recorded simulation for this configuration.
+\begin{table}[H]
+\caption{Preamplifier DC Bias Results}
 \label{tab:preamp_sim_dc}
-\centering
-\begin{tabular}{l|c|c|c}
-\hline
-\textbf{Parameter} & \textbf{Calculated} & \textbf{Simulated} & \textbf{Deviation (\%)} \\
-\hline
-Base Voltage ($V_B$) & $3.07\text{~V}$ & $3.03\text{~V}$ & $1.30\%$ \\
-Emitter Voltage ($V_E$) & $2.24\text{~V}$ & $2.33\text{~V}$ & $4.02\%$ \\
-Collector Voltage ($V_C$) & $19.65\text{~V}$ & $19.47\text{~V}$ & $0.92\%$ \\
-Collector Current ($I_{CQ}$) & $1.012\text{~mA}$ & $1.055\text{~mA}$ & $4.25\%$ \\
-Collector-Emitter Voltage ($V_{CEQ}$) & $17.41\text{~V}$ & $17.14\text{~V}$ & $1.55\%$ \\
-Output DC Baseline ($V_{out,DC}$) & $0\text{~V}$ & $194.66\text{~pV}$ & $\sim 0\%$ \\
-\hline
-\end{tabular}
-\end{table}
-
-Under dynamic excitation, the output audio signal exhibits symmetric voltage excursions reaching approximately $1\text{~V}_{pp}$ ($\pm 500\text{~mV}_{\text{peak}}$) centered at $0\text{~V}$ DC, demonstrating clean linear amplification without clipping or crossover distortion.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.95\linewidth]{fig/pre_diam}
-    \caption{Simulated transient audio output signal $V_{out}$ showing symmetric AC swing centered at $0\text{~V}$ DC.}
-    \label{fig:sim_transient_pre}
-\end{figure}
-
-\subsection{Voltage Amplification Stage}
-
-The final circuit delivered $+19.919\,\V$ and $-20.056\,\V$ at the output (Fig.~\ref{fig:va_scope}). Their difference is $39.975\,\V$ peak to peak, within $0.07\%$ of the $40\,\V$ peak-to-peak target. The resulting gain from the time-domain extrema is
-\begin{equation}
-A_v=\frac{39.975}{2\sqrt{2}\,(2)}=7.07\,\mathrm{V/V}.
-\end{equation}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\columnwidth]{fig/Voltage_Amplification_1kHz.png}
-\caption{Multisim test at $2\,\V$ RMS and $1\,\kHz$. Channel A (red) shows Vout. The cursors mark opposite peaks.}
-\label{fig:va_scope}
-\end{figure}
-
-\begin{table}[htbp]
-\centering
-\caption{Final voltage-stage results with the $43\,\kohm$ load.}
-\label{tab:va_results}
-\begin{tabular}{@{}ll@{}}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.38\columnwidth}p{0.2\columnwidth}p{0.2\columnwidth}p{0.16\columnwidth}@{}}
 \toprule
-Quantity & Simulation result\\
+Quantity & Calculated & Simulated & Deviation\\
 \midrule
-Internal output at rest (VC4) & $-0.125\,\V$\\
-Output DC, Fourier record & $0.996\,\mathrm{mV}$\\
-Output fundamental at $1\,\kHz$ & $20.112\,\V$ peak\\
-Second / third harmonic & $0.077 / 0.193\,\V$ peak\\
-THD through the ninth harmonic & $1.183\%$\\
-Small-signal gain near $20\,\Hz$ & $6.930\,\mathrm{V/V}$\\
-Small-signal gain near $1\,\kHz$ & $7.118\,\mathrm{V/V}$\\
+Base voltage & $2.94\,\V$ & $3.03\,\V$ & $3.06\%$\\
+Emitter voltage & $2.24\,\V$ & $2.33\,\V$ & $4.02\%$\\
+Collector voltage & $19.65\,\V$ & $19.47\,\V$ & $0.92\%$\\
+Collector current & $1.012\,\mathrm{mA}$ & $1.055\,\mathrm{mA}$ & $4.25\%$\\
+Collector-to-emitter voltage & $17.41\,\V$ & $17.14\,\V$ & $1.55\%$\\
+Output DC & $0\,\V$ & $194.66\,\mathrm{pV}$ & ---\\
 \bottomrule
 \end{tabular}
 \end{table}
-The fundamental corresponds to $20.112/\sqrt{2}=14.22\,\V$ RMS. Its peak amplitude differs slightly from either oscilloscope cursor because the waveform also contains harmonics.
-
-\subsection{Class AB Power Stage}
-
-Tables~\ref{tab:voltages} and \ref{tab:powers} retain the available
-$10\,\kHz$ reference readings for comparison and thermal calculations.
-The updated schematic defines a single output node shared by the
-source-resistor junction and SPK2. RMS describes the effective signal level, peak-to-peak describes
-the full voltage or current swing, and mean describes the average DC
-component. The power readings are average values over the measurement
-interval.
-
+\FloatBarrier
 \begin{table}[H]
-\caption{Recorded Voltage References at $10\,\kHz$}
+\caption{Reported Preamplifier Transient Output}
+\label{tab:preamp_transient}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.62\columnwidth}p{0.33\columnwidth}@{}}
+\toprule
+Quantity & Value\\
+\midrule
+Output, peak-to-peak & Approximately $1.0\,\V$\\
+Output, peak & Approximately $0.50\,\V$\\
+Output DC center & $0\,\V$\\
+\bottomrule
+\end{tabular}
+\end{table}
+\FloatBarrier
+\subsection{Voltage Amplification Stage}
+The transient test reaches the required output swing. The Fourier
+results summarize the fundamental and harmonic content after the
+coupling capacitors have settled.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{fig/Voltage_Amplification_1kHz.png}
+\caption{Voltage-stage transient test at $1\,\kHz$; cursors mark opposite output peaks.}
+\label{fig:va_scope}
+\end{figure}
+\FloatBarrier
+\begin{table}[H]
+\caption{Voltage-Stage Simulation Results}
+\label{tab:va_results}
+\centering\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.62\columnwidth}p{0.33\columnwidth}@{}}
+\toprule
+Quantity & Value\\
+\midrule
+Q4 drain at rest & $16.89\,\V$\\
+Internal output at rest, VC4 & $-0.125\,\V$\\
+Positive output peak & $19.919\,\V$\\
+Negative output peak & $-20.056\,\V$\\
+Output DC, Fourier analysis & $0.996\,\mathrm{mV}$\\
+Fundamental amplitude & $20.112\,\V$ peak\\
+Second harmonic & $0.077\,\V$ peak\\
+Third harmonic & $0.193\,\V$ peak\\
+THD, through ninth harmonic & $1.183\%$\\
+Small-signal gain near $20\,\Hz$ & $6.930\,\mathrm{V/V}$\\
+Small-signal gain near $1\,\kHz$ & $7.118\,\mathrm{V/V}$\\
+Derived output swing & $39.975\,\V$ peak-to-peak\\
+Derived transient gain & $7.07\,\mathrm{V/V}$\\
+Fundamental, RMS equivalent & $14.22\,\V$\\
+Output-swing target deviation & Less than $0.07\%$\\
+\bottomrule
+\end{tabular}
+\end{table}
+\FloatBarrier
+\subsection{Class AB Power Stage}
+The recorded test delivers more than the target load power.
+The transistor losses represent heat in the output devices and are
+separate from the power delivered to the loudspeaker.
+\begin{table}[H]
+\caption{Power-Stage Voltages at $10\,\kHz$}
 \label{tab:voltages}
 \centering\footnotesize
-\setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{@{}p{.36\columnwidth}p{.18\columnwidth}p{.18\columnwidth}p{.22\columnwidth}@{}}
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.36\columnwidth}p{0.18\columnwidth}p{0.18\columnwidth}p{0.22\columnwidth}@{}}
 \toprule
-Location & Peak-to-peak & RMS & Mean\\
+Location & Peak-to-peak & RMS & DC mean\\
 \midrule
 IRFZ44N gate & $39.9\,\V$ & $14.6\,\V$ & $+3.62\,\V$\\
 IRF4905 gate & $39.8\,\V$ & $14.6\,\V$ & $-3.62\,\V$\\
-Output AC reference & $38.2\,\V$ & $13.5\,\V$ & ---\\
+Output AC & $38.2\,\V$ & $13.5\,\V$ & ---\\
 \bottomrule
 \end{tabular}
+\par\smallskip
+\parbox{.97\columnwidth}{\scriptsize The output DC mean is not included in this test record. Its adjustment target appears in Table~\ref{tab:power_calc}.}
 \end{table}
 \FloatBarrier
-
-The output reference is $13.5\,\V$ RMS. The dash indicates that a
-DC measurement for the revised VOUT connection is not included in
-these reference readings. Its DC adjustment target is $0\,\V$.
-The gate means describe signal-on operation; $I_{DQ}$ is assessed
-with the input amplitude set to zero.
-
 \begin{table}[H]
-\caption{Recorded Current and Power References at $10\,\kHz$}
+\caption{Power-Stage Current and Power Results}
 \label{tab:powers}
 \centering\footnotesize
-\begin{tabular}{@{}p{.65\columnwidth}p{.30\columnwidth}@{}}
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}p{0.62\columnwidth}p{0.33\columnwidth}@{}}
 \toprule
-Quantity & Simulated value\\
+Quantity & Value\\
 \midrule
-Load-current peak-to-peak & $4.78\,\A$\\
-Load-current RMS & $1.69\,\A$\\
-Average loudspeaker-load power & $22.8\,\W$\\
-IRFZ44N average dissipation & $6.58\,\W$\\
-IRF4905 average dissipation & $6.63\,\W$\\
-Signal frequency & $10.0\,\kHz$\\
+Load current, peak-to-peak & $4.78\,\A$\\
+Load current, RMS & $1.69\,\A$\\
+Average load power, simulated & $22.8\,\W$\\
+U1 average loss, simulated & $6.58\,\W$\\
+U2 average loss, simulated & $6.63\,\W$\\
+Load power derived from RMS voltage & $22.78\,\W$\\
+Load current derived from RMS voltage & $1.69\,\A$\\
+Output peak derived from voltage swing & $19.1\,\V$\\
+Output-to-input amplitude ratio & $95.5\%$\\
+Power above design target & $14\%$\\
 \bottomrule
 \end{tabular}
 \end{table}
 \FloatBarrier
-
-The reference output-power reading exceeds the $20\,\W$ design reference.
-The transistor dissipation values describe heat produced within the
-output devices and are accounted for separately from the power
-received by the load.
 
 \section{Analysis and Integration}
 \subsection{Preamplification Stage}
-The calculated small-signal gain $A_v \approx -2.13\text{~V/V}$ provides moderate, highly controlled amplification without driving the output into saturation or cut-off under standard audio line-level inputs. By setting the quiescent collector voltage $V_C$ to approximately $9.81\text{~V}$, the collector node retains ample headroom for positive and negative voltage swings.
-
-When integrated into the complete audio system, the preamplifier's output node connects via $C_2$ to the input resistor of the TL081-based summer/inverting stage ($R_{11} = 2.2\text{~k}\Omega$). The output coupling network ($C_2$ and $R_5$) successfully eliminates the $+9.81\text{~V}$ DC offset from the colector of $Q_1$, ensuring the TL081 receiving terminal operates centered at $0\text{~V}$ DC. Furthermore, the unbypassed topology eliminates clipping at the peak excursions, matching the downstream headroom requirements of the Class AB output driver stage.
+The calculated and simulated DC values place the transistor in its
+active region. Coupling capacitors isolate this bias from the next
+stage. The interstage check measures signal gain with the voltage
+amplifier connected.
 
 \subsection{Voltage Amplification Stage}
-
-The resistor changes were evaluated at comparable output levels. At $1\,\kHz$, one intermediate network produced $15.2\,\V$ RMS with $4.87\%$ THD. A lower-resistance network produced $15.1\,\V$ RMS with $2.85\%$ THD. In the final network, increasing $R_{12}$ from $3.3$ to $3.48\,\kohm$ brought the measured swing from $40.80$ to $39.98\,\V$ peak to peak and reduced THD from $1.37\%$ to $1.18\%$. The final choice therefore reflects both the voltage required at the interface and the shape of the signal.
-
-The standalone test establishes the voltage available to drive the next block. The $43\,\kohm$ load draws a fraction of a milliampere, whereas the Class AB stage supplies the loudspeaker current. When the stages are connected, the input bias network of the power stage becomes an additional load. The corresponding interface check is to measure the voltage at the power-stage input under that load.
+The final resistor network balances the required output swing and
+harmonic distortion. Its standalone load test establishes the voltage
+available to the next stage; the connected power-stage input adds
+loading that must be included in the interface check.
 
 \subsection{Class AB Power Stage}
-
-The recorded reference output voltage supports the average-power result.
-Applying (\ref{eq:power}) gives
-\begin{equation}
-P_L=\frac{(13.5)^2}{8}=22.78\,\W,
-\end{equation}
-which agrees with the $22.8\,\W$ simulation reading after rounding.
-The expected current is $13.5/8=1.69\,\A$ RMS, also consistent
-with the recorded value.
-
-The $38.2\,\V$ peak-to-peak output corresponds to approximately
-$19.1\,\V$ peak. Compared with the specified $20\,\V$ peak input,
-the output amplitude is $95.5\%$ of the input amplitude. This small
-reduction is consistent with the power stage's role of supplying
-current while preserving the signal polarity and most of its voltage
-amplitude.
-
-In the recorded reference test, the delivered power is $14\%$ above
-the $20\,\W$ objective. This result provides the comparison baseline
-for the updated power-stage schematic. The two transistor
-losses are similar, and both remain below the $10\,\W$ per-device
-thermal design allowance.
-
-For integration with the complete amplifier, the preceding stage
-provides the required input amplitude while driving the power-stage
-input. The bias references describe the resting condition, while the
-reported voltage, current, and power values describe operation with
-the audio test signal applied.
+The load-voltage and current readings support the recorded output
+power. The amplitude ratio is consistent with a source follower,
+and the recorded transistor losses define the heat-sink operating point.
+The preceding stage must sustain the required voltage under the
+connected input load.
 
 \section{Conclusions and Next Steps}
 \subsection{Preamplification Stage}
-The discrete 2N2222 BJT preamplifier stage was successfully designed and mathematically verified. By employing an unbypassed emitter topology, the stage achieves stable AC voltage gain while preserving signal linearity and preventing clipping. The DC bias point ($V_{CEQ} = 3.12\text{~V}, I_{CQ} = 3.02\text{~mA}$) ensures linear active operation, with a negligible thermal dissipation of $9.42\text{~mW}$ that keeps operating temperatures near $26.88^\circ\text{C}$.
-
-\textbf{Next Steps:}
-\begin{itemize}
-    \item Perform transient sweep simulations in LTspice/Multisim to confirm dynamic AC parameters, frequency response, and Total Harmonic Distortion (THD).
-    \item Verify experimental integration with the TL081 mixing stage to adjust overall systemic gains.
-    \item Validate physical breadboard performance against calculated bias points.
-\end{itemize}
+The BJT stage provides initial voltage gain and DC isolation using
+the positive supply rail. Loaded interstage measurements complete
+its integration into the signal path.
 
 \subsection{Voltage Amplification Stage}
-
-At $1\,\kHz$ the simulated voltage stage converted a $2\,\V$ RMS input into a $39.975\,\V$ peak-to-peak output across $43\,\kohm$. The two measured peaks were within $0.1\,\V$ of the nominal $\pm20\,\V$ interface level, with $1.18\%$ THD. For the prototype, the first checks are the resting voltage at VC4 and the output swing with the power-stage input connected. Comparing those readings with the standalone results will show the effects of loading and device variation.
+The MOSFET voltage stage reaches the required signal swing with
+controlled harmonic distortion in the standalone test. The next
+check is its output with the power-stage input connected.
 
 \subsection{Class AB Power Stage}
-
-The complementary IRFZ44N/IRF4905 stage retains the Class AB topology
-and uses commercial component values. Its bias design includes a
-$I_{DQ}=50\,\mathrm{mA}$ resting-current target, with trimmers for
-adjustment and source resistors that provide current references.
-C1 and C2 couple the input signal to the transistor gates, while
-the load connects directly to VOUT. The thermal assessment covers
-transistor, resistor, and capacitor losses and gives calculated
-temperature estimates for the stage electronics.
-
-With a $20\,\V$ peak input at $10\,\kHz$, the recorded reference test delivered
-$22.8\,\W$ to an $8\,\Ohm$ load, exceeding the $20\,\W$ design
-reference. The output reaches $13.5\,\V$ RMS and $1.69\,\A$ RMS.
-These reference results support the power-delivery objective for
-the documented test. The updated DC assessment uses the direct
-output connection and the $50\,\mathrm{mA}$ adjustment target. The thermal calculation gives MOSFET junction temperatures of
-$64.5\,{}^\circ\mathrm{C}$ and $59.8\,{}^\circ\mathrm{C}$.
-Frequency-response, signal-quality, and connected-stage assessments
-complete the evaluation framework for the amplifier.
-
-\begin{thebibliography}{5}
+The complementary output stage meets the power objective in the
+recorded test. Its thermal assessment uses one NTE495 heat sink per
+output transistor at the recorded losses. Loaded interstage measurements,
+frequency response, and signal-quality checks complete the amplifier
+assessment.
+\begin{thebibliography}{8}
 \bibitem{floyd}
 T. L. Floyd, \emph{Dispositivos electrónicos}, 8th ed.
 Mexico: Pearson Educación, 2008, secs.~7--2 and 9--2.
+
+\bibitem{nte495}
+NTE Electronics, Inc., ``NTE495: Hardware---Heat Sink for Plastic
+Power Type Package,'' datasheet, p.~1. [Online]. Available:
+\url{https://www.rxelectronics.kr/datasheet/59/nte495.pdf}.
 
 \bibitem{irfz44n}
 International Rectifier, ``IRFZ44NPbF: HEXFET power MOSFET,''
@@ -972,6 +676,7 @@ datasheet, document PD-94787B, pp.~1--4.
 \bibitem{irf4905}
 Infineon Technologies, ``IRF4905PbF: HEXFET power MOSFET,''
 datasheet, rev.~2.1, Apr.~8, 2026, pp.~1--4.
+
 \bibitem{va_irf530}
 ON Semiconductor, ``IRF530: TMOS E-FET Power Field Effect Transistor,''
 datasheet, publication IRF530/D, rev.~2, Aug. 2006.
@@ -980,5 +685,16 @@ datasheet, publication IRF530/D, rev.~2, Aug. 2006.
 Vishay Siliconix, ``IRF9540 Power MOSFET,'' datasheet, document 91078,
 rev.~C, Aug.~16, 2021. \url{https://www.vishay.com/docs/91078/91078.pdf}.
 
+\bibitem{microjpm_heatsink}
+MicroJPM, ``Heatsink 43x17x30mm---AD73819,'' product specifications.
+Accessed: Nov.~9, 2026. [Online]. Available:
+\url{https://www.microjpm.store/products/ad73819}.
+
+\bibitem{crc_heatsink}
+CRCibern\'etica, ``Aluminum Heat Sink---DEV-CB0214-68,'' product
+specifications. Accessed: Nov.~9, 2026. [Online]. Available:
+\url{https://crcibernetica.com/aluminum-heat-sink/}.
+
 \end{thebibliography}
+
 \end{document}
