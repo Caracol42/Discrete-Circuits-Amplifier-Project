@@ -1,0 +1,14 @@
+Version 4
+SymbolType BLOCK
+LINE Normal 0 -40 0 -64
+RECTANGLE Normal -64 -40 80 40
+TEXT -76 55 Left 2 PreAmpModule
+PIN -64 0 LEFT 8
+PINATTR PinName VIN
+PINATTR SpiceOrder 1
+PIN 0 -64 LEFT 8
+PINATTR PinName VCC
+PINATTR SpiceOrder 2
+PIN 80 0 RIGHT 8
+PINATTR PinName VOUT
+PINATTR SpiceOrder 3
