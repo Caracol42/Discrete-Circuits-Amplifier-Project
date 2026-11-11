@@ -357,6 +357,29 @@ Nominal load resistance    & 8 & $\Omega$ \\
 \end{table}
 
 % =========================================================
+\datasheetsubsection{Voltage Amplification Stage}
+Two IRF530 transistors amplify the preamplifier signal. The IRF9540
+acts as the load for the second IRF530. An output capacitor blocks
+the DC bias while passing the audio signal to the Class AB stage.
+The design target is 20~V peak for a 2~V RMS input.
+
+\begin{center}
+\small
+\begin{tabular}{lrc}
+\hline
+\textbf{Stage characteristic} & \textbf{Value} & \textbf{Unit} \\
+\hline
+Supply rails & $\pm24$ & V \\
+Test load & 43 & k$\Omega$ \\
+Small-signal gain near 20 Hz & 6.930 & V/V \\
+Small-signal gain near 1 kHz & 7.118 & V/V \\
+Peak-to-peak output at 1 kHz & 39.975 & V \\
+Output fundamental at 1 kHz & 20.112 & V peak \\
+Stage THD at 1 kHz (through harmonic 9) & 1.183 & \% \\
+\hline
+\end{tabular}
+\end{center}
+
 % POWER DISIPATION & THERMAL - SPECIFICATIONS
 % =========================================================
 \datasheetsection{Power and Thermal Characteristics}
@@ -376,9 +399,9 @@ BJT Transistor & 2N2222 & 17.60 mW & $83.3^\circ\text{C/W}$ \\
 
 \multicolumn{4}{l}{\textbf{Voltage Amplification Stage}} \\
 \hline
-N-Channel MOSFET &IRF530 &-- &-- \\
-N-Channel MOSFET &IRF530 &-- &-- \\
-P-Channel MOSFET &IRF9540 &-- &-- \\
+N-Channel MOSFET (Q4) & IRF530 & 20.8 mW & 1.60 $^\circ$C/W \\
+N-Channel MOSFET (Q1) & IRF530 & 72 mW & 1.60 $^\circ$C/W \\
+P-Channel MOSFET (Q2) & IRF9540 & 90 mW & 1.0 $^\circ$C/W \\
 \hline
 
 \multicolumn{4}{l}{\textbf{Class AB Power Stage}} \\
@@ -393,6 +416,10 @@ P-Channel MOSFET &IRF4905 &6.63 W &0.75 $^\circ$C/W \\
 
 \caption{Power dissipation and thermal characteristics of the amplifier stages.}
 \label{tab:power_thermal_characteristics}
+\par\smallskip
+\parbox{0.91\linewidth}{\small Voltage-stage dissipation values are
+estimates at zero input. Junction-to-case thermal resistances are from
+the onsemi IRF530/D and Vishay IRF9540 (document 91078) datasheets.}
 
 \end{table}
 
@@ -411,22 +438,15 @@ and an 8 $\Omega$ load.
 The recorded average output power
 was 22.8 W.
 
-The voltage amplification stage
-was separately evaluated using
-a 2 V RMS input signal at 1 kHz.
-
-The simulated voltage gain was
-7.118 V/V, with total harmonic
-distortion of 1.183\%.
+In the standalone voltage-stage simulation, a 2~V RMS sine wave at
+1~kHz produced peaks of $+19.919$~V and $-20.056$~V across the
+43~k$\Omega$ test load. The 39.975~V peak-to-peak output corresponds
+to a gain of 7.07~V/V. Fourier analysis of the same output gave
+1.183\% total harmonic distortion through the ninth harmonic.
 
 These results correspond to
 individual stage evaluations.
 
-Further testing is necessary
-to determine the complete
-amplifier frequency response,
-harmonic distortion, noise,
-and continuous output-power rating.
 
 % ==========================================
 % DOCUMENT INFORMATION
